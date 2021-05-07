@@ -1,4 +1,4 @@
-import { RangeType } from 'enums'
+import { Emoji, RangeType } from 'enums'
 import { RadiatorConfig } from 'interfaces'
 
 const radiatorConfigFixture: RadiatorConfig = {
@@ -24,7 +24,13 @@ const radiatorConfigFixture: RadiatorConfig = {
   telegramChannelId: 1,
   websiteUrl: 'http://example.com',
   analyticsViewId: '12345',
-  analyticsConversions: [],
+  analyticsConversions: [
+    {
+      name: 'Career',
+      emoji: Emoji.zap,
+      goals: [10, 11, 12, 13, 14, 15],
+    },
+  ],
 }
 
 export default radiatorConfigFixture

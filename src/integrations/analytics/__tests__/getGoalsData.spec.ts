@@ -37,24 +37,16 @@ describe('Radiator > analytics > getGoalsData', () => {
 
     const data = await getGoalsData(range, radiatorConfigFixture)
 
-    expect(analytics.getAnalytics).toHaveBeenCalledTimes(3)
-    expect(data).toEqual({
-      leads: {
-        rate: 'good',
+    expect(analytics.getAnalytics).toHaveBeenCalledTimes(1)
+    expect(data).toEqual([
+      {
+        emoji: 'zap',
+        name: 'Career',
         previous: 7,
+        rate: 'good',
         value: 8,
       },
-      career: {
-        rate: 'good',
-        previous: 7,
-        value: 8,
-      },
-      contacts: {
-        rate: 'good',
-        previous: 7,
-        value: 8,
-      },
-    })
+    ])
   })
 
   it('should correctly prettify raw data and returns it with bad rate', async () => {
@@ -89,22 +81,14 @@ describe('Radiator > analytics > getGoalsData', () => {
 
     const data = await getGoalsData(range, radiatorConfigFixture)
 
-    expect(data).toEqual({
-      leads: {
-        rate: 'bad',
+    expect(data).toEqual([
+      {
+        emoji: 'zap',
+        name: 'Career',
         previous: 10,
+        rate: 'bad',
         value: 8,
       },
-      career: {
-        rate: 'bad',
-        previous: 10,
-        value: 8,
-      },
-      contacts: {
-        rate: 'bad',
-        previous: 10,
-        value: 8,
-      },
-    })
+    ])
   })
 })

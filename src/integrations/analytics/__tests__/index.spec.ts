@@ -107,20 +107,15 @@ describe('Radiator > analytics > index', () => {
       },
       countries: [],
       devices: [],
-      goals: {
-        career: {
-          previous: 3,
-          value: 5,
+      goals: [
+        {
+          emoji: 'zap',
+          name: 'Career',
+          previous: 0,
+          rate: 'good',
+          value: 2,
         },
-        contacts: {
-          previous: 3,
-          value: 5,
-        },
-        leads: {
-          previous: 3,
-          value: 5,
-        },
-      },
+      ],
     })
   })
 })

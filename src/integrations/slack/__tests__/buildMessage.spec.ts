@@ -205,8 +205,7 @@ describe('Radiator > slack > buildMessage', () => {
           type: 'section',
           text: {
             type: 'mrkdwn',
-            text:
-              ':face_with_symbols_on_mouth: :zap: Leads: *6* (7)\n\n:face_with_symbols_on_mouth: :telephone_receiver: Contacts: *6* (7)\n\n:partying_face: :briefcase: Careers: *2* (0)\n\n',
+            text: ':partying_face: :zap: Career: *2* (0)\n\n',
           },
         },
         {

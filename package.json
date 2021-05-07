@@ -42,7 +42,7 @@
     "test:ci": "CI=true yarn test",
     "example": "node example",
     "version": "standard-version",
-    "reset-hard": "git clean -dfx && git reset --hard && yarn",
+    "reset-hard": "git clean -df && git reset --hard && yarn",
     "prepare-release": "yarn reset-hard && yarn test && yarn version"
   },
   "dependencies": {
