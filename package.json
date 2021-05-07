@@ -1,0 +1,57 @@
+{
+  "name": "@maddevs/mad-radiator",
+  "version": "1.0.0",
+  "description": "Script for collect data from analytics and send to slack(webhook) and telegram",
+  "main": "build/main/index.js",
+  "typings": "build/main/index.d.ts",
+  "module": "build/module/index.js",
+  "repository": "https://github.com/RomanChasovitin/@maddevs/mad-radiator",
+  "license": "MIT",
+  "keywords": [],
+  "scripts": {
+    "build": "tsc -p tsconfig.json && tsc-alias -p tsconfig.json",
+    "fix": "run-s fix:*",
+    "fix:prettier": "prettier \"src/**/*.ts\" --write --config .prettierrc",
+    "fix:lint": "eslint src --ext .ts --fix",
+    "test": "jest --config jest.config.js --runInBand",
+    "test:watch": "yarn test --watchAll",
+    "test:ci": "CI=true yarn test",
+    "version": "standard-version",
+    "reset-hard": "git clean -dfx && git reset --hard && yarn",
+    "prepare-release": "run-s reset-hard test version"
+  },
+  "engines": {
+    "node": ">=12"
+  },
+  "dependencies": {
+    "@bitauth/libauth": "^1.17.1",
+    "@types/node-telegram-bot-api": "^0.51.1",
+    "@types/yargs": "^16.0.1",
+    "axios": "^0.21.1",
+    "chalk": "^4.1.1",
+    "googleapis": "^73.0.0",
+    "node-telegram-bot-api": "^0.53.0",
+    "yargs": "^17.0.1"
+  },
+  "devDependencies": {
+    "@types/jest": "^26.0.23",
+    "@typescript-eslint/eslint-plugin": "^4.0.1",
+    "@typescript-eslint/parser": "^4.0.1",
+    "eslint": "^7.8.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-eslint-comments": "^3.2.0",
+    "eslint-plugin-functional": "^3.0.2",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-jest": "^24.3.6",
+    "jest": "^26.6.3",
+    "prettier": "^2.1.1",
+    "standard-version": "^9.0.0",
+    "ts-jest": "^26.5.6",
+    "ts-node": "^9.0.0",
+    "tsc-alias": "^1.2.10",
+    "typescript": "^4.0.2"
+  },
+  "files": [
+    "build/main"
+  ]
+}
