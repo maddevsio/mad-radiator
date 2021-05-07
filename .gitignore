@@ -9,4 +9,4 @@ coverage
 *.log
 package-lock.json
 tsconfig.tsbuildinfo
-example.config.json
+example/example.config.json

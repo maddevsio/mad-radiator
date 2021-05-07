@@ -1,13 +1,13 @@
 import { Rate } from 'enums'
 
-export type CoreItem = {
+export interface CoreItem {
   value: number | string
   previous: number | string
   difference: string
   rate: Rate
 }
 
-export type CoreItems = {
+export interface CoreItems {
   users: CoreItem
   sessions: CoreItem
   bounceRate: CoreItem

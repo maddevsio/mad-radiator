@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import { RangeType, Rate } from 'enums'
+import { Emoji, RangeType, Rate } from 'enums'
 import main from 'integrations/telegram'
 import * as buildMessage from 'integrations/telegram/buildMessage'
 import { ParsedRange } from 'interfaces'
@@ -86,23 +86,15 @@ describe('Radiator > telegram > index', () => {
           value: 10,
         },
       ],
-      goals: {
-        career: {
-          rate: Rate.good,
+      goals: [
+        {
+          name: 'Career',
           previous: 0,
           value: 2,
+          rate: Rate.good,
+          emoji: Emoji.zap,
         },
-        contacts: {
-          rate: Rate.bad,
-          previous: 7,
-          value: 6,
-        },
-        leads: {
-          rate: Rate.bad,
-          previous: 7,
-          value: 6,
-        },
-      },
+      ],
     }
 
     const defaultRange = {

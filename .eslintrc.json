@@ -4,37 +4,26 @@
   "parserOptions": { "project": "./tsconfig.json" },
   "env": { "es6": true },
   "ignorePatterns": ["node_modules", "lib", "coverage"],
-  "plugins": ["import", "eslint-comments", "functional", "jest"],
+  "plugins": ["import", "jest"],
   "extends": [
-    "eslint:recommended",
-    "plugin:eslint-comments/recommended",
-    "plugin:@typescript-eslint/recommended",
     "plugin:import/typescript",
-    "plugin:functional/lite",
+    "airbnb-typescript/base",
     "prettier",
     "prettier/@typescript-eslint",
     "plugin:jest/all"
   ],
   "globals": { "BigInt": true, "console": true, "WebAssembly": true },
   "rules": {
+    "class-methods-use-this": "off",
     "@typescript-eslint/explicit-module-boundary-types": "off",
     "@typescript-eslint/ban-ts-comment": "warn",
-    "functional/no-class": "off",
-    "functional/immutable-data": "off",
-    "functional/no-return-void": "off",
-    "functional/no-let": "off",
-    "functional/prefer-readonly-type": "off",
     // jest
     "jest/prefer-expect-assertions": "off",
     "jest/no-hooks": "off",
     "jest/prefer-strict-equal": "off",
     "jest/no-mocks-import": "off",
     "jest/lowercase-name": "off",
-    "eslint-comments/disable-enable-pair": [
-      "error",
-      { "allowWholeFile": true }
-    ],
-    "eslint-comments/no-unused-disable": "error",
+    "import/prefer-default-export": "off",
     "import/order": [
       "error",
       { "newlines-between": "always", "alphabetize": { "order": "asc" } }

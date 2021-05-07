@@ -1,18 +1,18 @@
 import { Rate } from 'enums'
 
-export type LighthouseCategory = {
+export interface LighthouseCategory {
   id: string
   title: string
   score: number
 }
 
-export type LighthousePayload = {
+export interface LighthousePayload {
   lighthouseResult: {
     categories: Array<LighthouseCategory>
   }
 }
 
-export type LighthouseEntity = {
+export interface LighthouseEntity {
   title: string
   value: number
   rate: Rate

@@ -2,7 +2,12 @@
   "name": "@maddevs/mad-radiator",
   "version": "1.1.0",
   "description": "Script for collect data from analytics and send to slack(webhook) and telegram",
-  "keywords": ["radiator", "analytics", "marketing", "analytics report"],
+  "keywords": [
+    "radiator",
+    "analytics",
+    "marketing",
+    "analytics report"
+  ],
   "homepage": "https://github.com/maddevsio/mad-radiator#readme",
   "bugs": {
     "url": "https://github.com/maddevsio/mad-radiator/issues"
@@ -12,7 +17,9 @@
     "email": "chasovitin.r@maddevs.io"
   },
   "license": "ISC",
-  "files": ["lib"],
+  "files": [
+    "lib"
+  ],
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
   "bin": {
@@ -27,15 +34,16 @@
   },
   "scripts": {
     "build": "tsc -p tsconfig.json && tsc-alias -p tsconfig.json",
-    "fix": "run-s fix:*",
+    "fix": "yarn fix:prettier && yarn fix:lint",
     "fix:prettier": "prettier \"src/**/*.ts\" --write --config .prettierrc",
     "fix:lint": "eslint src --ext .ts --fix",
     "test": "jest --config jest.config.js --runInBand",
     "test:watch": "yarn test --watchAll",
     "test:ci": "CI=true yarn test",
+    "example": "node example",
     "version": "standard-version",
     "reset-hard": "git clean -dfx && git reset --hard && yarn",
-    "prepare-release": "run-s reset-hard test version"
+    "prepare-release": "yarn reset-hard && yarn test && yarn version"
   },
   "dependencies": {
     "@bitauth/libauth": "^1.17.1",
@@ -52,9 +60,9 @@
     "@typescript-eslint/eslint-plugin": "^4.0.1",
     "@typescript-eslint/parser": "^4.0.1",
     "eslint": "^7.8.0",
+    "eslint-config-airbnb-typescript": "^12.3.1",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-eslint-comments": "^3.2.0",
-    "eslint-plugin-functional": "^3.0.2",
     "eslint-plugin-import": "^2.22.0",
     "eslint-plugin-jest": "^24.3.6",
     "jest": "^26.6.3",

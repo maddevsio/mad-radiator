@@ -1,18 +1,19 @@
 import { RangeType } from 'enums'
+import { AnalyticsConversion } from 'interfaces/analytics'
 
-export type Range = {
+export interface Range {
   startDate: string
   endDate: string
 }
 
-export type ParsedRange = {
+export interface ParsedRange {
   range: RangeType
   originalRange: Range
   previousRange: Range
   text: string
 }
 
-export type EnvironmentConfig = {
+export interface EnvironmentConfig {
   authType: string
   analyticsProjectId: string
   analyticsPrivateKeyId: string
@@ -28,7 +29,7 @@ export type EnvironmentConfig = {
   telegramToken: string
 }
 
-export type RadiatorConfig = {
+export interface RadiatorConfig {
   env: EnvironmentConfig
   slack: boolean
   telegram: boolean
@@ -37,4 +38,5 @@ export type RadiatorConfig = {
   telegramChannelId: number
   websiteUrl: string
   analyticsViewId: string
+  analyticsConversions: Array<AnalyticsConversion>
 }

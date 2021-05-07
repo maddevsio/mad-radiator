@@ -1,6 +1,6 @@
+/* eslint-disable no-console */
 import chalk from 'chalk'
 import { error, info, log, success, warning } from 'logger'
-
 
 describe('Logger module', () => {
   beforeEach(() => {

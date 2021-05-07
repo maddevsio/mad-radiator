@@ -3,24 +3,24 @@ import { Country } from 'interfaces/analytics/countries.interfaces'
 import { Device } from 'interfaces/analytics/devices.interfaces'
 import { Goals } from 'interfaces/analytics/goals.interfaces'
 
-export type AnalyticsMetric = {
+export interface AnalyticsMetric {
   expression: string
 }
 
-export type AnalyticsDimension = {
+export interface AnalyticsDimension {
   name: string
 }
 
-export type AnalyticsValue = {
+export interface AnalyticsValue {
   values: Array<number>
 }
 
-export type AnalyticsDataRow = {
+export interface AnalyticsDataRow {
   dimensions: Array<string>
   metrics: Array<AnalyticsValue>
 }
 
-export type AnalyticsReport = {
+export interface AnalyticsReport {
   data: {
     totals: Array<AnalyticsValue>
     rows: Array<AnalyticsDataRow>
@@ -29,7 +29,7 @@ export type AnalyticsReport = {
 
 export type AnalyticsPayload = Array<AnalyticsReport>
 
-export type AnalyticsData = {
+export interface AnalyticsData {
   core: CoreItems
   countries: Array<Country>
   devices: Array<Device>

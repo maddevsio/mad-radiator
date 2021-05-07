@@ -1,4 +1,4 @@
-import { RangeType, Rate } from 'enums'
+import { Emoji, RangeType, Rate } from 'enums'
 import main from 'integrations/analytics'
 import * as auth from 'integrations/analytics/auth'
 import * as getCoreData from 'integrations/analytics/getCoreData'
@@ -44,20 +44,15 @@ jest
 const devices: Array<Device> = []
 jest.spyOn(getDevicesData, 'getDevicesData').mockImplementation(() => Promise.resolve(devices))
 
-const goals: Goals = {
-  leads: {
-    value: 5,
-    previous: 3,
+const goals: Goals = [
+  {
+    name: 'Career',
+    previous: 0,
+    value: 2,
+    rate: Rate.good,
+    emoji: Emoji.zap,
   },
-  career: {
-    value: 5,
-    previous: 3,
-  },
-  contacts: {
-    value: 5,
-    previous: 3,
-  },
-}
+]
 jest.spyOn(getGoalsData, 'getGoalsData').mockImplementation(() => Promise.resolve(goals))
 
 describe('Radiator > analytics > index', () => {

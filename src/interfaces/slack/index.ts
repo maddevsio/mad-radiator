@@ -2,7 +2,7 @@ import { SlackMessageBlockType } from 'enums'
 
 export type SlackMessageBlockTextType = 'plain_text' | 'mrkdwn'
 
-export type SlackMessageBlock = {
+export interface SlackMessageBlock {
   type: SlackMessageBlockType
   text?: {
     type?: SlackMessageBlockTextType
@@ -11,7 +11,7 @@ export type SlackMessageBlock = {
   }
 }
 
-export type SlackMessage = {
+export interface SlackMessage {
   text?: string
   blocks?: Array<SlackMessageBlock>
 }

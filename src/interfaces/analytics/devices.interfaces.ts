@@ -2,7 +2,7 @@ import { Rate } from 'enums'
 
 export type DeviceTitle = 'desktop' | 'mobile' | 'tablet'
 
-export type Device = {
+export interface Device {
   title: DeviceTitle
   value: number
   previous: number

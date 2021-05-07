@@ -1,5 +1,3 @@
 import radiator from './main'
 
-export {
-  radiator
-}
+export { radiator }

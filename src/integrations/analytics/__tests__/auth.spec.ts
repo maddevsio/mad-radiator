@@ -29,11 +29,7 @@ describe('Radiator > analytics > auth module', () => {
   it('should correctly throw and log error during writeFile', async () => {
     jest
       .spyOn(fs, 'writeFile')
-      .mockImplementation(
-        (_, __,
-          callback: fs.NoParamCallback,
-        ) => callback(new Error('Error')),
-      )
+      .mockImplementation((_, __, callback: fs.NoParamCallback) => callback(new Error('Error')))
     jest.spyOn(global.console, 'error').mockImplementation(() => null)
 
     await authorize(radiatorConfigFixture)
@@ -45,9 +41,7 @@ describe('Radiator > analytics > auth module', () => {
     jest.spyOn(fs, 'writeFile').mockImplementation(() => null)
     jest
       .spyOn(fs, 'unlink')
-      .mockImplementation((_, callback: fs.NoParamCallback) =>
-        callback(new Error('Error')),
-      )
+      .mockImplementation((_, callback: fs.NoParamCallback) => callback(new Error('Error')))
     jest.spyOn(global.console, 'error').mockImplementation(() => null)
     const unlink = await authorize(radiatorConfigFixture)
 

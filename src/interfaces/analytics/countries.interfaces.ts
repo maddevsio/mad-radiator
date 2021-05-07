@@ -1,6 +1,6 @@
 import { Rate } from 'enums'
 
-export type Country = {
+export interface Country {
   title: string
   value: number
   percentage: number

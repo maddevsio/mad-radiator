@@ -102,17 +102,7 @@ export function buildMessage(
       section('Клики и конверсии произведенные пользователями:'),
       section(
         list(
-          [
-            listItem(goals.leads, 'Leads', Emoji.zap, 'previous', Integration.slack),
-            listItem(
-              goals.contacts,
-              'Contacts',
-              Emoji.telephoneReceiver,
-              'previous',
-              Integration.slack,
-            ),
-            listItem(goals.career, 'Careers', Emoji.briefcase, 'previous', Integration.slack),
-          ],
+          goals.map(goal => listItem(goal, goal.name, goal.emoji, 'previous', Integration.slack)),
           Integration.slack,
         ),
       ),

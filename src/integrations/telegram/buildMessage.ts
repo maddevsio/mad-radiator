@@ -104,17 +104,7 @@ export function buildMessage(
     section('Клики и конверсии произведенные пользователями:'),
     section(
       list(
-        [
-          listItem(goals.leads, 'Leads', Emoji.zap, 'previous', Integration.telegram),
-          listItem(
-            goals.contacts,
-            'Contacts',
-            Emoji.telephoneReceiver,
-            'previous',
-            Integration.telegram,
-          ),
-          listItem(goals.career, 'Careers', Emoji.briefcase, 'previous', Integration.telegram),
-        ],
+        goals.map(goal => listItem(goal, goal.name, goal.emoji, 'previous', Integration.telegram)),
         Integration.telegram,
       ),
     ),

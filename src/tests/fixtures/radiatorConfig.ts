@@ -24,6 +24,7 @@ const radiatorConfigFixture: RadiatorConfig = {
   telegramChannelId: 1,
   websiteUrl: 'http://example.com',
   analyticsViewId: '12345',
+  analyticsConversions: [],
 }
 
 export default radiatorConfigFixture
