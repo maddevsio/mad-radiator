@@ -1,13 +1,30 @@
 {
   "name": "@maddevs/mad-radiator",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Script for collect data from analytics and send to slack(webhook) and telegram",
-  "main": "build/main/index.js",
-  "typings": "build/main/index.d.ts",
-  "module": "build/module/index.js",
-  "repository": "https://github.com/RomanChasovitin/@maddevs/mad-radiator",
-  "license": "MIT",
-  "keywords": [],
+  "keywords": ["radiator", "analytics", "marketing", "analytics report"],
+  "homepage": "https://github.com/maddevsio/mad-radiator#readme",
+  "bugs": {
+    "url": "https://github.com/maddevsio/mad-radiator/issues"
+  },
+  "author": {
+    "name": "Roman Chasovitin",
+    "email": "chasovitin.r@maddevs.io"
+  },
+  "license": "ISC",
+  "files": ["lib"],
+  "main": "lib/index.js",
+  "typings": "lib/index.d.ts",
+  "bin": {
+    "mad-radiator": "lib/cli/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/maddevsio/mad-radiator.git"
+  },
+  "engines": {
+    "node": ">=12.14.1"
+  },
   "scripts": {
     "build": "tsc -p tsconfig.json && tsc-alias -p tsconfig.json",
     "fix": "run-s fix:*",
@@ -19,9 +36,6 @@
     "version": "standard-version",
     "reset-hard": "git clean -dfx && git reset --hard && yarn",
     "prepare-release": "run-s reset-hard test version"
-  },
-  "engines": {
-    "node": ">=12"
   },
   "dependencies": {
     "@bitauth/libauth": "^1.17.1",
@@ -50,8 +64,5 @@
     "ts-node": "^9.0.0",
     "tsc-alias": "^1.2.10",
     "typescript": "^4.0.2"
-  },
-  "files": [
-    "build/main"
-  ]
+  }
 }
