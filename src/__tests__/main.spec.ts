@@ -1,4 +1,4 @@
-import { Emoji, Rate } from 'enums'
+import { Rate } from 'enums'
 import * as getAnalyticsData from 'integrations/analytics'
 import * as getLighthouseData from 'integrations/lighthouse'
 import * as sendMessageToSlack from 'integrations/slack'
@@ -84,7 +84,7 @@ describe('Radiator main', () => {
         previous: 0,
         value: 2,
         rate: Rate.good,
-        emoji: Emoji.zap,
+        emoji: 'zap',
       },
     ],
   }

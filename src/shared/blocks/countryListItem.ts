@@ -1,18 +1,19 @@
-import { Emoji, Integration } from 'enums'
+import { Integration } from 'enums'
+import { Emoji } from 'interfaces'
 import { Country } from 'interfaces/analytics'
 import { toISO } from 'utils/countryISO/toISO'
 import { getEmoji } from 'utils/emoji/getEmoji'
 
 const getFlag = (title: string, integration: Integration): string => {
   const iso = toISO(title)
-  if (!iso) return getEmoji(Emoji.defaultFlag, integration)
+  if (!iso) return getEmoji('flags', integration)
 
-  const emoji = `${iso.toLowerCase()}Flag`
+  const emoji = `flag-${iso.toLowerCase()}` as Emoji
 
-  if (getEmoji(Emoji[emoji as keyof typeof Emoji]) !== ':x:') {
-    return getEmoji(Emoji[emoji as keyof typeof Emoji], integration)
+  if (getEmoji(emoji) !== ':x:') {
+    return getEmoji(emoji, integration)
   }
-  return getEmoji(Emoji.defaultFlag, integration)
+  return getEmoji('flags', integration)
 }
 
 export const countryListItem = (

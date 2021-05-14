@@ -1,10 +1,11 @@
-import { Emoji, Integration, Rate } from 'enums'
+import { Integration, Rate } from 'enums'
+import { Emoji } from 'interfaces'
 import { getEmoji } from 'utils/emoji/getEmoji'
 
 const emojiByRate: Record<Rate, Emoji> = {
-  good: Emoji.partyingFace,
-  bad: Emoji.uncensoredFace,
-  neutral: Emoji.neutralFace,
+  good: 'yum',
+  bad: 'rage',
+  neutral: 'neutral_face',
 }
 
 export function getRateEmoji(

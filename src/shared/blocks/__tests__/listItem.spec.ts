@@ -1,4 +1,4 @@
-import { Emoji, Integration, Rate } from 'enums'
+import { Integration, Rate } from 'enums'
 import { CoreItem } from 'interfaces/analytics'
 import { listItem } from 'shared/blocks/listItem'
 
@@ -11,7 +11,7 @@ describe('listItem shared block', () => {
       previous: 25,
     }
     const title = 'Title'
-    const emoji = Emoji.door
+    const emoji = 'door'
     const parensKey = 'difference'
     const valueType = ''
     const parensType = '%'
@@ -37,7 +37,7 @@ describe('listItem shared block', () => {
       previous: 25,
     }
     const title = 'Title'
-    const emoji = Emoji.door
+    const emoji = 'door'
     const parensKey = 'difference'
 
     const result = listItem(entity, title, emoji, parensKey, Integration.slack)

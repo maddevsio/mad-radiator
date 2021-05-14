@@ -1,6 +1,6 @@
 {
   "name": "@maddevs/mad-radiator",
-  "version": "1.1.4",
+  "version": "1.1.1",
   "description": "Script for collect data from analytics and send to slack(webhook) and telegram",
   "keywords": [
     "radiator",
@@ -47,11 +47,14 @@
   },
   "dependencies": {
     "@bitauth/libauth": "^1.17.1",
+    "@types/node-emoji": "^1.8.1",
     "@types/node-telegram-bot-api": "^0.51.1",
     "@types/yargs": "^16.0.1",
     "axios": "^0.21.1",
     "chalk": "^4.1.1",
     "googleapis": "^73.0.0",
+    "node-emoji": "^1.10.0",
+    "node-emoji-new": "^3.4.5",
     "node-telegram-bot-api": "^0.53.0",
     "yargs": "^17.0.1"
   },

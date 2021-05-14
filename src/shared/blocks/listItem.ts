@@ -1,4 +1,5 @@
-import { Emoji, Integration } from 'enums'
+import { Integration } from 'enums'
+import { Emoji } from 'interfaces'
 import { CoreItem, Device, Goal } from 'interfaces/analytics'
 import { getEmoji } from 'utils/emoji/getEmoji'
 import { getRateEmoji } from 'utils/emoji/getRateEmoji'

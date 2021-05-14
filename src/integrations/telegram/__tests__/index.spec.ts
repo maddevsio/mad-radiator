@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import { Emoji, RangeType, Rate } from 'enums'
+import { RangeType, Rate } from 'enums'
 import main from 'integrations/telegram'
 import * as buildMessage from 'integrations/telegram/buildMessage'
 import { ParsedRange } from 'interfaces'
@@ -92,7 +92,7 @@ describe('Radiator > telegram > index', () => {
           previous: 0,
           value: 2,
           rate: Rate.good,
-          emoji: Emoji.zap,
+          emoji: 'zap',
         },
       ],
     }
