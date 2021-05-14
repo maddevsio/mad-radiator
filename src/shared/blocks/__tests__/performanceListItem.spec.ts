@@ -1,4 +1,4 @@
-import { Emoji, Integration, Rate } from 'enums'
+import { Integration, Rate } from 'enums'
 import { LighthouseEntity } from 'interfaces/lighthouse'
 import { performanceListItem } from 'shared/blocks/performanceListItem'
 
@@ -10,10 +10,8 @@ describe('performanceListItem shared block', () => {
       value: 95,
     }
 
-    const emoji = Emoji.notFound
+    const result = performanceListItem(entity, 'sports_medal', Integration.slack)
 
-    const result = performanceListItem(entity, emoji, Integration.slack)
-
-    expect(result).toBe(':partying_face: :x: SEO: *95%*')
+    expect(result).toBe(':yum: :sports_medal: SEO: *95%*')
   })
 })

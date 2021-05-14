@@ -1,5 +1,8 @@
 import { RangeType } from 'enums'
 import { AnalyticsConversion } from 'interfaces/analytics'
+import { emoji } from 'node-emoji'
+
+export type Emoji = keyof typeof emoji
 
 export interface Range {
   startDate: string

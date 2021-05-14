@@ -1,4 +1,5 @@
-import { Emoji, Rate } from 'enums'
+import { Rate } from 'enums'
+import { Emoji } from 'interfaces'
 
 export interface Goal {
   name: string

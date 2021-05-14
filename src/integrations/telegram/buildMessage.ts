@@ -1,4 +1,4 @@
-import { Emoji, Integration } from 'enums'
+import { Integration } from 'enums'
 import { divider } from 'integrations/telegram/blocks/divider'
 import { header } from 'integrations/telegram/blocks/header'
 import { section } from 'integrations/telegram/blocks/section'
@@ -23,7 +23,7 @@ export function buildMessage(
 
   return [
     header(
-      `${getEmoji(Emoji.calendar, Integration.telegram)} Отчет радиатора по ключевым метрикам за ${
+      `${getEmoji('calendar', Integration.telegram)} Отчет радиатора по ключевым метрикам за ${
         range.text
       }`,
     ),
@@ -34,28 +34,12 @@ export function buildMessage(
     section(
       list(
         [
-          listItem(
-            core.users,
-            'Users',
-            Emoji.technologist,
-            'difference',
-            Integration.telegram,
-            '',
-            '%',
-          ),
-          listItem(
-            core.sessions,
-            'Sessions',
-            Emoji.door,
-            'difference',
-            Integration.telegram,
-            '',
-            '%',
-          ),
+          listItem(core.users, 'Users', 'man', 'difference', Integration.telegram, '', '%'),
+          listItem(core.sessions, 'Sessions', 'door', 'difference', Integration.telegram, '', '%'),
           listItem(
             core.bounceRate,
             'Bounce Rate',
-            Emoji.moyai,
+            'moyai',
             'difference',
             Integration.telegram,
             '%',
@@ -64,7 +48,7 @@ export function buildMessage(
           listItem(
             core.duration,
             'Session Duration',
-            Emoji.clock,
+            'clock1',
             'difference',
             Integration.telegram,
             '',
@@ -113,11 +97,15 @@ export function buildMessage(
     section(
       list(
         [
-          performanceListItem(lighthouse.performance, Emoji.chart, Integration.telegram),
-          performanceListItem(lighthouse.accessibility, Emoji.wheelchair, Integration.telegram),
-          performanceListItem(lighthouse['best-practices'], Emoji.horns, Integration.telegram),
-          performanceListItem(lighthouse.seo, Emoji.medal, Integration.telegram),
-          performanceListItem(lighthouse.pwa, Emoji.iphone, Integration.telegram),
+          performanceListItem(
+            lighthouse.performance,
+            'chart_with_upwards_trend',
+            Integration.telegram,
+          ),
+          performanceListItem(lighthouse.accessibility, 'wheelchair', Integration.telegram),
+          performanceListItem(lighthouse['best-practices'], 'the_horns', Integration.telegram),
+          performanceListItem(lighthouse.seo, 'sports_medal', Integration.telegram),
+          performanceListItem(lighthouse.pwa, 'iphone', Integration.telegram),
         ],
         Integration.telegram,
       ),

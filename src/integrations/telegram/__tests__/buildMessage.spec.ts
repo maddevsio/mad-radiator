@@ -1,4 +1,4 @@
-import { Emoji, RangeType, Rate } from 'enums'
+import { RangeType, Rate } from 'enums'
 import { buildMessage } from 'integrations/telegram/buildMessage'
 import { ParsedRange } from 'interfaces'
 import { AnalyticsData } from 'interfaces/analytics'
@@ -80,7 +80,7 @@ describe('Radiator > telegram > buildMessage', () => {
           previous: 0,
           value: 2,
           rate: Rate.good,
-          emoji: Emoji.zap,
+          emoji: 'zap',
         },
       ],
     }
@@ -131,15 +131,15 @@ describe('Radiator > telegram > buildMessage', () => {
 ———
 За отчетный период сайт http://example.com посетило *10 пользователей*. Всего *20 сессий*, средняя длительность 1 сессии составляет *40s*. *30%* пользователей закрыли сайт никак с ним не провзаимодействовав.
 
-🥳 🧑‍💻 Users: *10* (+100%)
-🥳 🚪 Sessions: *20* (+100%)
-🥳 🗿 Bounce Rate: *30%* (+100%)
-🥳 🕐 Session Duration: *40s* (+100%)
+😋 👨 Users: *10* (+100%)
+😋 🚪 Sessions: *20* (+100%)
+😋 🗿 Bounce Rate: *30%* (+100%)
+😋 🕐 Session Duration: *40s* (+100%)
 
 ———
 Сайт просматривают на разных устройствах. Соотношение:
 
-🥳 💻 Desktop: *130%* (125%)
+😋 💻 Desktop: *130%* (125%)
 😐 📱 Mobile: *60%* (100%)
 😐 📟 Tablet: *10%* (25%)
 
@@ -153,15 +153,15 @@ describe('Radiator > telegram > buildMessage', () => {
 ———
 Клики и конверсии произведенные пользователями:
 
-🥳 ⚡️ Career: *2* (0)
+😋 ⚡ Career: *2* (0)
 
 ———
 Производительность сайта от Google PageSpeed:
 
 😐 📈 Performance: *75%*
-😐 👨‍🦽 accessibility: *75%*
+😐 ♿ accessibility: *75%*
 😐 🤘 best-practices: *75%*
-😐 🥇 seo: *75%*
+😐 🏅 seo: *75%*
 😐 📱 seo: *75%*
 
 ———

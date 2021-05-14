@@ -1,4 +1,5 @@
-import { Emoji, Integration } from 'enums'
+import { Integration } from 'enums'
+import { Emoji } from 'interfaces'
 import { LighthouseEntity } from 'interfaces/lighthouse'
 import { getEmoji } from 'utils/emoji/getEmoji'
 import { getRateEmoji } from 'utils/emoji/getRateEmoji'

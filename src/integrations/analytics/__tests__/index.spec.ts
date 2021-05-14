@@ -1,4 +1,4 @@
-import { Emoji, RangeType, Rate } from 'enums'
+import { RangeType, Rate } from 'enums'
 import main from 'integrations/analytics'
 import * as auth from 'integrations/analytics/auth'
 import * as getCoreData from 'integrations/analytics/getCoreData'
@@ -50,7 +50,7 @@ const goals: Goals = [
     previous: 0,
     value: 2,
     rate: Rate.good,
-    emoji: Emoji.zap,
+    emoji: 'zap',
   },
 ]
 jest.spyOn(getGoalsData, 'getGoalsData').mockImplementation(() => Promise.resolve(goals))

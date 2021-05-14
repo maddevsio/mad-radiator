@@ -1,4 +1,4 @@
-import { Emoji, RangeType, Rate } from 'enums'
+import { RangeType, Rate } from 'enums'
 import main from 'integrations/slack'
 import * as buildMessage from 'integrations/slack/buildMessage'
 import * as sendMessage from 'integrations/slack/sendMessage'
@@ -86,7 +86,7 @@ describe('Radiator > slack > index', () => {
           previous: 0,
           value: 2,
           rate: Rate.good,
-          emoji: Emoji.zap,
+          emoji: 'zap',
         },
       ],
     }

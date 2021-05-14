@@ -1,4 +1,4 @@
-import { Emoji, Integration } from 'enums'
+import { Integration } from 'enums'
 import { divider } from 'integrations/slack/blocks/divider'
 import { header } from 'integrations/slack/blocks/header'
 import { section } from 'integrations/slack/blocks/section'
@@ -24,7 +24,7 @@ export function buildMessage(
 
   return {
     blocks: [
-      header(`${getEmoji(Emoji.calendar)} Отчет радиатора по ключевым метрикам за ${range.text}`),
+      header(`${getEmoji('calendar')} Отчет радиатора по ключевым метрикам за ${range.text}`),
       divider(),
       section(
         `<!here> За отчетный период сайт ${config.websiteUrl} посетило *${core.users.value} пользователей*. Всего *${core.sessions.value} сессий*, средняя длительность 1 сессии составляет *${core.duration.value}*. *${core.bounceRate.value}%* пользователей закрыли сайт никак с ним не провзаимодействовав.`,
@@ -32,28 +32,12 @@ export function buildMessage(
       section(
         list(
           [
-            listItem(
-              core.users,
-              'Users',
-              Emoji.technologist,
-              'difference',
-              Integration.slack,
-              '',
-              '%',
-            ),
-            listItem(
-              core.sessions,
-              'Sessions',
-              Emoji.door,
-              'difference',
-              Integration.slack,
-              '',
-              '%',
-            ),
+            listItem(core.users, 'Users', 'man', 'difference', Integration.slack, '', '%'),
+            listItem(core.sessions, 'Sessions', 'door', 'difference', Integration.slack, '', '%'),
             listItem(
               core.bounceRate,
               'Bounce Rate',
-              Emoji.moyai,
+              'moyai',
               'difference',
               Integration.slack,
               '%',
@@ -62,7 +46,7 @@ export function buildMessage(
             listItem(
               core.duration,
               'Session Duration',
-              Emoji.clock,
+              'clock1',
               'difference',
               Integration.slack,
               '',
@@ -111,11 +95,15 @@ export function buildMessage(
       section(
         list(
           [
-            performanceListItem(lighthouse.performance, Emoji.chart, Integration.slack),
-            performanceListItem(lighthouse.accessibility, Emoji.wheelchair, Integration.slack),
-            performanceListItem(lighthouse['best-practices'], Emoji.horns, Integration.slack),
-            performanceListItem(lighthouse.seo, Emoji.medal, Integration.slack),
-            performanceListItem(lighthouse.pwa, Emoji.iphone, Integration.slack),
+            performanceListItem(
+              lighthouse.performance,
+              'chart_with_upwards_trend',
+              Integration.slack,
+            ),
+            performanceListItem(lighthouse.accessibility, 'wheelchair', Integration.slack),
+            performanceListItem(lighthouse['best-practices'], 'the_horns', Integration.slack),
+            performanceListItem(lighthouse.seo, 'sports_medal', Integration.slack),
+            performanceListItem(lighthouse.pwa, 'iphone', Integration.slack),
           ],
           Integration.slack,
         ),

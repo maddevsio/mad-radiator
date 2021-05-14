@@ -1,4 +1,4 @@
-import { Emoji, RangeType } from 'enums'
+import { RangeType } from 'enums'
 import { RadiatorConfig } from 'interfaces'
 
 const radiatorConfigFixture: RadiatorConfig = {
@@ -27,7 +27,7 @@ const radiatorConfigFixture: RadiatorConfig = {
   analyticsConversions: [
     {
       name: 'Career',
-      emoji: Emoji.zap,
+      emoji: 'zap',
       goals: [10, 11, 12, 13, 14, 15],
     },
   ],
