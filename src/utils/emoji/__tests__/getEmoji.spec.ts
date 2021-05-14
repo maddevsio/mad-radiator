@@ -1,4 +1,5 @@
 import { Integration } from 'enums'
+import { Emoji } from 'interfaces'
 import { getEmoji } from 'utils/emoji/getEmoji'
 
 describe('getEmoji utility', () => {
@@ -15,5 +16,10 @@ describe('getEmoji utility', () => {
   it('should correctly return emoji by type=telegram', () => {
     const emoji = getEmoji('door', Integration.telegram)
     expect(emoji).toBe('\ud83d\udeaa')
+  })
+
+  it('should correctly return x if emoji is not found', () => {
+    const emoji = getEmoji('not_found' as Emoji, Integration.slack)
+    expect(emoji).toBe(':x:')
   })
 })

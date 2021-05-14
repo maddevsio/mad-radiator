@@ -10,8 +10,8 @@ describe('performanceListItem shared block', () => {
       value: 95,
     }
 
-    const result = performanceListItem(entity, '+1', Integration.slack)
+    const result = performanceListItem(entity, 'sports_medal', Integration.slack)
 
-    expect(result).toBe(':partying_face: :+1: SEO: *95%*')
+    expect(result).toBe(':yum: :sports_medal: SEO: *95%*')
   })
 })

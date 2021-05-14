@@ -152,7 +152,7 @@ describe('Radiator > slack > buildMessage', () => {
           text: {
             type: 'mrkdwn',
             text:
-              ':partying_face: :technologist: Users: *10* (+100%)\n\n:partying_face: :door: Sessions: *20* (+100%)\n\n:partying_face: :moyai: Bounce Rate: *30%* (+100%)\n\n:partying_face: :clock1: Session Duration: *40s* (+100%)\n\n',
+              ':yum: :man: Users: *10* (+100%)\n\n:yum: :door: Sessions: *20* (+100%)\n\n:yum: :moyai: Bounce Rate: *30%* (+100%)\n\n:yum: :clock1: Session Duration: *40s* (+100%)\n\n',
           },
         },
         {
@@ -170,7 +170,7 @@ describe('Radiator > slack > buildMessage', () => {
           text: {
             type: 'mrkdwn',
             text:
-              ':partying_face: :computer: Desktop: *130%* (125%)\n\n:neutral_face: :iphone: Mobile: *60%* (100%)\n\n:neutral_face: :pager: Tablet: *10%* (25%)\n\n',
+              ':yum: :computer: Desktop: *130%* (125%)\n\n:neutral_face: :iphone: Mobile: *60%* (100%)\n\n:neutral_face: :pager: Tablet: *10%* (25%)\n\n',
           },
         },
         {
@@ -205,7 +205,7 @@ describe('Radiator > slack > buildMessage', () => {
           type: 'section',
           text: {
             type: 'mrkdwn',
-            text: ':partying_face: :zap: Career: *2* (0)\n\n',
+            text: ':yum: :zap: Career: *2* (0)\n\n',
           },
         },
         {
@@ -223,7 +223,7 @@ describe('Radiator > slack > buildMessage', () => {
           text: {
             type: 'mrkdwn',
             text:
-              ':neutral_face: :chart_with_upwards_trend: Performance: *75%*\n\n:neutral_face: :man_in_manual_wheelchair: accessibility: *75%*\n\n:neutral_face: :the_horns: best-practices: *75%*\n\n:neutral_face: :sports_medal: seo: *75%*\n\n:neutral_face: :iphone: seo: *75%*\n\n',
+              ':neutral_face: :chart_with_upwards_trend: Performance: *75%*\n\n:neutral_face: :wheelchair: accessibility: *75%*\n\n:neutral_face: :sign_of_the_horns: best-practices: *75%*\n\n:neutral_face: :sports_medal: seo: *75%*\n\n:neutral_face: :iphone: seo: *75%*\n\n',
           },
         },
         {

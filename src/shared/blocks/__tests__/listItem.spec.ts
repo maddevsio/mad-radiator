@@ -26,7 +26,7 @@ describe('listItem shared block', () => {
       parensType,
     )
 
-    expect(result).toBe(':partying_face: :door: Title: *15* (+25%)')
+    expect(result).toBe(':yum: :door: Title: *15* (+25%)')
   })
 
   it('should correctly return listItem with default parens & value types', () => {
@@ -42,6 +42,6 @@ describe('listItem shared block', () => {
 
     const result = listItem(entity, title, emoji, parensKey, Integration.slack)
 
-    expect(result).toBe(':partying_face: :door: Title: *15* (+25)')
+    expect(result).toBe(':yum: :door: Title: *15* (+25)')
   })
 })

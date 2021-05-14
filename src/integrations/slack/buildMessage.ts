@@ -102,7 +102,7 @@ export function buildMessage(
             ),
             performanceListItem(lighthouse.accessibility, 'wheelchair', Integration.slack),
             performanceListItem(lighthouse['best-practices'], 'the_horns', Integration.slack),
-            performanceListItem(lighthouse.seo, 'medal', Integration.slack),
+            performanceListItem(lighthouse.seo, 'sports_medal', Integration.slack),
             performanceListItem(lighthouse.pwa, 'iphone', Integration.slack),
           ],
           Integration.slack,

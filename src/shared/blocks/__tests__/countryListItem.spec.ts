@@ -31,7 +31,7 @@ describe('countryListItem shared block', () => {
 
   it('should correctly return string block with defined country without flag', () => {
     const entity: Country = {
-      title: 'Algeria',
+      title: 'Unexpected country',
       percentage: 25,
       value: 1,
       rate: Rate.good,
@@ -39,6 +39,6 @@ describe('countryListItem shared block', () => {
 
     const result = countryListItem(entity, Integration.slack)
 
-    expect(result).toBe(':flags: Algeria: *25%* от всех посетителей сайта')
+    expect(result).toBe(':flags: Unexpected country: *25%* от всех посетителей сайта')
   })
 })

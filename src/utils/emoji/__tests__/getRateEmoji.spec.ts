@@ -4,12 +4,12 @@ import { getRateEmoji } from 'utils/emoji/getRateEmoji'
 describe('getRateEmoji utility', () => {
   it('should correctly return rate emoji', () => {
     const emoji = getRateEmoji(Rate.bad, Integration.slack)
-    expect(emoji).toBe(':face_with_symbols_on_mouth:')
+    expect(emoji).toBe(':rage:')
   })
 
   it('should correctly return rate emoji for telegram', () => {
     const emoji = getRateEmoji(Rate.good, Integration.telegram)
-    expect(emoji).toBe('\ud83e\udd73')
+    expect(emoji).toBe('\ud83d\ude0b')
   })
 
   it('should correctly return rate emoji without params', () => {

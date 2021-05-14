@@ -10,10 +10,7 @@ const getFlag = (title: string, integration: Integration): string => {
 
   const emoji = `flag-${iso.toLowerCase()}` as Emoji
 
-  if (getEmoji(emoji) !== ':x:') {
-    return getEmoji(emoji, integration)
-  }
-  return getEmoji('flags', integration)
+  return getEmoji(emoji, integration)
 }
 
 export const countryListItem = (

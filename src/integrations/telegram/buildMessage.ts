@@ -104,7 +104,7 @@ export function buildMessage(
           ),
           performanceListItem(lighthouse.accessibility, 'wheelchair', Integration.telegram),
           performanceListItem(lighthouse['best-practices'], 'the_horns', Integration.telegram),
-          performanceListItem(lighthouse.seo, 'medal', Integration.telegram),
+          performanceListItem(lighthouse.seo, 'sports_medal', Integration.telegram),
           performanceListItem(lighthouse.pwa, 'iphone', Integration.telegram),
         ],
         Integration.telegram,
