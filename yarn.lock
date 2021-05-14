@@ -4281,13 +4281,6 @@ nice-try@^1.0.4:
   resolved "https://registry.yarnpkg.com/nice-try/-/nice-try-1.0.5.tgz#a3378a7696ce7d223e88fc9b764bd7ef1089e366"
   integrity sha512-1nh45deeb5olNY7eX82BkPO7SSxR5SSYJiPTrTdFUVYwAl8CKMA5N9PjTYkHiRjisVcxcQ1HXdLhx2qxxJzLNQ==
 
-node-emoji-new@^3.4.5:
-  version "3.4.5"
-  resolved "https://registry.yarnpkg.com/node-emoji-new/-/node-emoji-new-3.4.5.tgz#09a168a69e467c56cd92b591b2afc82b3ed8489b"
-  integrity sha512-opp9oURoZsxbcHFYzOQEaArVAkut9TaiaTu2DnX6+OyXMqvDXb57G5YGw+HWBD3YIG96Yr3MPvPQIzBemSheKg==
-  dependencies:
-    lodash.toarray "^4.4.0"
-
 node-emoji@^1.10.0:
   version "1.10.0"
   resolved "https://registry.yarnpkg.com/node-emoji/-/node-emoji-1.10.0.tgz#8886abd25d9c7bb61802a658523d1f8d2a89b2da"
