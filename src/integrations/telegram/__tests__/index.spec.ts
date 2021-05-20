@@ -2,20 +2,11 @@
 import { RangeType, Rate } from 'enums'
 import main from 'integrations/telegram'
 import * as buildMessage from 'integrations/telegram/buildMessage'
+import * as sendMessage from 'integrations/telegram/sendMessage'
 import { ParsedRange } from 'interfaces'
 import { AnalyticsData } from 'interfaces/analytics'
 import { LighthouseData } from 'interfaces/lighthouse'
-import * as TelegramBot from 'node-telegram-bot-api'
 import radiatorConfigFixture from 'tests/fixtures/radiatorConfig'
-
-jest.mock('node-telegram-bot-api', () => jest.fn())
-
-const sendMessage = jest.fn()
-
-// @ts-ignore
-TelegramBot.mockImplementation(() => ({
-  sendMessage,
-}))
 
 describe('Radiator > telegram > index', () => {
   it('should correctly called build and send message functions', async () => {
@@ -138,6 +129,7 @@ describe('Radiator > telegram > index', () => {
     }
 
     jest.spyOn(buildMessage, 'buildMessage').mockImplementation(() => '')
+    jest.spyOn(sendMessage, 'sendMessage').mockImplementation(() => Promise.resolve(undefined))
 
     await main(analytics, range, lighthouse, radiatorConfigFixture)
     expect(buildMessage.buildMessage).toHaveBeenCalledWith(
@@ -146,6 +138,6 @@ describe('Radiator > telegram > index', () => {
       lighthouse,
       radiatorConfigFixture,
     )
-    expect(sendMessage).toHaveBeenCalledTimes(1)
+    expect(sendMessage.sendMessage).toHaveBeenCalledTimes(1)
   })
 })

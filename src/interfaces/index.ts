@@ -1,4 +1,4 @@
-import { RangeType } from 'enums'
+import { RangeType, SchedulePeriod } from 'enums'
 import { AnalyticsConversion } from 'interfaces/analytics'
 import { emoji } from 'node-emoji'
 
@@ -32,8 +32,17 @@ export interface EnvironmentConfig {
   telegramToken: string
 }
 
+export interface ScheduleConfig {
+  period: SchedulePeriod
+  cron?: string
+  time?: number // hour of days in UTC(0-23)
+  weekDay?: number // 0-7 (0 or 7 is Sun)
+  monthDay?: number // 1-31
+}
+
 export interface RadiatorConfig {
   env: EnvironmentConfig
+  schedule?: ScheduleConfig
   slack: boolean
   telegram: boolean
   range: RangeType

@@ -20,7 +20,8 @@
       "integrations": ["integrations"],
       "shared": ["shared"],
       "logger": ["logger"],
-      "tests": ["tests"]
+      "tests": ["tests"],
+      "scheduler": ["scheduler"]
     },
 
     "strict": true,
@@ -52,6 +53,7 @@
     "integrations": ["integrations"],
     "shared": ["shared"],
     "logger": ["logger"],
-    "tests": ["tests"]
+    "tests": ["tests"],
+    "scheduler": ["scheduler"]
   }
 }
