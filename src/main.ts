@@ -4,9 +4,12 @@ import sendMessageToSlack from 'integrations/slack'
 import sendMessageToTelegram from 'integrations/telegram'
 import { RadiatorConfig } from 'interfaces'
 import { info, success } from 'logger'
+import { scheduler } from 'scheduler'
+import { buildCronString } from 'scheduler/buildCronString'
+import { buildCronStringInfo } from 'scheduler/buildCronStringInfo'
 import { parseRange } from 'utils/parseRange'
 
-export default async function radiator(config: RadiatorConfig): Promise<void> {
+async function runRadiator(config: RadiatorConfig, useSchedule: boolean = false): Promise<void> {
   info('Starting...')
   const range = parseRange(config.range)
 
@@ -28,5 +31,19 @@ export default async function radiator(config: RadiatorConfig): Promise<void> {
     success('Message was successfully sent!')
   }
 
-  process.exit()
+  if (!useSchedule) process.exit()
+}
+
+export default async function radiator(config: RadiatorConfig): Promise<void> {
+  if (config.schedule) {
+    const cronString = config.schedule.cron || buildCronString(config.schedule)
+    info(
+      config.schedule.cron
+        ? `Schedule is running by custom cron string ${config.schedule.cron}`
+        : buildCronStringInfo(config.schedule),
+    )
+    scheduler(cronString, () => runRadiator(config, true))
+  } else {
+    await runRadiator(config)
+  }
 }
