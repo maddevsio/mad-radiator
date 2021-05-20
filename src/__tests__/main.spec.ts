@@ -1,4 +1,4 @@
-import { Rate } from 'enums'
+import { Rate, SchedulePeriod } from 'enums'
 import * as getAnalyticsData from 'integrations/analytics'
 import * as getLighthouseData from 'integrations/lighthouse'
 import * as sendMessageToSlack from 'integrations/slack'
@@ -6,6 +6,7 @@ import * as sendMessageToTelegram from 'integrations/telegram'
 import { AnalyticsData } from 'interfaces/analytics'
 import { LighthouseData } from 'interfaces/lighthouse'
 import * as logger from 'logger'
+import * as scheduler from 'scheduler'
 import radiatorConfigFixture from 'tests/fixtures/radiatorConfig'
 
 import main from '../main'
@@ -126,6 +127,9 @@ describe('Radiator main', () => {
     jest.spyOn(logger, 'info').mockImplementation(() => undefined)
     jest.spyOn(logger, 'success').mockImplementation(() => undefined)
     jest.spyOn(process, 'exit').mockImplementation(() => undefined as never)
+    jest
+      .spyOn(scheduler, 'scheduler')
+      .mockImplementation((_: string, callback: (...args: any[]) => void) => callback())
   })
 
   it('should correctly called with default config', async () => {
@@ -154,5 +158,45 @@ describe('Radiator main', () => {
     expect(logger.info).toHaveBeenCalledTimes(3)
     expect(logger.success).not.toHaveBeenCalled()
     expect(process.exit).toHaveBeenCalledTimes(1)
+  })
+
+  it('should correctly called with scheduler', async () => {
+    await main({
+      ...radiatorConfigFixture,
+      schedule: {
+        period: SchedulePeriod.day,
+        time: 17,
+      },
+      slack: false,
+      telegram: false,
+    })
+
+    expect(getAnalyticsData.default).toHaveBeenCalledTimes(1)
+    expect(getLighthouseData.default).toHaveBeenCalledTimes(1)
+    expect(sendMessageToSlack.default).not.toHaveBeenCalled()
+    expect(sendMessageToTelegram.default).not.toHaveBeenCalled()
+    expect(logger.info).toHaveBeenCalledTimes(4)
+    expect(logger.success).not.toHaveBeenCalled()
+    expect(process.exit).not.toHaveBeenCalled()
+  })
+
+  it('should correctly called with scheduler and custom cron', async () => {
+    await main({
+      ...radiatorConfigFixture,
+      schedule: {
+        period: SchedulePeriod.day,
+        cron: '* * * * *',
+      },
+      slack: false,
+      telegram: false,
+    })
+
+    expect(getAnalyticsData.default).toHaveBeenCalledTimes(1)
+    expect(getLighthouseData.default).toHaveBeenCalledTimes(1)
+    expect(sendMessageToSlack.default).not.toHaveBeenCalled()
+    expect(sendMessageToTelegram.default).not.toHaveBeenCalled()
+    expect(logger.info).toHaveBeenCalledTimes(4)
+    expect(logger.success).not.toHaveBeenCalled()
+    expect(process.exit).not.toHaveBeenCalled()
   })
 })
