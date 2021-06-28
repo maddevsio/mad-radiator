@@ -5,9 +5,9 @@ import schedule, {
   RecurrenceSpecDateRange,
   RecurrenceSpecObjLit,
 } from 'node-schedule'
-import { scheduler } from 'scheduler'
+import { scheduler } from 'scheduler/Scheduler.service'
 
-describe('Scheduler index', () => {
+describe('SchedulerService index', () => {
   jest.spyOn(schedule, 'scheduleJob').mockImplementation(
     (
       _: string | number | RecurrenceRule | RecurrenceSpecDateRange | RecurrenceSpecObjLit | Date,

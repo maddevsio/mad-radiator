@@ -2,7 +2,7 @@ import { SchedulePeriod } from 'enums'
 import { ScheduleConfig } from 'interfaces'
 import { buildCronStringInfo } from 'scheduler/buildCronStringInfo'
 
-describe('Scheduler > buildCronStringInfo', () => {
+describe('SchedulerService > buildCronStringInfo', () => {
   let config: ScheduleConfig
 
   beforeEach(() => {
