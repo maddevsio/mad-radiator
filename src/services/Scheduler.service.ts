@@ -9,9 +9,8 @@ export class SchedulerService {
     this.config = config
   }
 
-  public async scheduleJob(callback: (...args: any[]) => void): Promise<schedule.Job> {
-    const job = await schedule.scheduleJob(this.cronString(), callback)
-    return job
+  public scheduleJob(callback: (...args: any[]) => void): void {
+    schedule.scheduleJob(this.cronString(), callback)
   }
 
   private cronString(): string {
