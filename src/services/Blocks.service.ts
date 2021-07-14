@@ -1,9 +1,9 @@
-import { EmojiService } from 'emoji/Emoji.service'
 import { Integration, SlackMessageBlockType } from 'enums'
 import { Emoji } from 'interfaces'
 import { CoreItem, Country, Device, Goal } from 'interfaces/analytics'
 import { LighthouseEntity } from 'interfaces/lighthouse'
 import { SlackMessageBlock } from 'interfaces/slack'
+import { EmojiService } from 'services/Emoji.service'
 import { toISO } from 'utils/countryISO/toISO'
 
 export class BlocksService {

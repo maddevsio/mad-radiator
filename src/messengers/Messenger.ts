@@ -1,12 +1,11 @@
 import axios from 'axios'
-import { BlocksService } from 'blocks/Blocks.service'
-import { EmojiService } from 'emoji/Emoji.service'
 import { Integration } from 'enums'
 import { ParsedRange, RadiatorConfig } from 'interfaces'
 import { AnalyticsData } from 'interfaces/analytics'
 import { LighthouseData } from 'interfaces/lighthouse'
+import { BlocksService } from 'services/Blocks.service'
+import { EmojiService } from 'services/Emoji.service'
 import { capitalize } from 'utils/capitalize'
-import { getEmojiForDevice } from 'utils/emoji/getEmojiForDevice'
 
 export class Messenger {
   protected readonly config: RadiatorConfig
@@ -44,7 +43,13 @@ export class Messenger {
       ),
       this.blocksService.divider(),
       this.blocksService.section(
-        `За отчетный период сайт ${this.config.websiteUrl} посетило *${core.users.value} пользователей*. Всего *${core.sessions.value} сессий*, средняя длительность 1 сессии составляет *${core.duration.value}*. *${core.bounceRate.value}%* пользователей закрыли сайт никак с ним не провзаимодействовав.`,
+        `${integration === Integration.slack ? '<!here>' : ''}За отчетный период сайт ${
+          this.config.websiteUrl
+        } посетило *${core.users.value} пользователей*. Всего *${
+          core.sessions.value
+        } сессий*, средняя длительность 1 сессии составляет *${core.duration.value}*. *${
+          core.bounceRate.value
+        }%* пользователей закрыли сайт никак с ним не провзаимодействовав.`,
       ),
       this.blocksService.section(
         this.blocksService.list([
@@ -76,7 +81,7 @@ export class Messenger {
             this.blocksService.listItem(
               device,
               capitalize(device.title),
-              getEmojiForDevice(device.title),
+              this.emojiService.getEmojiForDevice(device.title),
               'previous',
               '%',
               '%',

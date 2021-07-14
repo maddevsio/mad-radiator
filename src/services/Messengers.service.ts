@@ -19,8 +19,8 @@ export class MessengersService {
 
   public async send(
     analytics: AnalyticsData,
-    range: ParsedRange,
     lighthouse: LighthouseData,
+    range: ParsedRange,
   ): Promise<void> {
     if (this.slack) await this.slack.sendMessage(analytics, range, lighthouse)
     if (this.telegram) await this.telegram.sendMessage(analytics, range, lighthouse)

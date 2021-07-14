@@ -15,13 +15,9 @@
     "paths": {
       "enums": ["enums"],
       "interfaces": ["interfaces"],
-      "types": ["types"],
+      "messengers": ["messengers"],
+      "services": ["services"],
       "utils": ["utils"],
-      "integrations": ["integrations"],
-      "shared": ["shared"],
-      "logger": ["logger"],
-      "tests": ["tests"],
-      "scheduler": ["scheduler"]
     },
 
     "strict": true,
@@ -48,12 +44,8 @@
   "paths": {
     "enums": ["enums"],
     "interfaces": ["interfaces"],
-    "types": ["types"],
+    "messengers": ["messengers"],
+    "services": ["services"],
     "utils": ["utils"],
-    "integrations": ["integrations"],
-    "shared": ["shared"],
-    "logger": ["logger"],
-    "tests": ["tests"],
-    "scheduler": ["scheduler"]
   }
 }
