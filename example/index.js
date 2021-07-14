@@ -1,4 +1,4 @@
-const { radiator } = require('../lib')
+const { Radiator } = require('../lib')
 const config = require('./example.config.json')
 
-radiator(config)
+new Radiator(config)

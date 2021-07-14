@@ -1,3 +1,3 @@
-import radiator from './main'
+import { Radiator } from './Radiator'
 
-export { radiator }
+export { Radiator }
