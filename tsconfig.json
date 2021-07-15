@@ -17,7 +17,7 @@
       "interfaces": ["interfaces"],
       "messengers": ["messengers"],
       "services": ["services"],
-      "utils": ["utils"],
+      "utils": ["utils"]
     },
 
     "strict": true,
@@ -46,6 +46,6 @@
     "interfaces": ["interfaces"],
     "messengers": ["messengers"],
     "services": ["services"],
-    "utils": ["utils"],
+    "utils": ["utils"]
   }
 }
