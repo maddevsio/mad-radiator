@@ -27,11 +27,7 @@ export class BlocksService {
   }
 
   public list(items: Array<string>): string {
-    let joinString: string
-
-    if (this.type === Integration.slack) joinString = '\n\n'
-    else joinString = '\n'
-
+    const joinString = this.type === Integration.slack ? '\n\n' : '\n'
     return [...items].join(joinString)
   }
 

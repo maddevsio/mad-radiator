@@ -3,7 +3,7 @@ import { ScheduleConfig } from 'interfaces'
 import schedule from 'node-schedule'
 
 export class SchedulerService {
-  config: ScheduleConfig
+  private readonly config: ScheduleConfig
 
   constructor(config: ScheduleConfig) {
     this.config = config
@@ -18,8 +18,6 @@ export class SchedulerService {
     if (this.config.period === SchedulePeriod.day) return `0 ${this.config.time} * * *`
     if (this.config.period === SchedulePeriod.week)
       return `0 ${this.config.time} * * ${this.config.weekDay}`
-    if (this.config.period === SchedulePeriod.month)
-      return `0 ${this.config.time} ${this.config.monthDay} * *`
-    return ''
+    return `0 ${this.config.time} ${this.config.monthDay} * *`
   }
 }

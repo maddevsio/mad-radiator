@@ -81,7 +81,7 @@ export class Messenger {
             this.blocksService.listItem(
               device,
               capitalize(device.title),
-              this.emojiService.getEmojiForDevice(device.title),
+              this.emojiService.getEmojiNameForDevice(device.title),
               'previous',
               '%',
               '%',

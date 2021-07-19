@@ -10,10 +10,6 @@ export class EmojiService {
     this.type = type
   }
 
-  public setType(type: Integration) {
-    this.type = type
-  }
-
   private readonly emojiByRate: Record<Rate, Emoji> = {
     good: 'yum',
     bad: 'rage',
@@ -24,6 +20,10 @@ export class EmojiService {
     desktop: 'computer',
     mobile: 'iphone',
     tablet: 'pager',
+  }
+
+  public setType(type: Integration) {
+    this.type = type
   }
 
   public getEmoji(name: Emoji): string {
@@ -38,7 +38,7 @@ export class EmojiService {
     return this.getEmoji(this.emojiByRate[rate])
   }
 
-  public getEmojiForDevice(deviceTitle: DeviceTitle) {
+  public getEmojiNameForDevice(deviceTitle: DeviceTitle) {
     return this.emojiByDevice[deviceTitle]
   }
 }
