@@ -2,7 +2,7 @@ import fs from 'fs'
 import path from 'path'
 
 import { Rate } from 'enums'
-import { google } from 'googleapis'
+import { analyticsreporting_v4, google } from 'googleapis'
 import { ParsedRange, RadiatorConfig } from 'interfaces'
 import {
   AnalyticsData,
@@ -24,16 +24,17 @@ import { getPercentage } from 'utils/getPercentage'
  */
 const KEYS_FILEPATH = path.join(__dirname, 'keys.json')
 
-const googleAnalytics = google.analyticsreporting('v4')
-
 export class AnalyticsService {
   private config: RadiatorConfig
 
   private range: ParsedRange
 
+  private googleAnalytics: analyticsreporting_v4.Analyticsreporting
+
   constructor(config: RadiatorConfig, range: ParsedRange) {
     this.config = config
     this.range = range
+    this.googleAnalytics = google.analyticsreporting('v4')
   }
 
   public async getData(): Promise<AnalyticsData> {
@@ -70,7 +71,7 @@ export class AnalyticsService {
     metrics: Array<AnalyticsMetric>,
     dimensions: Array<AnalyticsDimension>,
   ): Promise<AnalyticsPayload> {
-    const response = await googleAnalytics.reports.batchGet({
+    const response = await this.googleAnalytics.reports.batchGet({
       // @ts-ignore
       requestBody: {
         reportRequests: [
