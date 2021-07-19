@@ -1,4 +1,4 @@
-import { ParsedRange, RadiatorConfig } from 'interfaces'
+import { ParsedRange, RadiatorConfig, ScheduleConfig } from 'interfaces'
 import { AnalyticsService } from 'services/Analytics.service'
 import { LighthouseService } from 'services/Lighthouse.service'
 import { LoggerService } from 'services/Logger.service'
@@ -11,7 +11,7 @@ export class Radiator {
 
   private readonly parsedRange: ParsedRange
 
-  private readonly schedulerService?: SchedulerService
+  private readonly schedulerService: SchedulerService
 
   private readonly messengersService: MessengersService
 
@@ -26,23 +26,19 @@ export class Radiator {
     // eslint-disable-next-line
 
     // instances
-    this.schedulerService = this.config.schedule && new SchedulerService(this.config.schedule)
+    this.schedulerService = new SchedulerService(this.config.schedule || ({} as ScheduleConfig))
     this.messengersService = new MessengersService(this.config)
     this.lighthouseService = new LighthouseService(this.config)
     this.analyticsService = new AnalyticsService(this.config, this.parsedRange)
-    if (this.schedulerService) this.scheduleJob()
+    if (this.config.schedule) this.scheduleJob()
   }
 
   private scheduleJob() {
-    this.schedulerService?.scheduleJob(() => this.runScript())
+    this.schedulerService.scheduleJob(() => this.run())
     LoggerService.info('Job successfully scheduled')
   }
 
   public async run() {
-    this.runScript()
-  }
-
-  private async runScript() {
     LoggerService.info('Getting analytics data...')
     const analytics = await this.analyticsService.getData()
 

@@ -17,7 +17,7 @@ module.exports = {
     '<rootDir>/src/index.ts',
     '<rootDir>/src/interfaces',
     '<rootDir>/src/cli',
-    '<rootDir>/src/tests',
+    '<rootDir>/src/__tests__',
     '<rootDir>/src/enums',
   ],
   coverageReporters: ['lcov'],
@@ -30,5 +30,9 @@ module.exports = {
     },
   },
   moduleNameMapper: pathsToModuleNameMapper(tsconfig.compilerOptions.paths, '<rootDir>/src'),
-  testPathIgnorePatterns: ['<rootDir>/node_modules', '<rootDir>/lib'],
+  testPathIgnorePatterns: [
+    '<rootDir>/node_modules',
+    '<rootDir>/lib',
+    '<rootDir>/src/__tests__/fixtures',
+  ],
 }

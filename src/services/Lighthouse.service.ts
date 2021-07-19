@@ -4,7 +4,7 @@ import { RadiatorConfig } from 'interfaces'
 import { LighthouseData, LighthousePayload } from 'interfaces/lighthouse'
 
 export class LighthouseService {
-  private config: RadiatorConfig
+  private readonly config: RadiatorConfig
 
   constructor(config: RadiatorConfig) {
     this.config = config
