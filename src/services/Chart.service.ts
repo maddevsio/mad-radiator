@@ -20,8 +20,8 @@ export class ChartService {
   private readonly renderService: ChartJSNodeCanvas
 
   private static chartOptions: ChartJSNodeCanvasOptions = {
-    width: 1000,
-    height: 1000,
+    width: 1920,
+    height: 1080,
     type: 'svg',
     chartCallback,
   }
