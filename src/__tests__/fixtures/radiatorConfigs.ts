@@ -46,4 +46,8 @@ export const defaultConfig: RadiatorConfig = {
     period: SchedulePeriod.day,
     time: 10,
   },
+  chart: {
+    period: 3,
+    type: 'users',
+  },
 }

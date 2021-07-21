@@ -144,6 +144,27 @@ describe('BlocksService', () => {
     expect(tgHeader).toBe('*Some title*\n')
   })
 
+  it('image correctly returns markup', () => {
+    const slackService = new BlocksService(Integration.slack)
+    const tgService = new BlocksService(Integration.telegram)
+
+    const url = 'url'
+
+    const slackImage = slackService.image(url)
+    const tgImage = tgService.image(url)
+    const empty = slackService.image()
+    const divider = slackService.divider()
+
+    expect(empty).toEqual(divider)
+
+    expect(slackImage).toEqual({
+      type: SlackMessageBlockType.image,
+      image_url: 'url',
+      alt_text: 'Graph',
+    })
+    expect(tgImage).toBe('Chart: url\n\n')
+  })
+
   it('setType correctly switch integration', () => {
     const service = new BlocksService(Integration.slack)
 

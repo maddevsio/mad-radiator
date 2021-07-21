@@ -71,7 +71,7 @@ describe('Lighthouse service', () => {
       },
     })
     expect(axios.get).toHaveBeenCalledWith(
-      'https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=https://maddevs.io&key=AIzaSyBOEY8LMRkWegkN7qNT0ET1AdfK-9N099M&category=seo&category=accessibility&category=best-practices&category=performance&category=pwa',
+      'https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=&key=&category=seo&category=accessibility&category=best-practices&category=performance&category=pwa',
     )
   })
 })

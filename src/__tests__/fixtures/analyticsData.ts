@@ -52,5 +52,8 @@ export const analyticsData: AnalyticsData = {
       rate: Rate.good,
     },
   ],
-  chart: {},
+  chart: {
+    key: 0,
+    key2: 10,
+  },
 }
