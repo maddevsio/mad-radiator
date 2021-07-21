@@ -19,6 +19,7 @@ export enum SlackMessageBlockType {
   header = 'header',
   divider = 'divider',
   section = 'section',
+  image = 'image',
 }
 
 export enum SchedulePeriod {

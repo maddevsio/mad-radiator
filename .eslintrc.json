@@ -31,6 +31,8 @@
     "sort-imports": [
       "error",
       { "ignoreDeclarationSort": true, "ignoreCase": true }
-    ]
+    ],
+    "no-restricted-syntax": "off",
+    "no-await-in-loop": "off"
   }
 }

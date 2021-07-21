@@ -1,4 +1,5 @@
 const { Radiator } = require('../lib')
 const config = require('./example.config.json')
 
-new Radiator(config)
+const radiator = new Radiator(config)
+radiator.run()

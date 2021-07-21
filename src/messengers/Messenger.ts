@@ -29,6 +29,7 @@ export class Messenger {
     range: ParsedRange,
     lighthouse: LighthouseData,
     integration: Integration,
+    imageURL?: string,
   ): Array<string | object> {
     const { core, devices, goals, countries } = analytics
 
@@ -119,6 +120,8 @@ export class Messenger {
           this.blocksService.performanceListItem(lighthouse.pwa, 'iphone'),
         ]),
       ),
+      this.blocksService.divider(),
+      this.blocksService.image(imageURL),
       this.blocksService.divider(),
     ]
   }

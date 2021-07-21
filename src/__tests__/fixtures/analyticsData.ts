@@ -52,4 +52,5 @@ export const analyticsData: AnalyticsData = {
       rate: Rate.good,
     },
   ],
+  chart: {},
 }
