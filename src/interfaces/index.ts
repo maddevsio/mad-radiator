@@ -40,9 +40,17 @@ export interface ScheduleConfig {
   monthDay?: number // 1-31
 }
 
+export type ChartType = 'users' | 'sessions'
+
+export interface ChartConfig {
+  period: number // current day - period
+  type: ChartType
+}
+
 export interface RadiatorConfig {
   env: EnvironmentConfig
   schedule?: ScheduleConfig
+  chart?: ChartConfig
   slack: boolean
   telegram: boolean
   range: RangeType

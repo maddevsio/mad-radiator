@@ -60,11 +60,11 @@ export class Radiator {
     LoggerService.info('Getting lighthouse data...')
     const lighthouse = await this.lighthouseService.getData()
 
-    LoggerService.info('Build an image...')
-    const imageBuffer = await this.chartService.renderChart(analytics.chart)
+    if (analytics.chart) LoggerService.info('Building an image...')
+    const imageBuffer = analytics.chart && (await this.chartService.renderChart(analytics.chart))
 
-    LoggerService.info('Save image in gdrive...')
-    const imageURL = await this.storageService.storeFile(imageBuffer)
+    if (imageBuffer) LoggerService.info('Saving an image in gdrive...')
+    const imageURL = imageBuffer && (await this.storageService.storeFile(imageBuffer))
 
     LoggerService.info('Send messages...')
     await this.messengersService.send(analytics, lighthouse, this.parsedRange, imageURL)

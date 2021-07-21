@@ -17,12 +17,12 @@ import { getPercentage } from 'utils/getPercentage'
 
 const delay = () => new Promise<void>(res => setTimeout(() => res(), 300))
 
-const build2WeeksRange = (): Record<string, Range> => {
+const buildRange = (period: number = 14): Record<string, Range> => {
   const today = new Date()
-  today.setDate(today.getDate() - 14)
+  today.setDate(today.getDate() - period)
   const range: Record<string, Range> = {}
 
-  for (let i = 14; i > 0; i -= 1) {
+  for (let i = period; i > 0; i -= 1) {
     const [month, day, year] = today.toLocaleDateString().split('/')
     const date = `${day}/${month}/${year}`
     range[date] = {
@@ -52,7 +52,7 @@ export class AnalyticsService {
     const countries = await this.getCountriesData()
     const devices = await this.getDevicesData()
     const goals = await this.getGoalsData()
-    const chart = await this.getChartData()
+    const chart = this.config.chart ? await this.getChartData() : undefined
 
     const data: AnalyticsData = {
       core,
@@ -89,8 +89,8 @@ export class AnalyticsService {
   }
 
   private async getChartData(): Promise<Record<string, number>> {
-    const metrics: Array<AnalyticsMetric> = [{ expression: 'ga:users' }]
-    const rangeList = build2WeeksRange()
+    const metrics: Array<AnalyticsMetric> = [{ expression: `ga:${this.config.chart?.type}` }]
+    const rangeList = buildRange(this.config.chart?.period)
     const result: Record<string, number> = {}
 
     for (const [originalDate, range] of Object.entries(rangeList)) {
