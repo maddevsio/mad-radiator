@@ -9,8 +9,9 @@ export class Slack extends Messenger {
     analytics: AnalyticsData,
     range: ParsedRange,
     lighthouse: LighthouseData,
+    imageURL?: string,
   ): Promise<void> {
-    const blocks = this.buildMessage(analytics, range, lighthouse, Integration.slack)
+    const blocks = this.buildMessage(analytics, range, lighthouse, Integration.slack, imageURL)
     const data = {
       username: 'Mad Radiator',
       icon_emoji: ':radio:',

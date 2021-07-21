@@ -47,11 +47,16 @@
   },
   "dependencies": {
     "@bitauth/libauth": "^1.17.1",
+    "@types/chartjs": "^0.0.31",
+    "@types/sharp": "^0.28.4",
     "axios": "^0.21.1",
     "chalk": "^4.1.1",
+    "chart.js": "^3.4.1",
+    "chartjs-node-canvas": "^3.2.0",
     "googleapis": "^73.0.0",
     "node-emoji": "^1.10.0",
     "node-schedule": "^2.0.0",
+    "sharp": "^0.28.3",
     "vega": "^5.20.2",
     "yargs": "^17.0.1"
   },

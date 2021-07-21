@@ -1,5 +1,3 @@
-import fs from 'fs'
-
 import { parsedRange } from '__tests__/fixtures/parsedRange'
 import { defaultConfig } from '__tests__/fixtures/radiatorConfigs'
 import { google } from 'googleapis'
@@ -19,19 +17,6 @@ jest.mock('googleapis', () => ({
     analyticsreporting: jest.fn(),
   },
 }))
-
-jest.spyOn(fs, 'writeFile').mockImplementation(
-  () =>
-    new Promise<void>(res => {
-      res()
-    }),
-)
-jest.spyOn(fs, 'unlink').mockImplementation(
-  () =>
-    new Promise<void>(res => {
-      res()
-    }),
-)
 
 describe('AnalyticsService', () => {
   let config: RadiatorConfig
@@ -90,11 +75,14 @@ describe('AnalyticsService', () => {
 
     const data = await service.getData()
 
-    expect(fs.writeFile).toHaveBeenCalledTimes(1)
-    expect(fs.unlink).toHaveBeenCalledTimes(1)
     expect(LoggerService.error).toHaveBeenCalledTimes(0)
 
     expect(data).toEqual({
+      chart: {
+        '18/7/2021': 10,
+        '19/7/2021': 10,
+        '20/7/2021': 10,
+      },
       core: {
         bounceRate: {
           difference: '+200',
@@ -215,28 +203,16 @@ describe('AnalyticsService', () => {
       },
     }))
 
-    jest.spyOn(fs, 'writeFile').mockImplementation(
-      (_, __, cb) =>
-        new Promise<void>(res => {
-          cb(new Error('error'))
-          res()
-        }),
-    )
-    jest.spyOn(fs, 'unlink').mockImplementation(
-      (_, cb) =>
-        new Promise<void>(res => {
-          cb(new Error('error'))
-          res()
-        }),
-    )
-
     const service = new AnalyticsService(config, parsedRange)
 
     const data = await service.getData()
 
-    expect(LoggerService.error).toHaveBeenCalledTimes(2)
-
     expect(data).toEqual({
+      chart: {
+        '18/7/2021': 5,
+        '19/7/2021': 5,
+        '20/7/2021': 5,
+      },
       core: {
         bounceRate: {
           difference: '-66.67',

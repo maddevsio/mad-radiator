@@ -1,9 +1,6 @@
-import fs from 'fs'
-import path from 'path'
-
 import { Rate } from 'enums'
 import { analyticsreporting_v4, google } from 'googleapis'
-import { ParsedRange, RadiatorConfig } from 'interfaces'
+import { ParsedRange, RadiatorConfig, Range } from 'interfaces'
 import {
   AnalyticsData,
   AnalyticsDimension,
@@ -15,14 +12,27 @@ import {
   DeviceTitle,
   Goals,
 } from 'interfaces/analytics'
-import { LoggerService } from 'services/Logger.service'
 import { formatTime } from 'utils/formatTime'
 import { getPercentage } from 'utils/getPercentage'
 
-/**
- * Path to keys.json file
- */
-const KEYS_FILEPATH = path.join(__dirname, 'keys.json')
+const delay = () => new Promise<void>(res => setTimeout(() => res(), 300))
+
+const buildRange = (period: number = 14): Record<string, Range> => {
+  const today = new Date()
+  today.setDate(today.getDate() - period)
+  const range: Record<string, Range> = {}
+
+  for (let i = period; i > 0; i -= 1) {
+    const [month, day, year] = today.toLocaleDateString().split('/')
+    const date = `${day}/${month}/${year}`
+    range[date] = {
+      startDate: `${i}DaysAgo`,
+      endDate: `${i}DaysAgo`,
+    }
+    today.setDate(today.getDate() + 1)
+  }
+  return range
+}
 
 export class AnalyticsService {
   private config: RadiatorConfig
@@ -38,38 +48,27 @@ export class AnalyticsService {
   }
 
   public async getData(): Promise<AnalyticsData> {
-    await this.authorize()
-
     const core = await this.getCoreData()
     const countries = await this.getCountriesData()
     const devices = await this.getDevicesData()
     const goals = await this.getGoalsData()
+    const chart = this.config.chart ? await this.getChartData() : undefined
 
     const data: AnalyticsData = {
       core,
       countries,
       devices,
       goals,
+      chart,
     }
 
-    await this.unlinkKeysFile()
     return data
-  }
-
-  private async authorize() {
-    await this.buildKeysFile(this.config)
-
-    const auth = new google.auth.GoogleAuth({
-      keyFilename: KEYS_FILEPATH,
-      scopes: ['https://www.googleapis.com/auth/analytics'],
-    })
-
-    google.options({ auth })
   }
 
   private async getAnalytics(
     metrics: Array<AnalyticsMetric>,
     dimensions: Array<AnalyticsDimension>,
+    dateRanges: Array<Range> = [this.range.originalRange, this.range.previousRange],
   ): Promise<AnalyticsPayload> {
     const response = await this.googleAnalytics.reports.batchGet({
       // @ts-ignore
@@ -77,7 +76,7 @@ export class AnalyticsService {
         reportRequests: [
           {
             viewId: this.config.analyticsViewId,
-            dateRanges: [this.range.originalRange, this.range.previousRange],
+            dateRanges,
             metrics,
             dimensions,
           },
@@ -87,6 +86,20 @@ export class AnalyticsService {
 
     const payload = response.data.reports as AnalyticsPayload | undefined
     return payload || ([] as AnalyticsPayload)
+  }
+
+  private async getChartData(): Promise<Record<string, number>> {
+    const metrics: Array<AnalyticsMetric> = [{ expression: `ga:${this.config.chart?.type}` }]
+    const rangeList = buildRange(this.config.chart?.period)
+    const result: Record<string, number> = {}
+
+    for (const [originalDate, range] of Object.entries(rangeList)) {
+      await delay() // for delay on 100ms
+      const payload = await this.getAnalytics(metrics, [], [range])
+      result[originalDate] = Number(payload[0].data.rows[0].metrics[0].values[0])
+    }
+
+    return result
   }
 
   private async getCoreData(): Promise<CoreItems> {
@@ -224,30 +237,5 @@ export class AnalyticsService {
         rate,
       }
     })
-  }
-
-  private async buildKeysFile(config: RadiatorConfig) {
-    const fileData = `{
-    "type": "${config.env.authType}",
-    "project_id": "${config.env.analyticsProjectId}",
-    "private_key_id": "${config.env.analyticsPrivateKeyId}",
-    "private_key": "${config.env.analyticsPrivateKey}",
-    "client_email": "${config.env.analyticsClientEmail}",
-    "client_id": "${config.env.analyticsClientId}",
-    "auth_uri": "${config.env.analyticsAuthUrl}",
-    "token_uri": "${config.env.analyticsTokenUri}",
-    "auth_provider_x509_cert_url": "${config.env.analyticsProviderCertUrl}",
-    "client_x509_cert_url": "${config.env.analyticsClientCertUrl}"
-  }`
-
-    await fs.writeFile(
-      KEYS_FILEPATH,
-      fileData,
-      error => error && LoggerService.error(`Write file error: ${error}`),
-    )
-  }
-
-  private async unlinkKeysFile() {
-    await fs.unlink(KEYS_FILEPATH, error => error && LoggerService.error(`Unlink error: ${error}`))
   }
 }

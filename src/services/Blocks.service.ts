@@ -65,6 +65,12 @@ export class BlocksService {
     return BlocksService.slackHeader(text)
   }
 
+  public image(imageURL?: string): string | SlackMessageBlock {
+    if (!imageURL) return this.divider()
+    if (this.type === Integration.telegram) return BlocksService.telegramImage(imageURL)
+    return BlocksService.slackImage(imageURL)
+  }
+
   private static telegramHeader(text: string): string {
     return `*${text}*\n`
   }
@@ -101,6 +107,18 @@ export class BlocksService {
         type: 'mrkdwn',
         text: `${text}\n\n`,
       },
+    }
+  }
+
+  private static telegramImage(imageURL: string): string {
+    return `Chart: ${imageURL.split('_').join('//_')}\n\n`
+  }
+
+  private static slackImage(imageURL: string): SlackMessageBlock {
+    return {
+      type: SlackMessageBlockType.image,
+      image_url: imageURL,
+      alt_text: 'Graph',
     }
   }
 

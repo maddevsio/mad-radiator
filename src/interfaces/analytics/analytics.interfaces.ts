@@ -34,4 +34,5 @@ export interface AnalyticsData {
   countries: Array<Country>
   devices: Array<Device>
   goals: Goals
+  chart?: Record<string, number>
 }
