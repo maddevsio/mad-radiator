@@ -2,7 +2,7 @@
 import { Radiator } from 'Radiator'
 import { analyticsData } from '__tests__/fixtures/analyticsData'
 import { defaultConfig } from '__tests__/fixtures/radiatorConfigs'
-import { AnalyticsService } from 'services/Analytics.service'
+import { AnalyticsService } from 'analytics/AnalyticsService'
 import { ChartService } from 'services/Chart.service'
 import { GoogleAuthService } from 'services/GoogleAuth.service'
 import { LighthouseService } from 'services/Lighthouse.service'
@@ -10,7 +10,7 @@ import { MessengersService } from 'services/Messengers.service'
 import { SchedulerService } from 'services/Scheduler.service'
 import { StorageService } from 'services/Storage.service'
 
-jest.mock('services/Analytics.service')
+jest.mock('analytics/AnalyticsService')
 jest.mock('services/Lighthouse.service')
 jest.mock('services/Logger.service')
 jest.mock('services/Messengers.service')
