@@ -1,5 +1,5 @@
+import { AnalyticsService } from 'analytics/AnalyticsService'
 import { ParsedRange, RadiatorConfig, ScheduleConfig } from 'interfaces'
-import { AnalyticsService } from 'services/Analytics.service'
 import { ChartService } from 'services/Chart.service'
 import { GoogleAuthService } from 'services/GoogleAuth.service'
 import { LighthouseService } from 'services/Lighthouse.service'

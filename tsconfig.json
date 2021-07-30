@@ -13,6 +13,7 @@
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "paths": {
+      "analytics": ["analytics"],
       "enums": ["enums"],
       "interfaces": ["interfaces"],
       "messengers": ["messengers"],
@@ -42,6 +43,7 @@
   "exclude": ["node_modules/**", "lib/**/*"],
   "compileOnSave": false,
   "paths": {
+    "analytics": ["analytics"],
     "enums": ["enums"],
     "interfaces": ["interfaces"],
     "messengers": ["messengers"],

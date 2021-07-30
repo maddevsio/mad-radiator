@@ -1,20 +1,35 @@
-import { AnalyticsRepository } from 'analytics/AnalyticsRepository'
+import { Repository } from 'analytics/Repository'
 import { Rate } from 'enums'
 import { AnalyticsPayload, Country } from 'interfaces/analytics'
 import { getPercentage } from 'utils/getPercentage'
 
-export class AnalyticsCountries extends AnalyticsRepository {
-  protected metrics = [{ expression: 'ga:users' }]
+/**
+ * Countries repository
+ */
+export class CountriesRepository extends Repository {
+  /**
+   * GA metrics
+   */
+  metrics = [{ expression: 'ga:users' }]
 
-  protected dimensions = [{ name: 'ga:country' }]
+  /**
+   * GA dimensions
+   */
+  dimensions = [{ name: 'ga:country' }]
 
+  /**
+   * Get data from GA
+   */
   public async getData(): Promise<Array<Country>> {
     const reports = await this.getAnalytics(this.metrics, this.dimensions)
-    return this.format(reports)
+    return CountriesRepository.format(reports)
   }
 
-  private format(reports: AnalyticsPayload): Array<Country> {
-    const total: number = AnalyticsCountries.getTotal(reports)
+  /**
+   * Format raw GA data
+   */
+  private static format(reports: AnalyticsPayload): Array<Country> {
+    const total: number = CountriesRepository.getTotal(reports)
 
     return reports[0].data.rows
       .map(
@@ -29,6 +44,9 @@ export class AnalyticsCountries extends AnalyticsRepository {
       .slice(0, 3)
   }
 
+  /**
+   * Get total from report
+   */
   private static getTotal(reports: AnalyticsPayload): number {
     return reports[0].data.totals[0].values[0]
   }

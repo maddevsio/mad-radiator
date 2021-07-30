@@ -1,21 +1,36 @@
-import { AnalyticsRepository } from 'analytics/AnalyticsRepository'
+import { Repository } from 'analytics/Repository'
 import { Rate } from 'enums'
 import { AnalyticsPayload, Device, DeviceTitle } from 'interfaces/analytics'
 import { getPercentage } from 'utils/getPercentage'
 
-export class AnalyticsDevices extends AnalyticsRepository {
-  protected metrics = [{ expression: 'ga:users' }]
+/**
+ * Devices repository
+ */
+export class DevicesRepository extends Repository {
+  /**
+   * GA metrics
+   */
+  metrics = [{ expression: 'ga:users' }]
 
-  protected dimensions = [{ name: 'ga:deviceCategory' }]
+  /**
+   * GA dimensions
+   */
+  dimensions = [{ name: 'ga:deviceCategory' }]
 
+  /**
+   * Get data from GA
+   */
   public async getData() {
     const reports = await this.getAnalytics(this.metrics, this.dimensions)
-    return this.format(reports)
+    return DevicesRepository.format(reports)
   }
 
-  private format(reports: AnalyticsPayload): Array<Device> {
-    const total = AnalyticsDevices.getTotal(reports, 0)
-    const totalPrev = AnalyticsDevices.getTotal(reports, 1)
+  /**
+   * Format raw GA data
+   */
+  private static format(reports: AnalyticsPayload): Array<Device> {
+    const total = DevicesRepository.getTotal(reports, 0)
+    const totalPrev = DevicesRepository.getTotal(reports, 1)
 
     return reports[0].data.rows
       .map(
@@ -34,6 +49,9 @@ export class AnalyticsDevices extends AnalyticsRepository {
       .sort((a, b) => b.value - a.value)
   }
 
+  /**
+   * Get total from report
+   */
   private static getTotal(reports: AnalyticsPayload, key: 0 | 1): number {
     return reports[0].data.totals[key].values[0]
   }

@@ -1,25 +1,41 @@
-import { AnalyticsRepository } from 'analytics/AnalyticsRepository'
+import { Repository } from 'analytics/Repository'
 import { Rate } from 'enums'
 import { AnalyticsPayload, CoreItems } from 'interfaces/analytics'
 import { formatTime } from 'utils/formatTime'
 import { getPercentage } from 'utils/getPercentage'
 
-export class AnalyticsCore extends AnalyticsRepository {
-  protected metrics = [
+/**
+ * Core repository
+ */
+export class CoreRepository extends Repository {
+  /**
+   * GA metrics
+   */
+  metrics = [
     { expression: 'ga:users' },
     { expression: 'ga:sessions' },
     { expression: 'ga:bounceRate' },
     { expression: 'ga:avgSessionDuration' },
   ]
 
-  protected dimensions = undefined
+  /**
+   * GA dimensions
+   * not needed for core data
+   */
+  dimensions = undefined
 
+  /**
+   * Get data from GA
+   */
   public async getData(): Promise<CoreItems> {
     const reports: AnalyticsPayload = await this.getAnalytics(this.metrics)
-    return this.format(reports)
+    return CoreRepository.format(reports)
   }
 
-  private format(reports: AnalyticsPayload): CoreItems {
+  /**
+   * Format raw GA data
+   */
+  private static format(reports: AnalyticsPayload): CoreItems {
     const [users, sessions, bounceRate, duration] = reports[0].data.totals[0].values.map(n =>
       Number(Number(n).toFixed(2)),
     )

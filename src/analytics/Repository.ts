@@ -2,15 +2,33 @@ import { analyticsreporting_v4, google } from 'googleapis'
 import { ParsedRange, RadiatorConfig, Range } from 'interfaces'
 import { AnalyticsDimension, AnalyticsMetric, AnalyticsPayload } from 'interfaces/analytics'
 
-export abstract class AnalyticsRepository {
+/**
+ * Abstract Analytics repository
+ */
+export abstract class Repository {
+  /**
+   * Range for requests
+   */
   private range: ParsedRange
 
+  /**
+   * GA instance
+   */
   private googleAnalytics: analyticsreporting_v4.Analyticsreporting
 
+  /**
+   * Main radiator config
+   */
   protected config: RadiatorConfig
 
+  /**
+   * GA metrics
+   */
   protected abstract metrics?: Array<AnalyticsMetric>
 
+  /**
+   * GA dimensions
+   */
   protected abstract dimensions?: Array<AnalyticsDimension>
 
   constructor(config: RadiatorConfig, range: ParsedRange) {
@@ -19,6 +37,9 @@ export abstract class AnalyticsRepository {
     this.googleAnalytics = google.analyticsreporting('v4')
   }
 
+  /**
+   * Get analytics data
+   */
   protected async getAnalytics(
     metrics: Array<AnalyticsMetric> = [],
     dimensions: Array<AnalyticsDimension> = [],

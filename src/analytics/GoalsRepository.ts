@@ -1,4 +1,4 @@
-import { AnalyticsRepository } from 'analytics/AnalyticsRepository'
+import { Repository } from 'analytics/Repository'
 import { Rate } from 'enums'
 import { AnalyticsConversion, AnalyticsMetric, AnalyticsPayload, Goals } from 'interfaces/analytics'
 
@@ -7,22 +7,39 @@ export interface ComputedGoal {
   conversion: AnalyticsConversion
 }
 
-export class AnalyticsGoals extends AnalyticsRepository {
+/**
+ * Goals repository
+ */
+export class GoalsRepository extends Repository {
+  /**
+   * GA metrics
+   * not needed for goals data
+   */
   metrics = undefined
 
+  /**
+   * GA dimensions
+   * not needed for goals data
+   */
   dimensions = undefined
 
+  /**
+   * Get data from GA
+   */
   public async getData(): Promise<Goals> {
     const { analyticsConversions } = this.config
     const goals = await Promise.all(
       analyticsConversions.map(async conversion => this.getConversion(conversion)),
     )
-    return this.format(goals)
+    return GoalsRepository.format(goals)
   }
 
+  /**
+   * Get conversions from GA
+   */
   private async getConversion(conversion: AnalyticsConversion): Promise<ComputedGoal> {
     const payload = await this.getAnalytics(
-      AnalyticsGoals.transformGoalsToMetrics(conversion.goals),
+      GoalsRepository.transformGoalsToMetrics(conversion.goals),
     )
     return {
       payload,
@@ -30,9 +47,12 @@ export class AnalyticsGoals extends AnalyticsRepository {
     }
   }
 
-  private format(goals: Array<ComputedGoal>): Goals {
+  /**
+   * Format raw GA data
+   */
+  private static format(goals: Array<ComputedGoal>): Goals {
     return goals.map(goal => {
-      const { value, previous } = AnalyticsGoals.calculateValue(goal.payload)
+      const { value, previous } = GoalsRepository.calculateValue(goal.payload)
       const rate = value > previous ? Rate.good : Rate.bad
 
       return {
@@ -45,12 +65,18 @@ export class AnalyticsGoals extends AnalyticsRepository {
     })
   }
 
+  /**
+   * Transform goals from config to a correct GA metrics
+   */
   private static transformGoalsToMetrics(goals: Array<Number>): Array<AnalyticsMetric> {
     return goals.map(goal => ({
       expression: `ga:goal${goal}Completions`,
     }))
   }
 
+  /**
+   * Calculate current and previous values
+   */
   private static calculateValue(entity: AnalyticsPayload) {
     return {
       value:
