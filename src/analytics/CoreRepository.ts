@@ -1,6 +1,6 @@
 import { Repository } from 'analytics/Repository'
-import { Rate } from 'enums'
-import { AnalyticsPayload, CoreItems } from 'interfaces/analytics'
+import { AnalyticsPayload, CoreItems } from 'analytics/interfaces'
+import { Rate } from 'interfaces'
 import { formatTime } from 'utils/formatTime'
 import { getPercentage } from 'utils/getPercentage'
 

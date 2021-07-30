@@ -1,12 +1,12 @@
-import { AnalyticsService } from 'analytics/AnalyticsService'
+import { AnalyticsService } from 'analytics'
+import { GoogleAuthorization } from 'authorization'
+import { ChartBuilder } from 'chartBuilder'
 import { ParsedRange, RadiatorConfig, ScheduleConfig } from 'interfaces'
-import { ChartService } from 'services/Chart.service'
-import { GoogleAuthService } from 'services/GoogleAuth.service'
-import { LighthouseService } from 'services/Lighthouse.service'
-import { LoggerService } from 'services/Logger.service'
-import { MessengersService } from 'services/Messengers.service'
-import { SchedulerService } from 'services/Scheduler.service'
-import { StorageService } from 'services/Storage.service'
+import { Lighthouse } from 'lighthouse'
+import { Logger } from 'logger'
+import { MessengersService } from 'messengers'
+import { Scheduler } from 'scheduler'
+import { GoogleDriveStorage } from 'storage'
 import { parseRange } from 'utils/parseRange'
 
 export class Radiator {
@@ -14,17 +14,17 @@ export class Radiator {
 
   private readonly parsedRange: ParsedRange
 
-  private readonly googleAuthService: GoogleAuthService
+  private readonly googleAuthorization: GoogleAuthorization
 
-  private readonly schedulerService: SchedulerService
+  private readonly scheduler: Scheduler
 
   private readonly messengersService: MessengersService
 
-  private readonly chartService: ChartService
+  private readonly chartBuilder: ChartBuilder
 
-  private readonly storageService: StorageService
+  private readonly googleDriveStorage: GoogleDriveStorage
 
-  private readonly lighthouseService: LighthouseService
+  private readonly lighthouse: Lighthouse
 
   private readonly analyticsService: AnalyticsService
 
@@ -35,41 +35,46 @@ export class Radiator {
     // eslint-disable-next-line
 
     // instances
-    this.googleAuthService = new GoogleAuthService(this.config)
-    this.schedulerService = new SchedulerService(this.config.schedule || ({} as ScheduleConfig))
+    this.googleAuthorization = new GoogleAuthorization(this.config)
+    this.scheduler = new Scheduler(this.config.schedule || ({} as ScheduleConfig))
     this.messengersService = new MessengersService(this.config)
-    this.chartService = new ChartService()
-    this.storageService = new StorageService()
-    this.lighthouseService = new LighthouseService(this.config)
+    this.chartBuilder = new ChartBuilder()
+    this.googleDriveStorage = new GoogleDriveStorage()
+    this.lighthouse = new Lighthouse(this.config)
     this.analyticsService = new AnalyticsService(this.config, this.parsedRange)
     if (this.config.schedule) this.scheduleJob()
   }
 
   private scheduleJob() {
-    this.schedulerService.scheduleJob(() => this.run())
-    LoggerService.info('Job successfully scheduled')
+    this.scheduler.scheduleJob(() => this.run())
+    Logger.info('Job successfully scheduled')
   }
 
   public async run() {
-    LoggerService.info('Authorize with google...')
-    const { unlink } = await this.googleAuthService.authorize()
+    Logger.info('Authorize with googleAuthorization...')
+    const { unlink } = await this.googleAuthorization.authorize()
 
-    LoggerService.info('Getting analytics data...')
+    Logger.info('Getting analytics data...')
     const analytics = await this.analyticsService.getData()
 
-    LoggerService.info('Getting lighthouse data...')
-    const lighthouse = await this.lighthouseService.getData()
+    Logger.info('Getting lighthouse data...')
+    const lighthouse = await this.lighthouse.getData()
 
-    if (analytics.chart) LoggerService.info('Building an image...')
-    const imageBuffer = analytics.chart && (await this.chartService.renderChart(analytics.chart))
+    if (analytics.chart) Logger.info('Building an image...')
+    const imageBuffer = analytics.chart && (await this.chartBuilder.renderChart(analytics.chart))
 
-    if (imageBuffer) LoggerService.info('Saving an image in gdrive...')
-    const imageURL = imageBuffer && (await this.storageService.storeFile(imageBuffer))
+    if (imageBuffer) Logger.info('Saving an image in gdrive...')
+    const imageURL = imageBuffer && (await this.googleDriveStorage.storeFile(imageBuffer))
 
-    LoggerService.info('Send messages...')
-    await this.messengersService.send(analytics, lighthouse, this.parsedRange, imageURL)
+    Logger.info('Send messages...')
+    await this.messengersService.sendMessages({
+      analytics,
+      lighthouse,
+      range: this.parsedRange,
+      imageURL,
+    })
 
     await unlink()
-    LoggerService.success('Success!')
+    Logger.success('Success!')
   }
 }

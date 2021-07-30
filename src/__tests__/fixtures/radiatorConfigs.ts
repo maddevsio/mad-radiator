@@ -1,5 +1,4 @@
-import { RangeType, SchedulePeriod } from 'enums'
-import { RadiatorConfig } from 'interfaces'
+import { RadiatorConfig, RangeType, SchedulePeriod } from 'interfaces'
 
 export const defaultConfig: RadiatorConfig = {
   env: {

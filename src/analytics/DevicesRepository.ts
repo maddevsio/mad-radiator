@@ -1,6 +1,6 @@
 import { Repository } from 'analytics/Repository'
-import { Rate } from 'enums'
-import { AnalyticsPayload, Device, DeviceTitle } from 'interfaces/analytics'
+import { AnalyticsPayload, Device, DeviceTitle } from 'analytics/interfaces'
+import { Rate } from 'interfaces'
 import { getPercentage } from 'utils/getPercentage'
 
 /**

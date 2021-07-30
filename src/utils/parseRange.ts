@@ -1,5 +1,4 @@
-import { RangeType } from 'enums'
-import { ParsedRange } from 'interfaces'
+import { ParsedRange, RangeType } from 'interfaces'
 
 function getYesterday(): string {
   const date = new Date()

@@ -1,6 +1,6 @@
+import { AnalyticsDimension, AnalyticsMetric, AnalyticsPayload } from 'analytics/interfaces'
 import { analyticsreporting_v4, google } from 'googleapis'
 import { ParsedRange, RadiatorConfig, Range } from 'interfaces'
-import { AnalyticsDimension, AnalyticsMetric, AnalyticsPayload } from 'interfaces/analytics'
 
 /**
  * Abstract Analytics repository
@@ -9,27 +9,27 @@ export abstract class Repository {
   /**
    * Range for requests
    */
-  private range: ParsedRange
+  private readonly range: ParsedRange
 
   /**
    * GA instance
    */
-  private googleAnalytics: analyticsreporting_v4.Analyticsreporting
+  private readonly googleAnalytics: analyticsreporting_v4.Analyticsreporting
 
   /**
    * Main radiator config
    */
-  protected config: RadiatorConfig
+  protected readonly config: RadiatorConfig
 
   /**
    * GA metrics
    */
-  protected abstract metrics?: Array<AnalyticsMetric>
+  protected abstract readonly metrics?: Array<AnalyticsMetric>
 
   /**
    * GA dimensions
    */
-  protected abstract dimensions?: Array<AnalyticsDimension>
+  protected abstract readonly dimensions?: Array<AnalyticsDimension>
 
   constructor(config: RadiatorConfig, range: ParsedRange) {
     this.config = config

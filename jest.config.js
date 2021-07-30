@@ -14,7 +14,7 @@ module.exports = {
   collectCoverageFrom: ['<rootDir>/src/**/*.ts'],
   coveragePathIgnorePatterns: [
     '<rootDir>/node_modules/',
-    '<rootDir>/src/index.ts',
+    '<rootDir>/src/slack.ts',
     '<rootDir>/src/interfaces',
     '<rootDir>/src/cli',
     '<rootDir>/src/__tests__',

@@ -1,6 +1,6 @@
 import { Repository } from 'analytics/Repository'
-import { Rate } from 'enums'
-import { AnalyticsConversion, AnalyticsMetric, AnalyticsPayload, Goals } from 'interfaces/analytics'
+import { AnalyticsConversion, AnalyticsMetric, AnalyticsPayload, Goals } from 'analytics/interfaces'
+import { Rate } from 'interfaces'
 
 export interface ComputedGoal {
   payload: AnalyticsPayload

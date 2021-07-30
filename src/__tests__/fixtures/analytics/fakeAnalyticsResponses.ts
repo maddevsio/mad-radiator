@@ -1,4 +1,4 @@
-import { AnalyticsPayload } from 'interfaces/analytics'
+import { AnalyticsPayload } from 'analytics/interfaces'
 
 export const fakeResponse = {
   data: {

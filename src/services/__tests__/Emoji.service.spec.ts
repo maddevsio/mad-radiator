@@ -1,6 +1,6 @@
+import { EmojiService } from 'emoji/EmojiFactory'
 import { Integration } from 'enums'
 import { Emoji } from 'interfaces'
-import { EmojiService } from 'services/Emoji.service'
 
 describe('EmojiService', () => {
   it('should correctly return an instance', () => {

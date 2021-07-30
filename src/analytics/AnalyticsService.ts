@@ -1,7 +1,6 @@
+import { RepositoryFactory, RepositoryType, RepositoryTypes } from 'analytics/RepositoryFactory'
+import { AnalyticsData, CoreItems, Country, Device, Goals } from 'analytics/interfaces'
 import { ParsedRange, RadiatorConfig } from 'interfaces'
-import { AnalyticsData, CoreItems, Country, Device, Goals } from 'interfaces/analytics'
-
-import { RepositoryFactory, RepositoryType, RepositoryTypes } from './RepositoryFactory'
 
 /**
  * Analytics service

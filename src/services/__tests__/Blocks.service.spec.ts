@@ -1,8 +1,8 @@
+import { Country, Device } from 'analytics/interfaces'
+import { BlocksService } from 'blocks/Blocks.service'
+import { EmojiService } from 'emoji/EmojiFactory'
 import { Integration, Rate, SlackMessageBlockType } from 'enums'
-import { Country, Device } from 'interfaces/analytics'
 import { LighthouseEntity } from 'interfaces/lighthouse'
-import { BlocksService } from 'services/Blocks.service'
-import { EmojiService } from 'services/Emoji.service'
 
 describe('BlocksService', () => {
   it('should correctly return an instance', () => {
