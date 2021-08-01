@@ -41,7 +41,7 @@ describe('CoreRepository', () => {
     const data = await repository.getData()
     expect(data).toEqual({
       bounceRate: {
-        difference: '+200',
+        difference: '+100',
         previous: 4,
         rate: 'bad',
         value: 12,
@@ -53,13 +53,13 @@ describe('CoreRepository', () => {
         value: '4s',
       },
       sessions: {
-        difference: '-80',
+        difference: '-133.33',
         previous: 10,
         rate: 'bad',
         value: 2,
       },
       users: {
-        difference: '+100',
+        difference: '+66.67',
         previous: 5,
         rate: 'good',
         value: 10,
@@ -82,25 +82,25 @@ describe('CoreRepository', () => {
     const data = await repository.getData()
     expect(data).toEqual({
       bounceRate: {
-        difference: '-66.67',
+        difference: '-100',
         previous: 12,
         rate: 'good',
         value: 4,
       },
       duration: {
-        difference: '+25',
+        difference: '+22.22',
         previous: '4s',
         rate: 'good',
         value: '5s',
       },
       sessions: {
-        difference: '+400',
+        difference: '+133.33',
         previous: 2,
         rate: 'good',
         value: 10,
       },
       users: {
-        difference: '-50',
+        difference: '-66.67',
         previous: 10,
         rate: 'bad',
         value: 5,

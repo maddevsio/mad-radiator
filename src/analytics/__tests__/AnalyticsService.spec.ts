@@ -48,7 +48,7 @@ describe('AnalyticsService', () => {
       },
       core: {
         bounceRate: {
-          difference: '+200',
+          difference: '+100',
           previous: 4,
           rate: 'bad',
           value: 12,
@@ -60,13 +60,13 @@ describe('AnalyticsService', () => {
           value: '4s',
         },
         sessions: {
-          difference: '-80',
+          difference: '-133.33',
           previous: 10,
           rate: 'bad',
           value: 2,
         },
         users: {
-          difference: '+100',
+          difference: '+66.67',
           previous: 5,
           rate: 'good',
           value: 10,
