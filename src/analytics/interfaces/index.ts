@@ -1,0 +1,5 @@
+export * from 'analytics/interfaces/analytics.interfaces'
+export * from 'analytics/interfaces/devices.interfaces'
+export * from 'analytics/interfaces/countries.interfaces'
+export * from 'analytics/interfaces/core.interfaces'
+export * from 'analytics/interfaces/goals.interfaces'

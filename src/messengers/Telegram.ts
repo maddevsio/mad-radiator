@@ -1,35 +1,61 @@
-import { Integration } from 'enums'
-import { ParsedRange } from 'interfaces'
-import { AnalyticsData } from 'interfaces/analytics'
-import { LighthouseData } from 'interfaces/lighthouse'
+import { Integration } from 'interfaces'
+import { MessageBuilderFactory } from 'messengers/MessageBuilderFactory'
 import { Messenger } from 'messengers/Messenger'
+import { BuildMessageData } from 'messengers/interfaces'
+
+enum TelegramMessageType {
+  message = 'Message',
+  photo = 'Photo',
+}
 
 export class Telegram extends Messenger {
-  public async sendMessage(
-    analytics: AnalyticsData,
-    range: ParsedRange,
-    lighthouse: LighthouseData,
-    imageURL?: string,
-  ): Promise<void> {
-    const message = this.buildMessage(analytics, range, lighthouse, Integration.telegram, imageURL)
+  protected messageBuilder = MessageBuilderFactory.createMessageBuilder(
+    Integration.telegram,
+    this.config,
+  )
 
-    const url = `https://api.telegram.org/bot${this.config.env.telegramToken}/sendMessage`
-    const data = {
+  async sendMessage(buildMessageData: BuildMessageData) {
+    const message = this.messageBuilder.getMessage(buildMessageData)
+    const requestData = this.getRequestData(TelegramMessageType.message, message)
+    const url = this.getApiUrl(TelegramMessageType.message)
+    await this.sendRequest(url, requestData)
+    if (buildMessageData.imageURL) await this.sendPhoto(buildMessageData.imageURL)
+  }
+
+  private getRequestData(type: TelegramMessageType, text: string | Array<Object>, photo?: string) {
+    const baseData = {
       chat_id: this.config.telegramChannelId,
-      text: message.join(''),
+    }
+
+    const photoData = {
+      photo,
+      caption: text,
+    }
+
+    const messageData = {
+      text,
       parse_mode: 'Markdown',
     }
-    await this.send(url, data)
-    if (imageURL) await this.sendPhoto(imageURL)
+
+    if (type === TelegramMessageType.message)
+      return {
+        ...baseData,
+        ...messageData,
+      }
+
+    return {
+      ...baseData,
+      ...photoData,
+    }
+  }
+
+  private getApiUrl(type: TelegramMessageType): string {
+    return `https://api.telegram.org/bot${this.config.env.telegramToken}/send${type}`
   }
 
   private async sendPhoto(imageURL: string) {
-    const url = `https://api.telegram.org/bot${this.config.env.telegramToken}/sendPhoto`
-    const data = {
-      chat_id: this.config.telegramChannelId,
-      photo: imageURL,
-      caption: 'График активности пользователей за последние 14 дней',
-    }
-    await this.send(url, data)
+    const url = this.getApiUrl(TelegramMessageType.photo)
+    const requestData = this.getRequestData(TelegramMessageType.photo, 'Activity graph', imageURL)
+    await this.sendRequest(url, requestData)
   }
 }

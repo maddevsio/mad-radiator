@@ -13,10 +13,18 @@
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "paths": {
-      "enums": ["enums"],
+      "analytics": ["analytics"],
+      "authorization": ["authorization"],
+      "blocks": ["blocks"],
+      "chartBuilder": ["chartBuilder"],
+      "emoji": ["emoji"],
       "interfaces": ["interfaces"],
+      "lighthouse": ["lighthouse"],
+      "logger": ["logger"],
       "messengers": ["messengers"],
+      "scheduler": ["scheduler"],
       "services": ["services"],
+      "storage": ["storage"],
       "utils": ["utils"]
     },
 
@@ -39,13 +47,21 @@
     "typeRoots": ["node_modules/@types", "src/types"]
   },
   "include": ["src/**/*.ts"],
-  "exclude": ["node_modules/**", "lib/**/*"],
+  "exclude": ["node_modules/**", "lib/**/*", "src/**/*.spec.ts", "src/**/*.test.ts"],
   "compileOnSave": false,
   "paths": {
-    "enums": ["enums"],
+    "analytics": ["analytics"],
+    "authorization": ["authorization"],
+    "blocks": ["blocks"],
+    "chartBuilder": ["chartBuilder"],
+    "emoji": ["emoji"],
     "interfaces": ["interfaces"],
+    "lighthouse": ["lighthouse"],
+    "logger": ["logger"],
     "messengers": ["messengers"],
+    "scheduler": ["scheduler"],
     "services": ["services"],
+    "storage": ["storage"],
     "utils": ["utils"]
   }
 }

@@ -13,12 +13,10 @@ module.exports = {
   collectCoverage: true,
   collectCoverageFrom: ['<rootDir>/src/**/*.ts'],
   coveragePathIgnorePatterns: [
+    'index.ts',
     '<rootDir>/node_modules/',
-    '<rootDir>/src/index.ts',
     '<rootDir>/src/interfaces',
-    '<rootDir>/src/cli',
     '<rootDir>/src/__tests__',
-    '<rootDir>/src/enums',
   ],
   coverageReporters: ['lcov'],
   coverageThreshold: {
@@ -33,6 +31,7 @@ module.exports = {
   testPathIgnorePatterns: [
     '<rootDir>/node_modules',
     '<rootDir>/lib',
+    '<rootDir>/src/services',
     '<rootDir>/src/__tests__/fixtures',
   ],
 }

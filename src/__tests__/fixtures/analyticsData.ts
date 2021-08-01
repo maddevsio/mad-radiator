@@ -1,5 +1,5 @@
-import { Rate } from 'enums'
-import { AnalyticsData } from 'interfaces/analytics'
+import { AnalyticsData } from 'analytics/interfaces'
+import { Rate } from 'interfaces'
 
 export const analyticsData: AnalyticsData = {
   core: {

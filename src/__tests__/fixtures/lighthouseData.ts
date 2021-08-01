@@ -1,5 +1,5 @@
-import { Rate } from 'enums'
-import { LighthouseData } from 'interfaces/lighthouse'
+import { Rate } from 'interfaces'
+import { LighthouseData } from 'lighthouse/interfaces'
 
 export const lighthouseData: LighthouseData = {
   performance: {

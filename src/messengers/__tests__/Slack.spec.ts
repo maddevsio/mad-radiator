@@ -16,10 +16,16 @@ describe('Slack messenger', () => {
     expect(slack.sendMessage).toBeTruthy()
   })
 
-  it('should correctly called Messenger.send method after calling sendMessage', async () => {
+  it('should sendMessage correctly sendMessage', async () => {
+    const buildMessageData = {
+      analytics: analyticsData,
+      lighthouse: lighthouseData,
+      range: parsedRange,
+      imageURL: '123',
+    }
     const slack = new Slack(defaultConfig)
 
-    await slack.sendMessage(analyticsData, parsedRange, lighthouseData)
+    await slack.sendMessage(buildMessageData)
 
     expect(axios.post).toHaveBeenCalledTimes(1)
   })
