@@ -37,7 +37,7 @@ export class ChartBuilder {
         labels: Object.keys(chartData),
         datasets: [
           {
-            label: 'Users',
+            label: 'Activity Graph',
             data: Object.values(chartData),
             backgroundColor: [ChartBuilder.defaultColor],
             borderColor: [ChartBuilder.defaultColor],

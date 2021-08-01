@@ -1,7 +1,6 @@
 import { Repository } from 'analytics/Repository'
 import { AnalyticsPayload, Device, DeviceTitle } from 'analytics/interfaces'
 import { Rate } from 'interfaces'
-import { getPercentage } from 'utils/getPercentage'
 
 /**
  * Devices repository
@@ -36,8 +35,8 @@ export class DevicesRepository extends Repository {
       .map(
         (row): Device => ({
           title: row.dimensions[0].toLowerCase() as DeviceTitle,
-          value: getPercentage(Number(row.metrics[0].values[0]), total, false),
-          previous: getPercentage(Number(row.metrics[1].values[0]), totalPrev, false),
+          value: DevicesRepository.getPercentage(Number(row.metrics[0].values[0]), total),
+          previous: DevicesRepository.getPercentage(Number(row.metrics[1].values[0]), totalPrev),
         }),
       )
       .map(
@@ -54,5 +53,12 @@ export class DevicesRepository extends Repository {
    */
   private static getTotal(reports: AnalyticsPayload, key: 0 | 1): number {
     return reports[0].data.totals[key].values[0]
+  }
+
+  /**
+   * Get percentage for number from total
+   */
+  private static getPercentage(toCalculate: number, total: number): number {
+    return Number(Number((toCalculate * 100) / total).toFixed(2))
   }
 }

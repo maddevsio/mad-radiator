@@ -1,7 +1,6 @@
 import { Repository } from 'analytics/Repository'
 import { AnalyticsPayload, Country } from 'analytics/interfaces'
 import { Rate } from 'interfaces'
-import { getPercentage } from 'utils/getPercentage'
 
 /**
  * Countries repository
@@ -36,7 +35,7 @@ export class CountriesRepository extends Repository {
         (row): Country => ({
           title: row.dimensions[0] === '(not set)' ? 'Other' : row.dimensions[0],
           value: Number(row.metrics[0].values[0]),
-          percentage: getPercentage(Number(row.metrics[0].values[0]), total, false),
+          percentage: CountriesRepository.getPercentage(Number(row.metrics[0].values[0]), total),
           rate: Rate.neutral,
         }),
       )
@@ -49,5 +48,12 @@ export class CountriesRepository extends Repository {
    */
   private static getTotal(reports: AnalyticsPayload): number {
     return reports[0].data.totals[0].values[0]
+  }
+
+  /**
+   * Get percentage for number from total
+   */
+  private static getPercentage(toCalculate: number, total: number): number {
+    return Number(Number((toCalculate * 100) / total).toFixed(2))
   }
 }

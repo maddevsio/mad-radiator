@@ -2,7 +2,6 @@ import { Repository } from 'analytics/Repository'
 import { AnalyticsPayload, CoreItems } from 'analytics/interfaces'
 import { Rate } from 'interfaces'
 import { formatTime } from 'utils/formatTime'
-import { getPercentage } from 'utils/getPercentage'
 
 /**
  * Core repository
@@ -46,10 +45,10 @@ export class CoreRepository extends Repository {
       durationPrev,
     ] = reports[0].data.totals[1].values.map(n => Number(Number(n).toFixed(2)))
 
-    const usersDifference = getPercentage(users, usersPrev)
-    const sessionsDifference = getPercentage(sessions, sessionsPrev)
-    const bounceRateDifference = getPercentage(bounceRate, bounceRatePrev)
-    const durationDifference = getPercentage(duration, durationPrev)
+    const usersDifference = CoreRepository.getPercentage(users, usersPrev)
+    const sessionsDifference = CoreRepository.getPercentage(sessions, sessionsPrev)
+    const bounceRateDifference = CoreRepository.getPercentage(bounceRate, bounceRatePrev)
+    const durationDifference = CoreRepository.getPercentage(duration, durationPrev)
 
     return {
       users: {
@@ -79,5 +78,12 @@ export class CoreRepository extends Repository {
         rate: durationDifference > 0 ? Rate.good : Rate.bad,
       },
     }
+  }
+
+  /**
+   * Get percentage between two numbers
+   */
+  private static getPercentage(first: number, second: number): number {
+    return Number(Number(((first - second) / ((first + second) / 2)) * 100).toFixed(2))
   }
 }

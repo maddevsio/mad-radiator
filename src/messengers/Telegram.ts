@@ -55,11 +55,7 @@ export class Telegram extends Messenger {
 
   private async sendPhoto(imageURL: string) {
     const url = this.getApiUrl(TelegramMessageType.photo)
-    const requestData = this.getRequestData(
-      TelegramMessageType.photo,
-      'График активности пользователей',
-      imageURL,
-    )
+    const requestData = this.getRequestData(TelegramMessageType.photo, 'Activity graph', imageURL)
     await this.sendRequest(url, requestData)
   }
 }
