@@ -1,9 +1,8 @@
 import { defaultConfig } from '__tests__/fixtures/radiatorConfigs'
 import axios, { AxiosResponse } from 'axios'
-import { Rate } from 'enums'
-import { RadiatorConfig } from 'interfaces'
-import { LighthousePayload } from 'interfaces/lighthouse'
-import { LighthouseService } from 'services/Lighthouse.service'
+import { RadiatorConfig, Rate } from 'interfaces'
+import { LighthousePayload } from 'lighthouse/interfaces'
+import { Lighthouse } from 'lighthouse/Lighthouse'
 
 const responseData: AxiosResponse<LighthousePayload> = {
   data: {
@@ -43,13 +42,13 @@ describe('Lighthouse service', () => {
   })
 
   it('should correctly created service without Slack/TG instances', () => {
-    const service = new LighthouseService(config)
+    const service = new Lighthouse(config)
 
     expect(service.getData).toBeTruthy()
   })
 
   it('should correctly called getData method', async () => {
-    const service = new LighthouseService(config)
+    const service = new Lighthouse(config)
 
     const data = await service.getData()
 

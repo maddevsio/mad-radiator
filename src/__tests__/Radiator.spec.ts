@@ -2,34 +2,35 @@
 import { Radiator } from 'Radiator'
 import { analyticsData } from '__tests__/fixtures/analyticsData'
 import { defaultConfig } from '__tests__/fixtures/radiatorConfigs'
-import { AnalyticsService } from 'analytics/AnalyticsService'
-import { ChartService } from 'services/Chart.service'
-import { GoogleAuthService } from 'services/GoogleAuth.service'
-import { LighthouseService } from 'services/Lighthouse.service'
-import { MessengersService } from 'services/Messengers.service'
-import { SchedulerService } from 'services/Scheduler.service'
-import { StorageService } from 'services/Storage.service'
+import { AnalyticsService } from 'analytics'
+import { ChartBuilder } from 'chartBuilder'
+import { GoogleAuthorization } from 'authorization'
+import { Lighthouse } from 'lighthouse'
+import { MessengersService } from 'messengers'
+import { Scheduler } from 'scheduler'
+import { GoogleDriveStorage } from 'storage'
 
 jest.mock('analytics/AnalyticsService')
-jest.mock('services/Lighthouse.service')
-jest.mock('services/Logger.service')
-jest.mock('services/Messengers.service')
-jest.mock('services/Scheduler.service')
-jest.mock('services/GoogleAuth.service')
-jest.mock('services/Chart.service')
-jest.mock('services/Storage.service')
+jest.mock('chartBuilder/ChartBuilder')
+jest.mock('authorization/GoogleAuthorization')
+jest.mock('lighthouse/Lighthouse')
+jest.mock('messengers/MessengersService')
+jest.mock('scheduler/Scheduler')
+jest.mock('storage/GoogleDriveStorage')
 
 const MockedAnalytics = AnalyticsService as jest.Mock<AnalyticsService>
-const MockedLighthouse = LighthouseService as jest.Mock<LighthouseService>
+const MockedLighthouse = Lighthouse as jest.Mock<Lighthouse>
 const MockedMessengers = MessengersService as jest.Mock<MessengersService>
-const MockedScheduler = SchedulerService as jest.Mock<SchedulerService>
-const MockedGoogleAuth = GoogleAuthService as jest.Mock<GoogleAuthService>
+const MockedScheduler = Scheduler as jest.Mock<Scheduler>
+const MockedGoogleAuth = GoogleAuthorization as jest.Mock<GoogleAuthorization>
 // @ts-ignore
-const MockedChart = ChartService as jest.Mock<ChartService>
+const MockedChart = ChartBuilder as jest.Mock<ChartBuilder>
 // @ts-ignore
-const MockedStorage = StorageService as jest.Mock<StorageService>
+const MockedStorage = GoogleDriveStorage as jest.Mock<GoogleDriveStorage>
 
 describe('Radiator', () => {
+  jest.spyOn(console, 'log').mockImplementation(() => {})
+
   let scheduleJob = jest.fn()
   let unlink = jest.fn()
   let getData = jest.fn()
@@ -111,7 +112,7 @@ describe('Radiator', () => {
 
     expect(getData).toHaveBeenCalledTimes(1)
     expect(lighthouseInstance.getData).toHaveBeenCalledTimes(1)
-    expect(messengersInstance.send).toHaveBeenCalledTimes(1)
+    expect(messengersInstance.sendMessages).toHaveBeenCalledTimes(1)
     expect(unlink).toHaveBeenCalledTimes(1)
     expect(renderChart).toHaveBeenCalledTimes(1)
     expect(storeFile).toHaveBeenCalledTimes(1)

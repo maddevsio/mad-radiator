@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import { RangeType } from 'enums'
+import { RangeType } from 'interfaces'
 import { parseRange } from 'utils/parseRange'
 
 class MockedDate extends Date {

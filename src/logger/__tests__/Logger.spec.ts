@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import chalk from 'chalk'
-import { LoggerService } from 'services/Logger.service'
+import { Logger } from 'logger'
 
 describe('Logger service', () => {
   beforeEach(() => {
@@ -9,22 +9,22 @@ describe('Logger service', () => {
   })
 
   it('success', () => {
-    LoggerService.success('success')
+    Logger.success('success')
     expect(console.log).toHaveBeenCalledWith(chalk.green.bold('success'))
   })
 
   it('error', () => {
-    LoggerService.error('error')
+    Logger.error('error')
     expect(console.log).toHaveBeenCalledWith(chalk.red.bold('error'))
   })
 
   it('info', () => {
-    LoggerService.info('info')
+    Logger.info('info')
     expect(console.log).toHaveBeenCalledWith(chalk.blue.bold('info'))
   })
 
   it('warning', () => {
-    LoggerService.warning('warning')
+    Logger.warning('warning')
     expect(console.log).toHaveBeenCalledWith(chalk.yellow.bold('warning'))
   })
 })

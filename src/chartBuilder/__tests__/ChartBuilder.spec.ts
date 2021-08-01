@@ -1,4 +1,4 @@
-import { ChartService } from 'services/Chart.service'
+import { ChartBuilder } from 'chartBuilder/ChartBuilder'
 
 jest.mock('chartjs-node-canvas', () => ({
   ChartJSNodeCanvas: class {
@@ -15,16 +15,16 @@ jest.mock('sharp', () => () => ({
   }),
 }))
 
-describe('ChartService', () => {
+describe('ChartBuilder', () => {
   it('should correctly create an instance', () => {
-    const service = new ChartService()
+    const builder = new ChartBuilder()
 
-    expect(service.renderChart).toBeTruthy()
+    expect(builder.renderChart).toBeTruthy()
   })
 
   it('should correctly called renderChart method and got png', async () => {
-    const service = new ChartService()
-    const img = await service.renderChart({ test: 1, test2: 2 })
+    const builder = new ChartBuilder()
+    const img = await builder.renderChart({ test: 1, test2: 2 })
 
     expect(img).toBe('buffer')
   })

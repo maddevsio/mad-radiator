@@ -2,10 +2,10 @@ import fs from 'fs'
 
 import { defaultConfig } from '__tests__/fixtures/radiatorConfigs'
 import { RadiatorConfig } from 'interfaces'
-import { GoogleAuthService } from 'services/GoogleAuth.service'
-import { LoggerService } from 'services/Logger.service'
+import { GoogleAuthorization } from 'authorization/GoogleAuthorization'
+import { Logger } from 'logger'
 
-jest.spyOn(LoggerService, 'error').mockImplementation(() => {})
+jest.spyOn(Logger, 'error').mockImplementation(() => {})
 
 jest.mock('googleapis', () => ({
   google: {
@@ -29,7 +29,7 @@ jest.spyOn(fs, 'unlink').mockImplementation(
     }),
 )
 
-describe('GoogleAuthService', () => {
+describe('GoogleAuthorization', () => {
   let config: RadiatorConfig
 
   beforeEach(() => {
@@ -37,13 +37,13 @@ describe('GoogleAuthService', () => {
   })
 
   it('should correctly create an instance', () => {
-    const service = new GoogleAuthService(config)
+    const service = new GoogleAuthorization(config)
 
     expect(service.authorize).toBeTruthy()
   })
 
   it('should correctly authorize', async () => {
-    const service = new GoogleAuthService(config)
+    const service = new GoogleAuthorization(config)
 
     const { unlink } = await service.authorize()
 
@@ -71,13 +71,13 @@ describe('GoogleAuthService', () => {
         }),
     )
 
-    const service = new GoogleAuthService(config)
+    const service = new GoogleAuthorization(config)
     const { unlink } = await service.authorize()
 
-    expect(LoggerService.error).toHaveBeenCalledTimes(1)
+    expect(Logger.error).toHaveBeenCalledTimes(1)
 
     await unlink()
 
-    expect(LoggerService.error).toHaveBeenCalledTimes(2)
+    expect(Logger.error).toHaveBeenCalledTimes(2)
   })
 })

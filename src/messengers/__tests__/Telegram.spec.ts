@@ -10,28 +10,22 @@ jest.spyOn(axios, 'post').mockImplementation(
 )
 
 describe('Telegram messenger', () => {
-  afterEach(() => {
-    jest.clearAllMocks()
-  })
-
   it('should correctly created an instance', () => {
     const telegram = new Telegram(defaultConfig)
 
     expect(telegram.sendMessage).toBeTruthy()
   })
 
-  it('should correctly called Messenger.send method after calling sendMessage', async () => {
-    const telegram = new Telegram(defaultConfig)
+  it('should sendMessage correctly sendMessage', async () => {
+    const buildMessageData = {
+      analytics: analyticsData,
+      lighthouse: lighthouseData,
+      range: parsedRange,
+      imageURL: '123',
+    }
+    const slack = new Telegram(defaultConfig)
 
-    await telegram.sendMessage(analyticsData, parsedRange, lighthouseData)
-
-    expect(axios.post).toHaveBeenCalledTimes(1)
-  })
-
-  it('should correctly called sendPhoto method if has imageURL', async () => {
-    const telegram = new Telegram(defaultConfig)
-
-    await telegram.sendMessage(analyticsData, parsedRange, lighthouseData, 'url')
+    await slack.sendMessage(buildMessageData)
 
     expect(axios.post).toHaveBeenCalledTimes(2)
   })

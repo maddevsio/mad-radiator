@@ -1,13 +1,12 @@
-import { SchedulePeriod } from 'enums'
-import { ScheduleConfig } from 'interfaces'
+import { ScheduleConfig, SchedulePeriod } from 'interfaces'
 import schedule from 'node-schedule'
-import { SchedulerService } from 'services/Scheduler.service'
+import { Scheduler } from 'scheduler/Scheduler'
 
 jest.mock('node-schedule', () => ({
   scheduleJob: jest.fn((str, cb) => cb(str)),
 }))
 
-describe('SchedulerService', () => {
+describe('Scheduler', () => {
   let config: ScheduleConfig
 
   beforeEach(() => {
@@ -18,11 +17,11 @@ describe('SchedulerService', () => {
   })
 
   it('should created correctly', () => {
-    const service = new SchedulerService(config)
+    const service = new Scheduler(config)
     expect(service.scheduleJob).toBeTruthy()
   })
   it('scheduleJob method with custom cronString', () => {
-    const service = new SchedulerService(config)
+    const service = new Scheduler(config)
     const cb = jest.fn()
 
     service.scheduleJob(cb)
@@ -35,7 +34,7 @@ describe('SchedulerService', () => {
     config.cron = ''
     config.period = SchedulePeriod.day
     config.time = 14
-    const service = new SchedulerService(config)
+    const service = new Scheduler(config)
     const cb = jest.fn()
 
     service.scheduleJob(cb)
@@ -49,7 +48,7 @@ describe('SchedulerService', () => {
     config.period = SchedulePeriod.week
     config.time = 14
     config.weekDay = 3
-    const service = new SchedulerService(config)
+    const service = new Scheduler(config)
     const cb = jest.fn()
 
     service.scheduleJob(cb)
@@ -63,7 +62,7 @@ describe('SchedulerService', () => {
     config.period = SchedulePeriod.month
     config.time = 14
     config.monthDay = 3
-    const service = new SchedulerService(config)
+    const service = new Scheduler(config)
     const cb = jest.fn()
 
     service.scheduleJob(cb)

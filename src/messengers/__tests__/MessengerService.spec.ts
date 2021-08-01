@@ -5,17 +5,17 @@ import { defaultConfig } from '__tests__/fixtures/radiatorConfigs'
 import { RadiatorConfig } from 'interfaces'
 import { Slack } from 'messengers/Slack'
 import { Telegram } from 'messengers/Telegram'
-import { LoggerService } from 'services/Logger.service'
-import { MessengersService } from 'services/Messengers.service'
+import { Logger } from 'logger'
+import { MessengersService } from 'messengers/MessengersService'
 
 jest.mock('messengers/Slack')
 jest.mock('messengers/Telegram')
-jest.mock('services/Logger.service')
+jest.mock('logger/Logger')
 
 const MockedSlack = Slack as jest.Mock<Slack>
 const MockedTG = Telegram as jest.Mock<Telegram>
 // @ts-ignore
-const MockedLogger = LoggerService as jest.mock<LoggerService>
+const MockedLogger = Logger as jest.mock<Logger>
 
 describe('Messengers service', () => {
   let config: RadiatorConfig
@@ -32,17 +32,9 @@ describe('Messengers service', () => {
     config.telegram = false
     const service = new MessengersService(config)
 
-    expect(Slack).toHaveBeenCalledTimes(0)
-    expect(Telegram).toHaveBeenCalledTimes(0)
-    expect(service.send).toBeTruthy()
-  })
-
-  it('should correctly created service and Slack/TG instances', () => {
-    const service = new MessengersService(config)
-
     expect(Slack).toHaveBeenCalledTimes(1)
     expect(Telegram).toHaveBeenCalledTimes(1)
-    expect(service.send).toBeTruthy()
+    expect(service.sendMessages).toBeTruthy()
   })
 
   it('should correctly called slack sendMessage method', () => {
@@ -50,7 +42,14 @@ describe('Messengers service', () => {
     config.telegram = false
     const service = new MessengersService(config)
 
-    service.send(analyticsData, lighthouseData, parsedRange)
+    const buildMessageData = {
+      analytics: analyticsData,
+      lighthouse: lighthouseData,
+      range: parsedRange,
+      imageURL: '123',
+    }
+
+    service.sendMessages(buildMessageData)
 
     const mockSlackInstance = MockedSlack.mock.instances[0]
     expect(mockSlackInstance.sendMessage).toHaveBeenCalledTimes(1)
@@ -59,6 +58,13 @@ describe('Messengers service', () => {
   it('should correctly called slack sendMessage method and got error', () => {
     config.slack = true
     config.telegram = false
+
+    const buildMessageData = {
+      analytics: analyticsData,
+      lighthouse: lighthouseData,
+      range: parsedRange,
+      imageURL: '123',
+    }
 
     const sendMessage = jest.fn(() => {
       throw new Error('err')
@@ -70,7 +76,7 @@ describe('Messengers service', () => {
     }))
 
     const service = new MessengersService(config)
-    service.send(analyticsData, lighthouseData, parsedRange)
+    service.sendMessages(buildMessageData)
 
     expect(MockedLogger.error).toHaveBeenCalledTimes(2)
   })
@@ -78,9 +84,16 @@ describe('Messengers service', () => {
   it('should correctly called tg sendMessage method', () => {
     config.slack = false
     config.telegram = true
+    const buildMessageData = {
+      analytics: analyticsData,
+      lighthouse: lighthouseData,
+      range: parsedRange,
+      imageURL: '123',
+    }
+
     const service = new MessengersService(config)
 
-    service.send(analyticsData, lighthouseData, parsedRange)
+    service.sendMessages(buildMessageData)
 
     const mockTgInstance = MockedTG.mock.instances[0]
     expect(mockTgInstance.sendMessage).toHaveBeenCalledTimes(1)
@@ -89,6 +102,12 @@ describe('Messengers service', () => {
   it('should correctly called tg sendMessage method and got error', () => {
     config.slack = false
     config.telegram = true
+    const buildMessageData = {
+      analytics: analyticsData,
+      lighthouse: lighthouseData,
+      range: parsedRange,
+      imageURL: '123',
+    }
 
     const sendMessage = jest.fn(() => {
       throw new Error('err')
@@ -100,7 +119,7 @@ describe('Messengers service', () => {
     }))
 
     const service = new MessengersService(config)
-    service.send(analyticsData, lighthouseData, parsedRange)
+    service.sendMessages(buildMessageData)
 
     expect(MockedLogger.error).toHaveBeenCalledTimes(4)
   })

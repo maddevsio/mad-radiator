@@ -31,7 +31,7 @@ describe('RepositoryFactroy', () => {
         defaultConfig,
         parsedRange,
       )
-      expect(repository instanceof Repository).toBeTruthy()
+      expect(repository).toBeInstanceOf(Repository)
     },
   )
 })

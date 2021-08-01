@@ -24,6 +24,10 @@ describe('AnalyticsService', () => {
   })
 
   it('getData should correctly return data from analytics', async () => {
+    const OriginalDate = Date
+    // @ts-ignore
+    jest.spyOn(global, 'Date').mockImplementation(() => new OriginalDate(2021, 6, 30))
+
     // @ts-ignore
     google.analyticsreporting.mockImplementation(() => ({
       reports: {

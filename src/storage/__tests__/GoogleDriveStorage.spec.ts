@@ -1,5 +1,5 @@
 import { google } from 'googleapis'
-import { StorageService } from 'services/Storage.service'
+import { GoogleDriveStorage } from 'storage/GoogleDriveStorage'
 
 // @ts-ignore
 jest.spyOn(google, 'drive').mockImplementation(() => ({
@@ -15,16 +15,15 @@ jest.spyOn(google, 'drive').mockImplementation(() => ({
   },
 }))
 
-describe('StorageService', () => {
+describe('GoogleDriveStorage', () => {
   it('should correctly create an instance', () => {
-    const service = new StorageService()
-
-    expect(service.storeFile).toBeTruthy()
+    const storage = new GoogleDriveStorage()
+    expect(storage.storeFile).toBeTruthy()
   })
 
   it('should correctly return link after called storeFile', async () => {
-    const service = new StorageService()
-    const link = await service.storeFile(Buffer.from('123'))
+    const storage = new GoogleDriveStorage()
+    const link = await storage.storeFile(Buffer.from('123'))
 
     expect(link).toBe('https://drive.google.com/uc?export=view&id=123')
   })
@@ -44,8 +43,8 @@ describe('StorageService', () => {
       },
     }))
 
-    const service = new StorageService()
-    const link = await service.storeFile(Buffer.from('123'))
+    const storage = new GoogleDriveStorage()
+    const link = await storage.storeFile(Buffer.from('123'))
 
     expect(link).toBeUndefined()
   })
