@@ -90,7 +90,7 @@ describe('TelegramMessageBuilder', () => {
 😋 maddevs.io - *90%*
 
 ———
-Chart: 123
+[Activity graph](123)
 
 ———
 `)
