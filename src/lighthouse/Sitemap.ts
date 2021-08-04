@@ -14,7 +14,7 @@ export class Sitemap {
 
     const { data: xml } = await axios.get<string>(url)
 
-    const urls = XmlParser.parseToJson(xml)
+    const urls = XmlParser.parseTags(xml, 'loc')
 
     if (!this.config.lighthouse?.urlTestRegexp) return urls
 

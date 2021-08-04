@@ -47,7 +47,7 @@
     "typeRoots": ["node_modules/@types", "src/types"]
   },
   "include": ["src/**/*.ts"],
-  "exclude": ["node_modules/**", "lib/**/*", "src/**/*.spec.ts", "src/**/*.test.ts"],
+  "exclude": ["node_modules/**", "lib/**/*"],
   "compileOnSave": false,
   "paths": {
     "analytics": ["analytics"],

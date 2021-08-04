@@ -61,14 +61,18 @@ export abstract class MessageBuilder {
     message.push(this.blocksService.divider())
 
     // pagespeed top
-    message.push(this.blocksService.section(MessageBuilder.pagespeedBestMessage()))
-    message.push(this.blocksService.section(this.pagespeedRating(lighthouse.top)))
-    message.push(this.blocksService.divider())
+    if (lighthouse.top.length) {
+      message.push(this.blocksService.section(MessageBuilder.pagespeedBestMessage()))
+      message.push(this.blocksService.section(this.pagespeedRating(lighthouse.top)))
+      message.push(this.blocksService.divider())
+    }
 
     // pagespeed worst
-    message.push(this.blocksService.section(MessageBuilder.pagespeedWorstMessage()))
-    message.push(this.blocksService.section(this.pagespeedRating(lighthouse.worst)))
-    message.push(this.blocksService.divider())
+    if (lighthouse.worst.length) {
+      message.push(this.blocksService.section(MessageBuilder.pagespeedWorstMessage()))
+      message.push(this.blocksService.section(this.pagespeedRating(lighthouse.worst)))
+      message.push(this.blocksService.divider())
+    }
 
     // image
     message.push(this.blocksService.image(imageURL))

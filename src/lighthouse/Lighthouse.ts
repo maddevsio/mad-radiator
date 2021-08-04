@@ -59,7 +59,7 @@ export class Lighthouse {
     ) as LighthouseMetrics
 
     const total = Object.values(metrics).reduce((acc: number, curr: number) => acc + curr, 0)
-    const average = total / Object.keys(metrics).length
+    const average = Math.round(total / Object.keys(metrics).length)
 
     return {
       url,

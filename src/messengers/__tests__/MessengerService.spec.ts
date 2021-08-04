@@ -78,7 +78,7 @@ describe('Messengers service', () => {
     const service = new MessengersService(config)
     service.sendMessages(buildMessageData)
 
-    expect(MockedLogger.error).toHaveBeenCalledTimes(2)
+    expect(MockedLogger.error).toHaveBeenCalledTimes(1)
   })
 
   it('should correctly called tg sendMessage method', () => {
@@ -121,6 +121,6 @@ describe('Messengers service', () => {
     const service = new MessengersService(config)
     service.sendMessages(buildMessageData)
 
-    expect(MockedLogger.error).toHaveBeenCalledTimes(4)
+    expect(MockedLogger.error).toHaveBeenCalledTimes(2)
   })
 })
