@@ -1,10 +1,17 @@
 import { AnalyticsConversion } from 'analytics/interfaces'
-import { ChartConfig, EnvironmentConfig, RangeType, ScheduleConfig } from 'interfaces'
+import {
+  ChartConfig,
+  EnvironmentConfig,
+  LighthouseConfig,
+  RangeType,
+  ScheduleConfig,
+} from 'interfaces'
 
 export interface RadiatorConfig {
   env: EnvironmentConfig
   schedule?: ScheduleConfig
   chart?: ChartConfig
+  lighthouse?: LighthouseConfig
   slack: boolean
   telegram: boolean
   range: RangeType

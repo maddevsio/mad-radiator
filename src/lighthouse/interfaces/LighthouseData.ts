@@ -1,3 +1,8 @@
-import { LighthouseEntity } from 'lighthouse/interfaces'
+import { LighthouseMetrics, LighthouseUrlResult } from 'lighthouse/interfaces'
 
-export type LighthouseData = Record<string, LighthouseEntity>
+export interface LighthouseData {
+  top: Array<LighthouseUrlResult>
+  worst: Array<LighthouseUrlResult>
+  average: LighthouseMetrics
+  urlCount: number
+}

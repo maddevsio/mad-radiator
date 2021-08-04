@@ -2,7 +2,7 @@ import { CoreItems, Country, Device, Goals } from 'analytics/interfaces'
 import { Blocks } from 'blocks/Blocks'
 import { Emoji } from 'emoji/Emoji'
 import { ParsedRange, RadiatorConfig } from 'interfaces'
-import { LighthouseData } from 'lighthouse/interfaces'
+import { LighthouseMetrics, LighthouseUrlResult } from 'lighthouse/interfaces'
 import { BuildMessageData, SlackMessageBlock } from 'messengers/interfaces'
 import { capitalize } from 'utils/capitalize'
 
@@ -53,9 +53,21 @@ export abstract class MessageBuilder {
     message.push(this.blocksService.section(this.conversionList(goals)))
     message.push(this.blocksService.divider())
 
-    // pagespeed
-    message.push(this.blocksService.section(MessageBuilder.pagespeedMessage()))
-    message.push(this.blocksService.section(this.pagespeedList(lighthouse)))
+    // pagespeed average
+    message.push(
+      this.blocksService.section(MessageBuilder.pagespeedAverageMessage(lighthouse.urlCount)),
+    )
+    message.push(this.blocksService.section(this.pagespeedList(lighthouse.average)))
+    message.push(this.blocksService.divider())
+
+    // pagespeed top
+    message.push(this.blocksService.section(MessageBuilder.pagespeedBestMessage()))
+    message.push(this.blocksService.section(this.pagespeedRating(lighthouse.top)))
+    message.push(this.blocksService.divider())
+
+    // pagespeed worst
+    message.push(this.blocksService.section(MessageBuilder.pagespeedWorstMessage()))
+    message.push(this.blocksService.section(this.pagespeedRating(lighthouse.worst)))
     message.push(this.blocksService.divider())
 
     // image
@@ -153,17 +165,43 @@ export abstract class MessageBuilder {
     )
   }
 
-  private static pagespeedMessage() {
-    return 'Производительность сайта от Google PageSpeed:'
+  private static pagespeedAverageMessage(count: number) {
+    return `Средняя производительность сайта от Google PageSpeed(Проанализировано ${count} страниц):`
   }
 
-  private pagespeedList(lighthouse: LighthouseData) {
+  private pagespeedList(lighthouse: LighthouseMetrics) {
     return this.blocksService.list([
-      this.blocksService.performanceListItem(lighthouse.performance, 'chart_with_upwards_trend'),
-      this.blocksService.performanceListItem(lighthouse.accessibility, 'wheelchair'),
-      this.blocksService.performanceListItem(lighthouse['best-practices'], 'the_horns'),
-      this.blocksService.performanceListItem(lighthouse.seo, 'sports_medal'),
-      this.blocksService.performanceListItem(lighthouse.pwa, 'iphone'),
+      this.blocksService.performanceListItem(
+        'Performance',
+        lighthouse.performance,
+        'chart_with_upwards_trend',
+      ),
+      this.blocksService.performanceListItem(
+        'Accessibility',
+        lighthouse.accessibility,
+        'wheelchair',
+      ),
+      this.blocksService.performanceListItem(
+        'Best Practices',
+        lighthouse.best_practices,
+        'the_horns',
+      ),
+      this.blocksService.performanceListItem('SEO', lighthouse.seo, 'sports_medal'),
+      this.blocksService.performanceListItem('PWA', lighthouse.pwa, 'iphone'),
     ])
+  }
+
+  private static pagespeedBestMessage() {
+    return 'Лучшие страницы:'
+  }
+
+  private static pagespeedWorstMessage() {
+    return 'Худшие страницы:'
+  }
+
+  private pagespeedRating(urls: Array<LighthouseUrlResult>) {
+    return this.blocksService.list(
+      urls.map(urlResult => this.blocksService.pagespeedRatingListItem(urlResult)),
+    )
   }
 }

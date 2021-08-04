@@ -44,13 +44,13 @@ describe('Lighthouse service', () => {
   it('should correctly created service without Slack/TG instances', () => {
     const service = new Lighthouse(config)
 
-    expect(service.getData).toBeTruthy()
+    expect(service.getLighthouseMetrics).toBeTruthy()
   })
 
   it('should correctly called getData method', async () => {
     const service = new Lighthouse(config)
 
-    const data = await service.getData()
+    const data = await service.getLighthouseMetrics()
 
     expect(data).toEqual({
       1: {

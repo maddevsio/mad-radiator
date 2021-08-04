@@ -1,30 +1,14 @@
-import { Rate } from 'interfaces'
 import { LighthouseData } from 'lighthouse/interfaces'
 
 export const lighthouseData: LighthouseData = {
-  performance: {
-    title: 'Access',
-    value: 100,
-    rate: Rate.good,
+  top: [],
+  worst: [],
+  average: {
+    performance: 100,
+    accessibility: 100,
+    best_practices: 100,
+    seo: 100,
+    pwa: 100,
   },
-  accessibility: {
-    title: 'Access',
-    value: 100,
-    rate: Rate.good,
-  },
-  'best-practices': {
-    title: 'Access',
-    value: 100,
-    rate: Rate.good,
-  },
-  seo: {
-    title: 'Access',
-    value: 100,
-    rate: Rate.good,
-  },
-  pwa: {
-    title: 'Access',
-    value: 100,
-    rate: Rate.good,
-  },
+  urlCount: 100,
 }

@@ -22,14 +22,14 @@ export class MessengersService {
       if (this.config.slack) await this.slack.sendMessage(buildMessageData)
     } catch (error) {
       Logger.error('Error during send message to slack')
-      Logger.error(error)
+      console.error(error.toJSON())
     }
 
     try {
       if (this.config.telegram) await this.telegram.sendMessage(buildMessageData)
     } catch (error) {
       Logger.error('Error during send message to telegram')
-      Logger.error(error)
+      console.error(error.toJSON())
     }
   }
 }
