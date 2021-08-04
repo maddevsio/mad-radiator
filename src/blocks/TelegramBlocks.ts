@@ -15,7 +15,7 @@ export class TelegramBlocks extends Blocks {
 
   image(imageURL?: string): string {
     if (!imageURL) return this.divider()
-    return `Chart: ${imageURL.split('_').join('//_')}\n\n`
+    return `[Activity graph](${imageURL.split('_').join('\\_')})\n\n`
   }
 
   section(text: string): string {

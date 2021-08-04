@@ -1,10 +1,16 @@
-import { defaultConfig } from '__tests__/fixtures/radiatorConfigs'
+import { MockedDate } from '__tests__/fixtures/MockedDate'
 import { analyticsData } from '__tests__/fixtures/analyticsData'
 import { lighthouseData } from '__tests__/fixtures/lighthouseData'
 import { parsedRange } from '__tests__/fixtures/parsedRange'
+import { defaultConfig } from '__tests__/fixtures/radiatorConfigs'
 import { SlackMessageBuilder } from 'messengers/SlackMessageBuilder'
 
 describe('SlackMessageBuilder', () => {
+  beforeEach(() => {
+    // @ts-ignore
+    global.Date = MockedDate
+  })
+
   it('should correctly return an instance', () => {
     const builder = new SlackMessageBuilder(defaultConfig)
 
@@ -105,7 +111,8 @@ describe('SlackMessageBuilder', () => {
       },
       {
         text: {
-          text: 'Производительность сайта от Google PageSpeed:\n\n',
+          text:
+            'Средняя производительность сайта от Google PageSpeed(Проанализировано 100 страниц):\n\n',
           type: 'mrkdwn',
         },
         type: 'section',
@@ -113,7 +120,7 @@ describe('SlackMessageBuilder', () => {
       {
         text: {
           text:
-            ':yum: :chart_with_upwards_trend: Access: *100%*\n\n:yum: :wheelchair: Access: *100%*\n\n:yum: :sign_of_the_horns: Access: *100%*\n\n:yum: :sports_medal: Access: *100%*\n\n:yum: :iphone: Access: *100%*\n\n',
+            ':yum: :chart_with_upwards_trend: Performance: *100%*\n\n:yum: :wheelchair: Accessibility: *100%*\n\n:yum: :sign_of_the_horns: Best Practices: *100%*\n\n:yum: :sports_medal: SEO: *100%*\n\n:yum: :iphone: PWA: *100%*\n\n',
           type: 'mrkdwn',
         },
         type: 'section',

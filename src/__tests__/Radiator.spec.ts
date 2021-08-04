@@ -3,8 +3,8 @@ import { Radiator } from 'Radiator'
 import { analyticsData } from '__tests__/fixtures/analyticsData'
 import { defaultConfig } from '__tests__/fixtures/radiatorConfigs'
 import { AnalyticsService } from 'analytics'
-import { ChartBuilder } from 'chartBuilder'
 import { GoogleAuthorization } from 'authorization'
+import { ChartBuilder } from 'chartBuilder'
 import { Lighthouse } from 'lighthouse'
 import { MessengersService } from 'messengers'
 import { Scheduler } from 'scheduler'
@@ -19,6 +19,7 @@ jest.mock('scheduler/Scheduler')
 jest.mock('storage/GoogleDriveStorage')
 
 const MockedAnalytics = AnalyticsService as jest.Mock<AnalyticsService>
+// @ts-ignore
 const MockedLighthouse = Lighthouse as jest.Mock<Lighthouse>
 const MockedMessengers = MessengersService as jest.Mock<MessengersService>
 const MockedScheduler = Scheduler as jest.Mock<Scheduler>
@@ -111,7 +112,7 @@ describe('Radiator', () => {
     await radiator.run()
 
     expect(getData).toHaveBeenCalledTimes(1)
-    expect(lighthouseInstance.getData).toHaveBeenCalledTimes(1)
+    expect(lighthouseInstance.getLighthouseMetrics).toHaveBeenCalledTimes(1)
     expect(messengersInstance.sendMessages).toHaveBeenCalledTimes(1)
     expect(unlink).toHaveBeenCalledTimes(1)
     expect(renderChart).toHaveBeenCalledTimes(1)

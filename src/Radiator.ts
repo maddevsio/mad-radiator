@@ -58,7 +58,7 @@ export class Radiator {
     const analytics = await this.analyticsService.getData()
 
     Logger.info('Getting lighthouse data...')
-    const lighthouse = await this.lighthouse.getData()
+    const lighthouse = await this.lighthouse.getLighthouseMetrics()
 
     if (analytics.chart) Logger.info('Building an image...')
     const imageBuffer = analytics.chart && (await this.chartBuilder.renderChart(analytics.chart))

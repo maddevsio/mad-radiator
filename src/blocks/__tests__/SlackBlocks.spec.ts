@@ -1,7 +1,7 @@
 import { Country, Device } from 'analytics/interfaces'
 import { SlackBlocks } from 'blocks/SlackBlocks'
 import { Rate } from 'interfaces'
-import { LighthouseEntity } from 'lighthouse/interfaces'
+import { LighthouseUrlResult } from 'lighthouse/interfaces'
 import { SlackMessageBlockType } from 'messengers/interfaces'
 
 describe('SlackBlocks', () => {
@@ -9,6 +9,7 @@ describe('SlackBlocks', () => {
     const blocks = new SlackBlocks()
 
     expect(blocks.countryListItem).toBeTruthy()
+    expect(blocks.pagespeedRatingListItem).toBeTruthy()
     expect(blocks.list).toBeTruthy()
     expect(blocks.listItem).toBeTruthy()
     expect(blocks.performanceListItem).toBeTruthy()
@@ -30,6 +31,46 @@ describe('SlackBlocks', () => {
     const countryListItem = blocks.countryListItem(country)
 
     expect(countryListItem).toBe(':flag-ru: Russia: *30%* от всех посетителей сайта')
+  })
+
+  it('pagespeedRatingListItem should correctly return markup', () => {
+    const blocks = new SlackBlocks()
+
+    const result: LighthouseUrlResult = {
+      url: 'maddevs.io',
+      metrics: {
+        accessibility: 90,
+        best_practices: 90,
+        pwa: 90,
+        performance: 90,
+        seo: 90,
+      },
+      average: 90,
+    }
+
+    const pagespeedRatingListItem = blocks.pagespeedRatingListItem(result)
+
+    expect(pagespeedRatingListItem).toBe(':yum: maddevs.io - *90%*')
+  })
+
+  it('pagespeedRatingListItem should correctly return markup with bad average', () => {
+    const blocks = new SlackBlocks()
+
+    const result: LighthouseUrlResult = {
+      url: 'maddevs.io',
+      metrics: {
+        accessibility: 40,
+        best_practices: 40,
+        pwa: 40,
+        performance: 40,
+        seo: 40,
+      },
+      average: 40,
+    }
+
+    const pagespeedRatingListItem = blocks.pagespeedRatingListItem(result)
+
+    expect(pagespeedRatingListItem).toBe(':rage: maddevs.io - *40%*')
   })
 
   it('countryListItem correctly returns markup with undefined country', () => {
@@ -76,14 +117,8 @@ describe('SlackBlocks', () => {
   })
 
   it('performanceListItem correctly returns markup', () => {
-    const entity: LighthouseEntity = {
-      title: 'Speed',
-      value: 90,
-      rate: Rate.good,
-    }
-
     const service = new SlackBlocks()
-    const listItem = service.performanceListItem(entity, '+1')
+    const listItem = service.performanceListItem('Speed', 90, '+1')
 
     expect(listItem).toBe(':yum: :thumbsup: Speed: *90%*')
   })

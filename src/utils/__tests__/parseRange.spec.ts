@@ -1,20 +1,7 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
+import { MockedDate } from '__tests__/fixtures/MockedDate'
 import { RangeType } from 'interfaces'
 import { parseRange } from 'utils/parseRange'
-
-class MockedDate extends Date {
-  public setDate(date: number) {
-    return date
-  }
-
-  public getDate() {
-    return 2
-  }
-
-  public toLocaleDateString() {
-    return '4/25/2021'
-  }
-}
 
 describe('parseRange utility', () => {
   beforeEach(() => {

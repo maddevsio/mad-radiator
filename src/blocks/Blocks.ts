@@ -2,7 +2,8 @@ import { CoreItem, Country, Device, Goal } from 'analytics/interfaces'
 import { ListItemParameters } from 'blocks/interfaces'
 import { Emoji } from 'emoji/Emoji'
 import { EmojiType } from 'emoji/interfaces'
-import { LighthouseEntity } from 'lighthouse/interfaces'
+import { Rate } from 'interfaces'
+import { LighthouseUrlResult } from 'lighthouse/interfaces'
 import { SlackMessageBlock } from 'messengers/interfaces/slack'
 import { toISO } from 'utils/countryISO/toISO'
 
@@ -29,11 +30,11 @@ export abstract class Blocks {
     return `${rateEmoji} ${emoji} ${title}: *${entity.value}${valueType}* (${entity[parensKey]}${parensType})`
   }
 
-  public performanceListItem(entity: LighthouseEntity, emojiType: EmojiType): string {
-    const rateEmoji = this.emojiService.getRateEmoji(entity.rate)
+  public performanceListItem(title: string, value: number, emojiType: EmojiType): string {
+    const rateEmoji = this.emojiService.getRateEmoji(Blocks.getRateForPerformance(value))
     const emoji = this.emojiService.getEmoji(emojiType)
 
-    return `${rateEmoji} ${emoji} ${entity.title}: *${entity.value}%*`
+    return `${rateEmoji} ${emoji} ${title}: *${value}%*`
   }
 
   public countryListItem({ title, percentage }: Country): string {
@@ -41,10 +42,21 @@ export abstract class Blocks {
     return `${flag} ${title}: *${percentage}%* от всех посетителей сайта`
   }
 
+  public pagespeedRatingListItem({ url, average }: LighthouseUrlResult): string {
+    const rateEmoji = this.emojiService.getRateEmoji(Blocks.getRateForPerformance(average))
+    return `${rateEmoji} ${url} - *${average}%*`
+  }
+
   private getFlag(title: string): string {
     const iso = toISO(title)
     if (!iso) return this.emojiService.getEmoji('flags')
     const emoji = `flag-${iso.toLowerCase()}` as EmojiType
     return this.emojiService.getEmoji(emoji)
+  }
+
+  private static getRateForPerformance(value: number): Rate {
+    if (value >= 90) return Rate.good
+    if (value >= 50) return Rate.neutral
+    return Rate.bad
   }
 }

@@ -1,13 +1,14 @@
 import { Country, Device } from 'analytics/interfaces'
 import { TelegramBlocks } from 'blocks/TelegramBlocks'
 import { Rate } from 'interfaces'
-import { LighthouseEntity } from 'lighthouse/interfaces'
+import { LighthouseUrlResult } from 'lighthouse/interfaces'
 
 describe('TelegramBlocks', () => {
   it('should correctly return an instance', () => {
     const blocks = new TelegramBlocks()
 
     expect(blocks.countryListItem).toBeTruthy()
+    expect(blocks.pagespeedRatingListItem).toBeTruthy()
     expect(blocks.list).toBeTruthy()
     expect(blocks.listItem).toBeTruthy()
     expect(blocks.performanceListItem).toBeTruthy()
@@ -29,6 +30,26 @@ describe('TelegramBlocks', () => {
     const countryListItem = blocks.countryListItem(country)
 
     expect(countryListItem).toBe('🇷🇺 Russia: *30%* от всех посетителей сайта')
+  })
+
+  it('pagespeedRatingListItem should correctly return markup', () => {
+    const blocks = new TelegramBlocks()
+
+    const result: LighthouseUrlResult = {
+      url: 'maddevs.io',
+      metrics: {
+        accessibility: 60,
+        best_practices: 60,
+        pwa: 60,
+        performance: 60,
+        seo: 60,
+      },
+      average: 60,
+    }
+
+    const pagespeedRatingListItem = blocks.pagespeedRatingListItem(result)
+
+    expect(pagespeedRatingListItem).toBe('😐 maddevs.io - *60%*')
   })
 
   it('countryListItem correctly returns markup with undefined country', () => {
@@ -75,14 +96,9 @@ describe('TelegramBlocks', () => {
   })
 
   it('performanceListItem correctly returns markup', () => {
-    const entity: LighthouseEntity = {
-      title: 'Speed',
-      value: 90,
-      rate: Rate.good,
-    }
-
     const service = new TelegramBlocks()
-    const listItem = service.performanceListItem(entity, '+1')
+
+    const listItem = service.performanceListItem('Speed', 90, '+1')
 
     expect(listItem).toBe('😋 👍 Speed: *90%*')
   })
@@ -123,6 +139,6 @@ describe('TelegramBlocks', () => {
     const divider = service.divider()
 
     expect(empty).toEqual(divider)
-    expect(image).toEqual('Chart: url\n\n')
+    expect(image).toEqual('[Activity graph](url)\n\n')
   })
 })
