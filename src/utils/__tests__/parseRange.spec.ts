@@ -1,7 +1,18 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { MockedDate } from '__tests__/fixtures/MockedDate'
 import { RangeType } from 'interfaces'
+// import moment from 'moment'
 import { parseRange } from 'utils/parseRange'
+
+jest.mock('moment', () => () => ({
+  utc: () => ({
+    subtract: () => ({
+      format: () => '25/4/2021',
+    }),
+  }),
+}))
+
+// const mockedMoment = moment as jest.Mock<moment>
 
 describe('parseRange utility', () => {
   beforeEach(() => {
