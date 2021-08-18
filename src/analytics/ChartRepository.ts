@@ -1,5 +1,5 @@
 import { Repository } from 'analytics/Repository'
-import { Range } from 'interfaces'
+import { RangeWithDisplay } from 'interfaces'
 
 /**
  * Repository for charts
@@ -30,10 +30,15 @@ export class ChartRepository extends Repository {
 
     const result: Record<string, number> = {}
 
-    for (const [originalDate, range] of Object.entries(rangeList)) {
-      const payload = await this.getAnalytics(this.metrics, [], [range])
-      result[originalDate] = Number(payload[0].data.rows[0].metrics[0].values[0])
+    for (const { dateToDisplay, startDate, endDate } of rangeList) {
+      const payload = await this.getAnalytics(this.metrics, [], [{ startDate, endDate }])
+      result[dateToDisplay] = Number(payload[0].data.rows[0].metrics[0].values[0])
     }
+    //
+    // for (const [originalDate, range] of Object.entries(rangeList)) {
+    //   const payload = await this.getAnalytics(this.metrics, [], [range])
+    //   result[originalDate] = Number(payload[0].data.rows[0].metrics[0].values[0])
+    // }
 
     return result
   }
@@ -51,7 +56,7 @@ export class ChartRepository extends Repository {
   /**
    * Build range for get data from analytics
    */
-  private static buildRange(period: number = 14): Record<string, Range> {
+  private static buildRange(period: number = 14): Array<RangeWithDisplay> {
     const filterDivisor =
       period > ChartRepository.maxRangeItems
         ? Math.round(period / ChartRepository.maxRangeItems)
@@ -61,16 +66,14 @@ export class ChartRepository extends Repository {
       .fill(0)
       .map((_, idx) => idx + 1)
       .reverse()
-      .filter(item => item % filterDivisor === 0)
-      .reduce((acc, idx) => {
-        const date = ChartRepository.getDatestring(idx)
+      .filter(idx => idx === 1 || idx % filterDivisor === 0)
+      .map(idx => {
+        const dateToDisplay = ChartRepository.getDatestring(idx)
         return {
-          ...acc,
-          [date]: {
-            startDate: `${idx}DaysAgo`,
-            endDate: `${idx}DaysAgo`,
-          },
+          dateToDisplay,
+          startDate: `${idx}DaysAgo`,
+          endDate: `${idx}DaysAgo`,
         }
-      }, {})
+      })
   }
 }

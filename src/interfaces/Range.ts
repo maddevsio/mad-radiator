@@ -9,6 +9,10 @@ export interface Range {
   endDate: string
 }
 
+export type RangeWithDisplay = Range & {
+  dateToDisplay: string
+}
+
 export interface ParsedRange {
   range: RangeType
   originalRange: Range
