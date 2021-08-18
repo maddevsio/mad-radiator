@@ -1,26 +1,22 @@
 import { ParsedRange, RangeType } from 'interfaces'
+import moment from 'moment'
+
+const DEFAULT_FORMAT = 'DD/MM/YYYY'
 
 function getYesterday(): string {
-  const date = new Date()
-  date.setDate(date.getDate() - 1)
-  const [month, day, year] = date.toLocaleDateString().split('/')
-  return `${day}/${month}/${year}`
+  return moment().utc().subtract(1, 'day').format(DEFAULT_FORMAT)
 }
 
 function getLastWeek(): string {
   const end = getYesterday()
-  const start = new Date()
-  start.setDate(start.getDate() - 7)
-  const [month, day, year] = start.toLocaleDateString().split('/')
-  return `${day}/${month}/${year} - ${end}`
+  const start = moment().utc().subtract(1, 'week').format(DEFAULT_FORMAT)
+  return `${start} - ${end}`
 }
 
 function getLastMonth(): string {
   const end = getYesterday()
-  const start = new Date()
-  start.setDate(start.getDate() - 30)
-  const [month, day, year] = start.toLocaleDateString().split('/')
-  return `${day}/${month}/${year} - ${end}`
+  const start = moment().utc().subtract(1, 'month').format(DEFAULT_FORMAT)
+  return `${start} - ${end}`
 }
 
 export function parseRange(range: RangeType = RangeType.day): ParsedRange {
