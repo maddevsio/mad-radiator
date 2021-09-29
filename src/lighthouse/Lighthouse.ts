@@ -30,12 +30,17 @@ export class Lighthouse {
 
     for (const url of urls) {
       Logger.info(`Getting metrics for ${url} page`)
-      const searchParams = this.buildSearchParams(url)
-      const payload: AxiosResponse<LighthousePayload> = await axios.get(
-        `${Lighthouse.url}?${searchParams}`,
-      )
-      urlResults.push(Lighthouse.buildUrlResult(payload.data, url))
-      Logger.success('Success')
+      try {
+        const searchParams = this.buildSearchParams(url)
+        const payload: AxiosResponse<LighthousePayload> = await axios.get(
+          `${Lighthouse.url}?${searchParams}`,
+        )
+        urlResults.push(Lighthouse.buildUrlResult(payload.data, url))
+        Logger.success('Success')
+      } catch (e) {
+        Logger.error('error')
+        Logger.error(e)
+      }
     }
 
     const average = Lighthouse.buildAverageResult(urlResults)
