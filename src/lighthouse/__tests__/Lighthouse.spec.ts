@@ -43,8 +43,6 @@ const responseData: AxiosResponse<LighthousePayload> = {
   config: {},
 }
 
-jest.spyOn(axios, 'get').mockImplementation(() => Promise.resolve(responseData))
-
 jest.mock('lighthouse/Sitemap')
 jest.mock('logger/Logger')
 
@@ -59,7 +57,7 @@ describe('Lighthouse service', () => {
 
   beforeEach(() => {
     MockedSitemap.mockClear()
-
+    jest.spyOn(axios, 'get').mockImplementation(() => Promise.resolve(responseData))
     config = { ...defaultConfig }
 
     // @ts-ignore
@@ -76,7 +74,6 @@ describe('Lighthouse service', () => {
 
   it('should correctly called getData method', async () => {
     config.lighthouse = {}
-
     const service = new Lighthouse(config)
 
     const data = await service.getLighthouseMetrics()
@@ -141,7 +138,21 @@ describe('Lighthouse service', () => {
     })
     expect(axios.get).toHaveBeenCalledTimes(2)
   })
+  it('should correctly called getData method and catch error from lighthouse', async () => {
+    config.lighthouse = {}
+    // eslint-disable-next-line prefer-promise-reject-errors
+    jest.spyOn(axios, 'get').mockImplementation(() => Promise.reject('API error'))
 
+    const service = new Lighthouse(config)
+
+    const data = await service.getLighthouseMetrics()
+    expect(data).toEqual({
+      average: { accessibility: 0, best_practices: 0, performance: 0, pwa: 0, seo: 0 },
+      top: [],
+      urlCount: 0,
+      worst: [],
+    })
+  })
   it('should correctly called getData method without lighthouse', async () => {
     config.lighthouse = undefined
 
@@ -208,7 +219,6 @@ describe('Lighthouse service', () => {
       ],
     })
   })
-
   it('should correctly called getData method with top and worst', async () => {
     config.lighthouse = {
       topCount: 1,
