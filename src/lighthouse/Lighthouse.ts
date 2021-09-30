@@ -45,7 +45,6 @@ export class Lighthouse {
 
     const average = Lighthouse.buildAverageResult(urlResults)
     const { top, worst } = this.getTopAndWorstUrls(urlResults)
-
     return {
       average,
       top,
@@ -90,14 +89,16 @@ export class Lighthouse {
         best_practices: 0,
       },
     ) as LighthouseMetrics
-
-    return Object.entries(total).reduce(
-      (acc, [key, value]) => ({
-        ...acc,
-        [key]: Math.round(value / urlResults.length),
-      }),
-      {},
-    ) as LighthouseMetrics
+    if (urlResults.length) {
+      return Object.entries(total).reduce(
+        (acc, [key, value]) => ({
+          ...acc,
+          [key]: Math.round(value / urlResults.length),
+        }),
+        {},
+      ) as LighthouseMetrics
+    }
+    return total
   }
 
   private getTopAndWorstUrls(
