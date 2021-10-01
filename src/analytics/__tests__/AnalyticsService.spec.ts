@@ -111,6 +111,7 @@ describe('AnalyticsService', () => {
           value: 33,
         },
       ],
+      blogs:[]
     })
   })
 })
