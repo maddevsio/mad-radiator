@@ -1,3 +1,4 @@
+import { Blog } from 'analytics/interfaces/blogs.interface'
 import { CoreItems } from 'analytics/interfaces/core.interfaces'
 import { Country } from 'analytics/interfaces/countries.interfaces'
 import { Device } from 'analytics/interfaces/devices.interfaces'
@@ -35,4 +36,5 @@ export interface AnalyticsData {
   devices: Array<Device>
   goals: Goals
   chart?: Record<string, number>
+  blogs?: Array<Blog>
 }

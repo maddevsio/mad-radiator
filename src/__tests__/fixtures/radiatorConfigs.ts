@@ -23,6 +23,7 @@ export const defaultConfig: RadiatorConfig = {
   telegramChannelId: 1,
   websiteUrl: '',
   analyticsViewId: '2',
+  PagePathsListForAnalytics: [],
   analyticsConversions: [
     {
       name: 'Leads',

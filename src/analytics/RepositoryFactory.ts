@@ -1,3 +1,4 @@
+import { BlogsRepository } from 'analytics/BlogsRepository'
 import { ChartRepository } from 'analytics/ChartRepository'
 import { CoreRepository } from 'analytics/CoreRepository'
 import { CountriesRepository } from 'analytics/CountriesRepository'
@@ -11,6 +12,7 @@ export enum RepositoryTypes {
   goals = 'goals',
   devices = 'devices',
   chart = 'chart',
+  blogs = 'blogs'
 }
 
 export type RepositoryType =
@@ -19,6 +21,7 @@ export type RepositoryType =
   | ChartRepository
   | DevicesRepository
   | CoreRepository
+  | BlogsRepository
 
 /**
  * Factory for Analytics repositories
@@ -41,6 +44,8 @@ export class RepositoryFactory {
         return new DevicesRepository(config, range)
       case RepositoryTypes.chart:
         return new ChartRepository(config, range)
+      case RepositoryTypes.blogs:
+        return new BlogsRepository(config, range)
       default:
         return new CoreRepository(config, range)
     }
