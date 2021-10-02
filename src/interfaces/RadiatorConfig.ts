@@ -20,5 +20,5 @@ export interface RadiatorConfig {
   websiteUrl: string
   analyticsViewId: string
   analyticsConversions: Array<AnalyticsConversion>
-  PagePathsListForAnalytics: Array<string>
+  pagePathsListForAnalytics: Array<string>
 }

@@ -1,5 +1,5 @@
 import { Repository } from 'analytics/Repository'
-import { AnalyticsPayload } from 'analytics/interfaces'
+import { AnalyticsDataRow, AnalyticsPayload } from 'analytics/interfaces'
 
 import { Blog } from './interfaces/blogs.interface'
 
@@ -22,25 +22,36 @@ export class BlogsRepository extends Repository {
    */
 
   public async getData(): Promise<Array<Blog>> {
-    const { websiteUrl, PagePathsListForAnalytics } = this.config
+    const { websiteUrl, pagePathsListForAnalytics } = this.config
     const reports = await this.getAnalytics(this.metrics, this.dimensions)
-    return BlogsRepository.format(reports, websiteUrl, PagePathsListForAnalytics)
+    return BlogsRepository.format(reports, websiteUrl, pagePathsListForAnalytics)
   }
 
   /**
    * Format raw GA data
    */
-  private static format(reports: AnalyticsPayload, websiteUrl: string, PagePathsListForAnalytics: Array<string>): Array<Blog> {
+  private static format(reports: AnalyticsPayload, websiteUrl: string, pagePathsListForAnalytics: Array<string>): Array<Blog> {
 
-    return PagePathsListForAnalytics
-      .map(pagePath => reports[0].data.rows.filter(row => row.dimensions[0].includes(pagePath))).flat()
-      .map(
-        (row): Blog => ({
-          pagePath: `${websiteUrl}${row.dimensions[0]}`,
-          pageViews: Number(row.metrics[0].values[0]),
-        }),
-      )
+    const reportsDataPath = reports[0].data.rows
+
+    if (pagePathsListForAnalytics?.length) {
+      const filteredPages = BlogsRepository.filterPages(reportsDataPath, pagePathsListForAnalytics)
+      return BlogsRepository.getTopPagesViewsStatistics(filteredPages, websiteUrl)
+    }
+    return BlogsRepository.getTopPagesViewsStatistics(reportsDataPath, websiteUrl)
+  }
+
+  private static getTopPagesViewsStatistics(reports: Array<AnalyticsDataRow>, websiteUrl: string) {
+    return reports.map(
+      (report): Blog => ({
+        pagePath: `${websiteUrl}${report.dimensions[0]}`,
+        pageViews: Number(report.metrics[0].values[0]),
+      }))
       .sort((a, b) => b.pageViews - a.pageViews)
       .slice(0, 3)
+  }
+
+  private static filterPages(allPages: Array<AnalyticsDataRow>, pagePathList: Array<string>) {
+    return pagePathList.map(pagePath => allPages.filter(page => page.dimensions[0].includes(pagePath))).flat()
   }
 }
