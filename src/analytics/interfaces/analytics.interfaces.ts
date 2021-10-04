@@ -36,5 +36,5 @@ export interface AnalyticsData {
   devices: Array<Device>
   goals: Goals
   chart?: Record<string, number>
-  blogs?: Array<Blog>
+  blogs: Array<Blog>
 }
