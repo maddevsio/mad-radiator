@@ -56,4 +56,10 @@ export const analyticsData: AnalyticsData = {
     key: 0,
     key2: 10,
   },
+  blogs: [
+    {
+      pagePath: 'https://maddevs.io/insights/blog/how-to-start-developing-for-raspberry-pi-with-qt/',
+      pageViews: 19,
+    },
+  ],
 }

@@ -1,4 +1,4 @@
-import { CoreItem, Country, Device, Goal } from 'analytics/interfaces'
+import { Blog, CoreItem, Country, Device, Goal } from 'analytics/interfaces'
 import { ListItemParameters } from 'blocks/interfaces'
 import { Emoji } from 'emoji/Emoji'
 import { EmojiType } from 'emoji/interfaces'
@@ -59,4 +59,11 @@ export abstract class Blocks {
     if (value >= 50) return Rate.neutral
     return Rate.bad
   }
+
+
+  public blogListItem({ pagePath, pageViews }: Blog): string {
+    return `${pagePath} - ${pageViews}`
+  }
+
 }
+
