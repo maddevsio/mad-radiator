@@ -78,7 +78,7 @@ export abstract class MessageBuilder {
 
 
     // blog views statistics
-    if (lighthouse.worst.length) {
+    if (blogs.length) {
       message.push(this.blocksService.section(MessageBuilder.blogsMessage()))
       message.push(this.blocksService.section(this.blogsList(blogs)))
       message.push(this.blocksService.divider())
