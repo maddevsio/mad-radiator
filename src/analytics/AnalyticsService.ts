@@ -2,6 +2,8 @@ import { RepositoryFactory, RepositoryType, RepositoryTypes } from 'analytics/Re
 import { AnalyticsData, CoreItems, Country, Device, Goals } from 'analytics/interfaces'
 import { ParsedRange, RadiatorConfig } from 'interfaces'
 
+import { Blog } from './interfaces/blogs.interface'
+
 /**
  * Analytics service
  */
@@ -45,6 +47,7 @@ export class AnalyticsService {
     const chart = this.config.chart
       ? ((await this.repositories.chart.getData()) as Record<string, number>)
       : undefined
+    const blogs = (await this.repositories.blogs.getData()) as Array<Blog>
 
     return {
       core,
@@ -52,6 +55,7 @@ export class AnalyticsService {
       devices,
       goals,
       chart,
+      blogs,
     }
   }
 
@@ -65,6 +69,7 @@ export class AnalyticsService {
       devices: this.factory.createRepository(RepositoryTypes.devices, this.config, this.range),
       goals: this.factory.createRepository(RepositoryTypes.goals, this.config, this.range),
       chart: this.factory.createRepository(RepositoryTypes.chart, this.config, this.range),
+      blogs: this.factory.createRepository(RepositoryTypes.blogs, this.config, this.range),
     }
   }
 }

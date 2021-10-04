@@ -6,6 +6,8 @@ import { LighthouseMetrics, LighthouseUrlResult } from 'lighthouse/interfaces'
 import { BuildMessageData, SlackMessageBlock } from 'messengers/interfaces'
 import { capitalize } from 'utils/capitalize'
 
+import { Blog } from '../analytics/interfaces/blogs.interface'
+
 export abstract class MessageBuilder {
   protected abstract readonly blocksService: Blocks
 
@@ -20,12 +22,12 @@ export abstract class MessageBuilder {
   public abstract getMessage(buildMessageData: BuildMessageData): string | Array<Object>
 
   protected buildMessage({
-    analytics,
-    range,
-    lighthouse,
-    imageURL,
-  }: BuildMessageData): Array<string | SlackMessageBlock> {
-    const { core, devices, goals, countries } = analytics
+                           analytics,
+                           range,
+                           lighthouse,
+                           imageURL,
+                         }: BuildMessageData): Array<string | SlackMessageBlock> {
+    const { core, devices, goals, countries, blogs } = analytics
 
     const message = []
 
@@ -71,6 +73,14 @@ export abstract class MessageBuilder {
     if (lighthouse.worst.length) {
       message.push(this.blocksService.section(MessageBuilder.pagespeedWorstMessage()))
       message.push(this.blocksService.section(this.pagespeedRating(lighthouse.worst)))
+      message.push(this.blocksService.divider())
+    }
+
+
+    // blog views statistics
+    if (blogs.length) {
+      message.push(this.blocksService.section(MessageBuilder.blogsMessage()))
+      message.push(this.blocksService.section(this.blogsList(blogs)))
       message.push(this.blocksService.divider())
     }
 
@@ -206,6 +216,16 @@ export abstract class MessageBuilder {
   private pagespeedRating(urls: Array<LighthouseUrlResult>) {
     return this.blocksService.list(
       urls.map(urlResult => this.blocksService.pagespeedRatingListItem(urlResult)),
+    )
+  }
+
+  private static blogsMessage() {
+    return 'Топ-3 популярных статей в блоге:'
+  }
+
+  private blogsList(blogs: Array<Blog>) {
+    return this.blocksService.list(
+      blogs.map(blog => this.blocksService.blogListItem(blog)),
     )
   }
 }
