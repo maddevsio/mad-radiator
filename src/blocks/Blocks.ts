@@ -60,10 +60,16 @@ export abstract class Blocks {
     return Rate.bad
   }
 
-
-  public blogListItem({ pagePath, pageViews }: Blog): string {
-    return `${pagePath} - ${pageViews}`
+  private static getRateForBlogsViews(value: number): Rate {
+    if (value >= 15) return Rate.good
+    if (value >= 10) return Rate.neutral
+    return Rate.bad
   }
 
+
+  public blogListItem({ pagePath, pageViews }: Blog): string {
+    const rateEmoji = this.emojiService.getRateEmoji(Blocks.getRateForBlogsViews(pageViews))
+    return `${rateEmoji} ${pagePath} - *${pageViews}* посещений`
+  }
 }
 
