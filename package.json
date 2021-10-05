@@ -1,6 +1,6 @@
 {
   "name": "@maddevs/mad-radiator",
-  "version": "1.6.2",
+  "version": "1.6.5",
   "description": "Script for collect data from analytics and send to slack(webhook) and telegram",
   "keywords": [
     "radiator",
@@ -43,7 +43,7 @@
     "example": "node example",
     "version": "standard-version --no-git-tag-version",
     "reset-hard": "git clean -df && git reset --hard && yarn",
-    "prepare-release": "yarn reset-hard && yarn test && yarn version"
+    "release": "yarn build && npm publish"
   },
   "dependencies": {
     "@bitauth/libauth": "^1.17.1",
