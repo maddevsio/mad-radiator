@@ -92,7 +92,7 @@ describe('TelegramMessageBuilder', () => {
 ———
 Топ-3 популярных статей в блоге:
 
-https://maddevs.io/insights/blog/how-to-start-developing-for-raspberry-pi-with-qt/ - 19
+😋 https://maddevs.io/insights/blog/how-to-start-developing-for-raspberry-pi-with-qt/ - *19* посещений
 
 ———
 [Activity graph](123)

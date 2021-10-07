@@ -22,23 +22,23 @@ export class BlogsRepository extends Repository {
    */
 
   public async getData(): Promise<Array<Blog>> {
-    const { websiteUrl, pagePathsListForAnalytics } = this.config
+    const { websiteUrl, pagesPathForViewsAnalytics } = this.config
     const reports = await this.getAnalytics(this.metrics, this.dimensions)
-    return BlogsRepository.format(reports, websiteUrl, pagePathsListForAnalytics)
+    return BlogsRepository.format(reports, websiteUrl, pagesPathForViewsAnalytics)
   }
 
   /**
    * Format raw GA data
    */
-  private static format(reports: AnalyticsPayload, websiteUrl: string, pagePathsListForAnalytics: Array<string>): Array<Blog> {
+  private static format(reports: AnalyticsPayload, websiteUrl: string, pagesPathForViewsAnalytics: Array<string>): Array<Blog> {
 
     const reportsDataPath = reports[0].data.rows
 
-    if (pagePathsListForAnalytics?.length) {
-      const filteredPages = BlogsRepository.filterPages(reportsDataPath, pagePathsListForAnalytics)
+    if (pagesPathForViewsAnalytics?.length) {
+      const filteredPages = BlogsRepository.filterPages(reportsDataPath, pagesPathForViewsAnalytics)
       return BlogsRepository.getTopPagesViewsStatistics(filteredPages, websiteUrl)
     }
-    return BlogsRepository.getTopPagesViewsStatistics(reportsDataPath, websiteUrl)
+    return []
   }
 
   private static getTopPagesViewsStatistics(reports: Array<AnalyticsDataRow>, websiteUrl: string) {
@@ -51,7 +51,10 @@ export class BlogsRepository extends Repository {
       .slice(0, 3)
   }
 
-  private static filterPages(allPages: Array<AnalyticsDataRow>, pagePathList: Array<string>) {
-    return pagePathList.map(pagePath => allPages.filter(page => page.dimensions[0].includes(pagePath))).flat()
+  private static filterPages(allPages: Array<AnalyticsDataRow>, pagesPathList: Array<string>) {
+    return pagesPathList.map(pagePath => allPages.filter(filteredPage => {
+      const filteredPagePath = filteredPage.dimensions[0]
+      return filteredPagePath.includes(pagePath) && filteredPagePath !== pagePath
+    })).flat()
   }
 }

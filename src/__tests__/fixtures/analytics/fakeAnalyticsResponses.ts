@@ -74,3 +74,48 @@ export const fakeResponseSecond = {
     ] as AnalyticsPayload,
   },
 }
+
+export const blogFakeResponse = {
+  data: {
+    reports: [
+      {
+        data: {
+          rows: [
+            {
+              dimensions: ['/insights/blog/seo-analyzer/'],
+              metrics: [
+                {
+                  values: [10, 2, 3],
+                },
+              ],
+            },
+            {
+              dimensions: ['/customer-university/custom-software-development-pricing-strategies/'],
+              metrics: [
+                {
+                  values: [10, 2, 3],
+                }
+              ],
+            },
+            {
+              dimensions: ['/insights/blog/'],
+              metrics: [
+                {
+                  values: [10, 2, 3],
+                },
+              ],
+            },
+          ],
+          totals: [
+            {
+              values: [10, 2, 12, 4, 5],
+            },
+            {
+              values: [5, 10, 4, 4, 16],
+            },
+          ],
+        },
+      },
+    ] as AnalyticsPayload,
+  },
+}

@@ -1,6 +1,5 @@
 import {
-  fakeResponse,
-  fakeResponseSecond,
+  blogFakeResponse,
 } from '__tests__/fixtures/analytics/fakeAnalyticsResponses'
 import { parsedRange } from '__tests__/fixtures/parsedRange'
 import { defaultConfig } from '__tests__/fixtures/radiatorConfigs'
@@ -16,9 +15,11 @@ jest.mock('googleapis', () => ({
 
 describe('BlogRepository', () => {
   let config: RadiatorConfig
+  let secondConfig: RadiatorConfig
 
   beforeEach(() => {
     config = { ...defaultConfig }
+    secondConfig = { ...defaultConfig, pagesPathForViewsAnalytics: [] }
   })
 
   it('should correctly return an instance', () => {
@@ -31,7 +32,7 @@ describe('BlogRepository', () => {
     google.analyticsreporting.mockImplementation(() => ({
       reports: {
         batchGet() {
-          return new Promise(res => res(fakeResponse))
+          return new Promise(res => res(blogFakeResponse))
         },
       },
     }))
@@ -41,34 +42,29 @@ describe('BlogRepository', () => {
     const data = await repository.getData()
     expect(data).toEqual([
       {
-        pagePath: '(not set)',
+        pagePath: '/customer-university/custom-software-development-pricing-strategies/',
+        pageViews: 10,
+      },
+      {
+        pagePath: '/insights/blog/seo-analyzer/',
         pageViews: 10,
       },
     ])
   })
 
-  it('should correctly return data(alternative case)', async () => {
+  it('you should correctly return an empty array if there is no pagesPathForViewsAnalytics in the settings', async () => {
     // @ts-ignore
     google.analyticsreporting.mockImplementation(() => ({
       reports: {
         batchGet() {
-          return new Promise(res => res(fakeResponseSecond))
+          return new Promise(res => res(blogFakeResponse))
         },
       },
     }))
 
-    const repository = new BlogsRepository(config, parsedRange)
+    const repository = new BlogsRepository(secondConfig, parsedRange)
 
     const data = await repository.getData()
-    expect(data).toEqual([
-      {
-        pagePath: 'Russia',
-        pageViews: 15,
-      },
-      {
-        pagePath: '123',
-        pageViews: 5,
-      },
-    ])
+    expect(data).toEqual([])
   })
 })
