@@ -129,6 +129,23 @@ describe('SlackMessageBuilder', () => {
         type: 'divider',
       },
       {
+        text: {
+          text: 'Топ-3 популярных статей в блоге:\n\n',
+          type: 'mrkdwn',
+        },
+        type: 'section',
+      },
+      {
+        text: {
+          text: ':yum: https://maddevs.io/insights/blog/how-to-start-developing-for-raspberry-pi-with-qt/ - *19* посещений\n\n',
+          type: 'mrkdwn',
+        },
+        type: 'section',
+      },
+      {
+        type: 'divider',
+      },
+      {
         alt_text: 'Graph',
         image_url: '123',
         type: 'image',

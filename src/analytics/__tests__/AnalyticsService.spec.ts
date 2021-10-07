@@ -111,12 +111,7 @@ describe('AnalyticsService', () => {
           value: 33,
         },
       ],
-      blogs: [
-        {
-          pagePath: '(not set)',
-          pageViews: 10,
-        },
-      ],
+      blogs: [],
     })
   })
 })
