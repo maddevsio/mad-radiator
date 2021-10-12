@@ -2,7 +2,11 @@ import { RepositoryFactory, RepositoryType, RepositoryTypes } from 'analytics/Re
 import { AnalyticsData, CoreItems, Country, Device, Goals } from 'analytics/interfaces'
 import { ParsedRange, RadiatorConfig } from 'interfaces'
 
-import { Blog } from './interfaces/blogs.interface'
+import { AnalyticsError } from '../errors/types/AnalyticsError'
+
+
+
+import { Blog } from './interfaces'
 
 /**
  * Analytics service
@@ -39,23 +43,27 @@ export class AnalyticsService {
    * Get all GA data
    */
   public async getData(): Promise<AnalyticsData> {
-    // TODO: Fix "as"
-    const core = (await this.repositories.core.getData()) as CoreItems
-    const countries = (await this.repositories.countries.getData()) as Array<Country>
-    const devices = (await this.repositories.devices.getData()) as Array<Device>
-    const goals = (await this.repositories.goals.getData()) as Goals
-    const chart = this.config.chart
-      ? ((await this.repositories.chart.getData()) as Record<string, number>)
-      : undefined
-    const blogs = (await this.repositories.blogs.getData()) as Array<Blog>
+    try {
+      // TODO: Fix "as"
+      const core = (await this.repositories.core.getData()) as CoreItems
+      const countries = (await this.repositories.countries.getData()) as Array<Country>
+      const devices = (await this.repositories.devices.getData()) as Array<Device>
+      const goals = (await this.repositories.goals.getData()) as Goals
+      const chart = this.config.chart
+        ? ((await this.repositories.chart.getData()) as Record<string, number>)
+        : undefined
+      const blogs = (await this.repositories.blogs.getData()) as Array<Blog>
 
-    return {
-      core,
-      countries,
-      devices,
-      goals,
-      chart,
-      blogs,
+      return {
+        core,
+        countries,
+        devices,
+        goals,
+        chart,
+        blogs,
+      }
+    } catch (error) {
+      throw new AnalyticsError(error)
     }
   }
 

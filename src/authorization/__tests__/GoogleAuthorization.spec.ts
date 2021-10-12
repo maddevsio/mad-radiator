@@ -1,8 +1,8 @@
 import fs from 'fs'
 
 import { defaultConfig } from '__tests__/fixtures/radiatorConfigs'
-import { RadiatorConfig } from 'interfaces'
 import { GoogleAuthorization } from 'authorization/GoogleAuthorization'
+import { RadiatorConfig } from 'interfaces'
 import { Logger } from 'logger'
 
 jest.spyOn(Logger, 'error').mockImplementation(() => {})

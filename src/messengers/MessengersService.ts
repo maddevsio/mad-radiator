@@ -4,6 +4,9 @@ import { Slack } from 'messengers/Slack'
 import { Telegram } from 'messengers/Telegram'
 import { BuildMessageData } from 'messengers/interfaces'
 
+import { MessagesError } from '../errors/types/MessagesError'
+
+
 export class MessengersService {
   private readonly config: RadiatorConfig
 
@@ -22,14 +25,14 @@ export class MessengersService {
       if (this.config.slack) await this.slack.sendMessage(buildMessageData)
     } catch (error) {
       Logger.error('Error during send message to slack')
-      console.error(error.toJSON())
+      throw new MessagesError(`Error during send message to slack: ${error.toJSON()}`)
     }
 
     try {
       if (this.config.telegram) await this.telegram.sendMessage(buildMessageData)
     } catch (error) {
       Logger.error('Error during send message to telegram')
-      console.error(error.toJSON())
+      throw new MessagesError(`Error during send message to telegram: ${error.toJSON()}`)
     }
   }
 }

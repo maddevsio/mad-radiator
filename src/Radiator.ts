@@ -1,3 +1,4 @@
+import * as Sentry from '@sentry/node'
 import { AnalyticsService } from 'analytics'
 import { GoogleAuthorization } from 'authorization'
 import { ChartBuilder } from 'chartBuilder'
@@ -28,6 +29,7 @@ export class Radiator {
 
   private readonly analyticsService: AnalyticsService
 
+
   constructor(config: RadiatorConfig) {
     this.config = config
     this.parsedRange = parseRange(this.config.range)
@@ -50,31 +52,46 @@ export class Radiator {
     Logger.info('Job successfully scheduled')
   }
 
-  public async run() {
-    Logger.info('Authorize with googleAuthorization...')
-    const { unlink } = await this.googleAuthorization.authorize()
-
-    Logger.info('Getting analytics data...')
-    const analytics = await this.analyticsService.getData()
-
-    Logger.info('Getting lighthouse data...')
-    const lighthouse = await this.lighthouse.getLighthouseMetrics()
-
-    if (analytics.chart) Logger.info('Building an image...')
-    const imageBuffer = analytics.chart && (await this.chartBuilder.renderChart(analytics.chart))
-
-    if (imageBuffer) Logger.info('Saving an image in gdrive...')
-    const imageURL = imageBuffer && (await this.googleDriveStorage.storeFile(imageBuffer))
-
-    Logger.info('Send messages...')
-    await this.messengersService.sendMessages({
-      analytics,
-      lighthouse,
-      range: this.parsedRange,
-      imageURL,
+  private sentryInit() {
+    Sentry.init({
+      dsn: this.config.env.sentryDSN,
+      tracesSampleRate: 1.0,
     })
+  }
 
-    await unlink()
-    Logger.success('Success!')
+
+  public async run() {
+    try {
+      Logger.info('Sentry initialization...')
+      this.sentryInit()
+
+      Logger.info('Authorize with googleAuthorization...')
+      const { unlink } = await this.googleAuthorization.authorize()
+
+      Logger.info('Getting analytics data...')
+      const analytics = await this.analyticsService.getData()
+
+      Logger.info('Getting lighthouse data...')
+      const lighthouse = await this.lighthouse.getLighthouseMetrics()
+
+      if (analytics.chart) Logger.info('Building an image...')
+      const imageBuffer = analytics.chart && (await this.chartBuilder.renderChart(analytics.chart))
+
+      if (imageBuffer) Logger.info('Saving an image in gdrive...')
+      const imageURL = imageBuffer && (await this.googleDriveStorage.storeFile(imageBuffer))
+
+      Logger.info('Send messages...')
+      await this.messengersService.sendMessages({
+        analytics,
+        lighthouse,
+        range: this.parsedRange,
+        imageURL,
+      })
+
+      await unlink()
+      Logger.success('Success!')
+    } catch (error) {
+      Sentry.captureException(error)
+    }
   }
 }
