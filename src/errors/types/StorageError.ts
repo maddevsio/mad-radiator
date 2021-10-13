@@ -1,6 +1,6 @@
 export class StorageError extends Error{
   constructor(message:string) {
-    super(`StorageError: ${message}`)
+    super(message)
     this.name = 'StorageError'
   }
 

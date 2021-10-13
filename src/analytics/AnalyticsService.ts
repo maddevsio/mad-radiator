@@ -53,7 +53,6 @@ export class AnalyticsService {
         ? ((await this.repositories.chart.getData()) as Record<string, number>)
         : undefined
       const blogs = (await this.repositories.blogs.getData()) as Array<Blog>
-
       return {
         core,
         countries,

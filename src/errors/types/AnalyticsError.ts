@@ -1,6 +1,6 @@
 export class AnalyticsError extends Error{
   constructor(message:string) {
-    super(`AnalyticsError: ${message}`)
+    super(message)
     this.name = 'AnalyticsError'
   }
 

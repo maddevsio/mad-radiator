@@ -1,6 +1,6 @@
 export class MessagesError extends Error{
   constructor(message:string) {
-    super(`MessagesError: ${message}`)
+    super(message)
     this.name = 'MessagesError'
   }
 

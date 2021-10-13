@@ -1,6 +1,6 @@
 export class ChartError extends Error{
   constructor(message:string) {
-    super(`ChartError: ${message}`)
+    super(message)
     this.name = 'ChartError'
   }
 

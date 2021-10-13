@@ -1,6 +1,6 @@
 export class LighthouseError extends Error{
   constructor(message:string) {
-    super(`LighthouseError: ${message}`)
+    super(message)
     this.name = 'LighthouseError'
   }
 
