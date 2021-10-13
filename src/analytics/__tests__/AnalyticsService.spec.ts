@@ -2,6 +2,7 @@ import { fakeResponse } from '__tests__/fixtures/analytics/fakeAnalyticsResponse
 import { parsedRange } from '__tests__/fixtures/parsedRange'
 import { defaultConfig } from '__tests__/fixtures/radiatorConfigs'
 import { AnalyticsService } from 'analytics/AnalyticsService'
+import { AnalyticsError } from 'errors/types/AnalyticsError'
 import { google } from 'googleapis'
 import { RadiatorConfig } from 'interfaces'
 
@@ -113,5 +114,19 @@ describe('AnalyticsService', () => {
       ],
       blogs: [],
     })
+  })
+  it('should correctly throw AnalyticsError', async () => {
+    const error = (err: string) => {
+      throw new AnalyticsError(err)
+    }
+    // @ts-ignore
+    google.analyticsreporting.mockImplementation(() => ({
+      reports: {
+        batchGet() {
+          return Promise.reject(error('API error'))
+        },
+      },
+    }))
+    expect(error).toThrow(AnalyticsError)
   })
 })

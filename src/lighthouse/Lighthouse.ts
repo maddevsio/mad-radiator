@@ -1,4 +1,5 @@
 import axios, { AxiosResponse } from 'axios'
+import { LighthouseError } from 'errors/types/LighthouseError'
 import { RadiatorConfig } from 'interfaces'
 import { Sitemap } from 'lighthouse/Sitemap'
 import {
@@ -8,6 +9,8 @@ import {
   LighthouseUrlResult,
 } from 'lighthouse/interfaces'
 import { Logger } from 'logger'
+
+
 
 export class Lighthouse {
   private readonly config: RadiatorConfig
@@ -37,9 +40,8 @@ export class Lighthouse {
         )
         urlResults.push(Lighthouse.buildUrlResult(payload.data, url))
         Logger.success('Success')
-      } catch (e) {
-        Logger.error('error')
-        Logger.error(e)
+      } catch (error) {
+        throw new LighthouseError(`Getting metrics for ${url} page, ${error}`)
       }
     }
 

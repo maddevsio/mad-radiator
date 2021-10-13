@@ -1,5 +1,5 @@
-import { EmojiType } from 'emoji/interfaces'
 import { TelegramEmoji } from 'emoji/TelegramEmoji'
+import { EmojiType } from 'emoji/interfaces'
 import { Rate } from 'interfaces'
 
 describe('TelegramEmoji', () => {

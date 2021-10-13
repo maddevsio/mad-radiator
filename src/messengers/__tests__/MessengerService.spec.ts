@@ -3,10 +3,10 @@ import { lighthouseData } from '__tests__/fixtures/lighthouseData'
 import { parsedRange } from '__tests__/fixtures/parsedRange'
 import { defaultConfig } from '__tests__/fixtures/radiatorConfigs'
 import { RadiatorConfig } from 'interfaces'
-import { Slack } from 'messengers/Slack'
-import { Telegram } from 'messengers/Telegram'
 import { Logger } from 'logger'
 import { MessengersService } from 'messengers/MessengersService'
+import { Slack } from 'messengers/Slack'
+import { Telegram } from 'messengers/Telegram'
 
 jest.mock('messengers/Slack')
 jest.mock('messengers/Telegram')

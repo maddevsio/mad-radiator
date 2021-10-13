@@ -1,5 +1,5 @@
-import { EmojiType } from 'emoji/interfaces'
 import { SlackEmoji } from 'emoji/SlackEmoji'
+import { EmojiType } from 'emoji/interfaces'
 import { Rate } from 'interfaces'
 
 describe('SlackEmoji', () => {

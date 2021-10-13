@@ -15,6 +15,7 @@ export const defaultConfig: RadiatorConfig = {
     slackWebhookUrl: '',
     googleapisKey: '',
     telegramToken: '',
+    sentryDSN: '',
   },
   slack: true,
   telegram: true,
