@@ -1,10 +1,10 @@
+import { MessagesError } from 'errors/types/MessagesError'
 import { RadiatorConfig } from 'interfaces'
 import { Logger } from 'logger'
 import { Slack } from 'messengers/Slack'
 import { Telegram } from 'messengers/Telegram'
 import { BuildMessageData } from 'messengers/interfaces'
 
-import { MessagesError } from '../errors/types/MessagesError'
 
 
 export class MessengersService {

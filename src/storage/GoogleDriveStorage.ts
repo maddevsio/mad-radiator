@@ -1,9 +1,9 @@
 import { Readable } from 'stream'
 
+import { StorageError } from 'errors/types/StorageError'
 import { google } from 'googleapis'
 import { Storage } from 'storage/Storage'
 
-import { StorageError } from '../errors/types/StorageError'
 
 export class GoogleDriveStorage extends Storage {
   private readonly drive = google.drive({

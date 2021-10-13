@@ -25,7 +25,8 @@
       "scheduler": ["scheduler"],
       "services": ["services"],
       "storage": ["storage"],
-      "utils": ["utils"]
+      "utils": ["utils"],
+      "errors": ["errors"]
     },
 
     "strict": true,

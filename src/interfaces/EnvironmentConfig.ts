@@ -12,5 +12,5 @@ export interface EnvironmentConfig {
   slackWebhookUrl: string
   googleapisKey: string
   telegramToken: string
-  sentryDSN:string
+  sentryDSN?: string
 }

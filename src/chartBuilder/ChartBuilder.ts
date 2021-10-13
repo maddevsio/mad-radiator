@@ -1,8 +1,8 @@
 import { ChartConfiguration } from 'chart.js'
 import { ChartJSNodeCanvas, ChartJSNodeCanvasOptions } from 'chartjs-node-canvas'
+import { ChartError } from 'errors/types/ChartError'
 import sharp from 'sharp'
 
-import { ChartError } from '../errors/types/ChartError'
 
 
 export class ChartBuilder {

@@ -53,16 +53,18 @@ export class Radiator {
   }
 
   private sentryInit() {
-    Sentry.init({
-      dsn: this.config.env.sentryDSN,
-      tracesSampleRate: 1.0,
-    })
+    if(this.config.env.sentryDSN){
+      Logger.info('Sentry initialization...')
+      Sentry.init({
+        dsn: this.config.env.sentryDSN,
+        tracesSampleRate: 1.0,
+      })
+    }
   }
 
 
   public async run() {
     try {
-      Logger.info('Sentry initialization...')
       this.sentryInit()
 
       Logger.info('Authorize with googleAuthorization...')

@@ -1,8 +1,8 @@
 import { RepositoryFactory, RepositoryType, RepositoryTypes } from 'analytics/RepositoryFactory'
 import { AnalyticsData, CoreItems, Country, Device, Goals } from 'analytics/interfaces'
+import { AnalyticsError } from 'errors/types/AnalyticsError'
 import { ParsedRange, RadiatorConfig } from 'interfaces'
 
-import { AnalyticsError } from '../errors/types/AnalyticsError'
 
 
 

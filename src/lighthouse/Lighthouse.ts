@@ -1,4 +1,5 @@
 import axios, { AxiosResponse } from 'axios'
+import { LighthouseError } from 'errors/types/LighthouseError'
 import { RadiatorConfig } from 'interfaces'
 import { Sitemap } from 'lighthouse/Sitemap'
 import {
@@ -9,7 +10,6 @@ import {
 } from 'lighthouse/interfaces'
 import { Logger } from 'logger'
 
-import { LighthouseError } from '../errors/types/LighthouseError'
 
 
 export class Lighthouse {

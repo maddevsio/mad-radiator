@@ -1,11 +1,11 @@
 import fs from 'fs'
 import path from 'path'
 
+import { AuthorizationError } from 'errors/types/AuthorizationError'
 import { google } from 'googleapis'
 import { RadiatorConfig } from 'interfaces'
 import { Logger } from 'logger'
 
-import { AuthorizationError } from '../errors/types/AuthorizationError'
 
 
 /**
