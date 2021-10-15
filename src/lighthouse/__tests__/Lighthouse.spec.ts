@@ -141,14 +141,12 @@ describe('Lighthouse service', () => {
   })
   it('should correctly called getData method and catch error from lighthouse', async () => {
     config.lighthouse = {}
-    // eslint-disable-next-line prefer-promise-reject-errors
-    const error = (err: string) => {
-      throw new LighthouseError(err)
-    }
 
-    jest.spyOn(axios, 'get').mockImplementation(() => Promise.reject(error('API error')))
+    jest.spyOn(axios, 'get').mockImplementation(() => Promise.reject(new Error('api error')))
 
-    expect(error).toThrow(LighthouseError)
+    const service = new Lighthouse(config)
+
+    await expect(service.getLighthouseMetrics()).rejects.toThrow(LighthouseError)
   })
   it('should correctly called getData method without lighthouse', async () => {
     config.lighthouse = undefined
