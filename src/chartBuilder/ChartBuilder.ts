@@ -1,6 +1,9 @@
 import { ChartConfiguration } from 'chart.js'
 import { ChartJSNodeCanvas, ChartJSNodeCanvasOptions } from 'chartjs-node-canvas'
+import { ChartError } from 'errors/types/ChartError'
 import sharp from 'sharp'
+
+
 
 export class ChartBuilder {
   private readonly renderService: ChartJSNodeCanvas
@@ -31,22 +34,27 @@ export class ChartBuilder {
   }
 
   public async renderChart(chartData: Record<string, number>) {
-    const params: ChartConfiguration = {
-      type: 'line',
-      data: {
-        labels: Object.keys(chartData),
-        datasets: [
-          {
-            label: 'Activity Graph',
-            data: Object.values(chartData),
-            backgroundColor: [ChartBuilder.defaultColor],
-            borderColor: [ChartBuilder.defaultColor],
-            borderWidth: 2,
-          },
-        ],
-      },
+    try{
+      const params: ChartConfiguration = {
+        type: 'line',
+        data: {
+          labels: Object.keys(chartData),
+          datasets: [
+            {
+              label: 'Activity Graph',
+              data: Object.values(chartData),
+              backgroundColor: [ChartBuilder.defaultColor],
+              borderColor: [ChartBuilder.defaultColor],
+              borderWidth: 2,
+            },
+          ],
+        },
+      }
+      const bufferSvg = this.renderService.renderToBufferSync(params)
+      return await sharp(bufferSvg).png().toBuffer()
     }
-    const bufferSvg = this.renderService.renderToBufferSync(params)
-    return sharp(bufferSvg).png().toBuffer()
+    catch (error){
+     throw new ChartError(error)
+    }
   }
 }

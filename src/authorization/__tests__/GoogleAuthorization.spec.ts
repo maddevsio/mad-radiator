@@ -2,6 +2,7 @@ import fs from 'fs'
 
 import { defaultConfig } from '__tests__/fixtures/radiatorConfigs'
 import { GoogleAuthorization } from 'authorization/GoogleAuthorization'
+import { AuthorizationError } from 'errors/types/AuthorizationError'
 import { RadiatorConfig } from 'interfaces'
 import { Logger } from 'logger'
 
@@ -53,6 +54,13 @@ describe('GoogleAuthorization', () => {
     await unlink()
 
     expect(fs.unlink).toHaveBeenCalledTimes(1)
+  })
+
+  it('should correctly throw AuthorizationError', async () => {
+    const error = () => {
+      throw new AuthorizationError("authorization error")
+    };
+    expect(error).toThrow(AuthorizationError)
   })
 
   it('should errors correctly handle with logger service', async () => {
