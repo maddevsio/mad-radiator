@@ -1,5 +1,6 @@
 import { defaultConfig } from '__tests__/fixtures/radiatorConfigs'
 import axios, { AxiosResponse } from 'axios'
+import { LighthouseError } from 'errors/types/LighthouseError'
 import { RadiatorConfig } from 'interfaces'
 import { Lighthouse } from 'lighthouse/Lighthouse'
 import { Sitemap } from 'lighthouse/Sitemap'
@@ -141,17 +142,13 @@ describe('Lighthouse service', () => {
   it('should correctly called getData method and catch error from lighthouse', async () => {
     config.lighthouse = {}
     // eslint-disable-next-line prefer-promise-reject-errors
-    jest.spyOn(axios, 'get').mockImplementation(() => Promise.reject('API error'))
+    const error = (err: string) => {
+      throw new LighthouseError(err)
+    }
 
-    const service = new Lighthouse(config)
+    jest.spyOn(axios, 'get').mockImplementation(() => Promise.reject(error('API error')))
 
-    const data = await service.getLighthouseMetrics()
-    expect(data).toEqual({
-      average: { accessibility: 0, best_practices: 0, performance: 0, pwa: 0, seo: 0 },
-      top: [],
-      urlCount: 0,
-      worst: [],
-    })
+    expect(error).toThrow(LighthouseError)
   })
   it('should correctly called getData method without lighthouse', async () => {
     config.lighthouse = undefined

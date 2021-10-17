@@ -1,9 +1,12 @@
 import fs from 'fs'
 import path from 'path'
 
+import { AuthorizationError } from 'errors/types/AuthorizationError'
 import { google } from 'googleapis'
 import { RadiatorConfig } from 'interfaces'
 import { Logger } from 'logger'
+
+
 
 /**
  * Path to keys.json file
@@ -18,22 +21,27 @@ export class GoogleAuthorization {
   }
 
   public async authorize() {
-    await this.buildKeysFile(this.config)
+    try{
+      await this.buildKeysFile(this.config)
 
-    const auth = new google.auth.GoogleAuth({
-      keyFilename: KEYS_FILEPATH,
-      scopes: [
-        'https://www.googleapis.com/auth/analytics',
-        'https://www.googleapis.com/auth/drive',
-      ],
-    })
+      const auth = new google.auth.GoogleAuth({
+        keyFilename: KEYS_FILEPATH,
+        scopes: [
+          'https://www.googleapis.com/auth/analytics',
+          'https://www.googleapis.com/auth/drive',
+        ],
+      })
 
-    google.options({ auth })
-    return {
-      unlink: async () => {
-        fs.unlink(KEYS_FILEPATH, error => error && Logger.error(`Unlink error: ${error}`))
-      },
-      google,
+      google.options({ auth })
+      return {
+        unlink: async () => {
+          fs.unlink(KEYS_FILEPATH, error => error && Logger.error(`Unlink error: ${error}`))
+        },
+        google,
+      }
+    }
+    catch (error){
+      throw new AuthorizationError(error)
     }
   }
 
