@@ -101,9 +101,10 @@ export class Lighthouse {
     return total
   }
 
-  private getTopAndWorstUrls(
-    urlResults: Array<LighthouseUrlResult>,
-  ): { top: Array<LighthouseUrlResult>; worst: Array<LighthouseUrlResult> } {
+  private getTopAndWorstUrls(urlResults: Array<LighthouseUrlResult>): {
+    top: Array<LighthouseUrlResult>
+    worst: Array<LighthouseUrlResult>
+  } {
     const sorted = urlResults.sort((a, b) => b.average - a.average)
 
     const top = sorted.slice(0, this.config.lighthouse?.topCount || 3)

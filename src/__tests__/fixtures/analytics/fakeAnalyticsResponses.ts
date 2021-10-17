@@ -94,7 +94,7 @@ export const blogFakeResponse = {
               metrics: [
                 {
                   values: [10, 2, 3],
-                }
+                },
               ],
             },
             {

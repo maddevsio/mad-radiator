@@ -41,16 +41,14 @@ describe('SlackMessageBuilder', () => {
       },
       {
         text: {
-          text:
-            'За отчетный период сайт  посетило *100 пользователей*. Всего *100 сессий*, средняя длительность 1 сессии составляет *100*. *100%* пользователей закрыли сайт никак с ним не провзаимодействовав.\n\n',
+          text: 'За отчетный период сайт  посетило *100 пользователей*. Всего *100 сессий*, средняя длительность 1 сессии составляет *100*. *100%* пользователей закрыли сайт никак с ним не провзаимодействовав.\n\n',
           type: 'mrkdwn',
         },
         type: 'section',
       },
       {
         text: {
-          text:
-            ':yum: :man: Users: *100* (100%%)\n\n:yum: :door: Sessions: *100* (100%%)\n\n:yum: :moyai: Bounce Rate: *100%* (100%%)\n\n:yum: :clock1: Session Duration: *100* (100%%)\n\n',
+          text: ':yum: :man: Users: *100* (100%%)\n\n:yum: :door: Sessions: *100* (100%%)\n\n:yum: :moyai: Bounce Rate: *100%* (100%%)\n\n:yum: :clock1: Session Duration: *100* (100%%)\n\n',
           type: 'mrkdwn',
         },
         type: 'section',
@@ -111,16 +109,14 @@ describe('SlackMessageBuilder', () => {
       },
       {
         text: {
-          text:
-            'Средняя производительность сайта от Google PageSpeed(Проанализировано 100 страниц):\n\n',
+          text: 'Средняя производительность сайта от Google PageSpeed(Проанализировано 100 страниц):\n\n',
           type: 'mrkdwn',
         },
         type: 'section',
       },
       {
         text: {
-          text:
-            ':yum: :chart_with_upwards_trend: Performance: *100%*\n\n:yum: :wheelchair: Accessibility: *100%*\n\n:yum: :sign_of_the_horns: Best Practices: *100%*\n\n:yum: :sports_medal: SEO: *100%*\n\n:yum: :iphone: PWA: *100%*\n\n',
+          text: ':yum: :chart_with_upwards_trend: Performance: *100%*\n\n:yum: :wheelchair: Accessibility: *100%*\n\n:yum: :sign_of_the_horns: Best Practices: *100%*\n\n:yum: :sports_medal: SEO: *100%*\n\n:yum: :iphone: PWA: *100%*\n\n',
           type: 'mrkdwn',
         },
         type: 'section',

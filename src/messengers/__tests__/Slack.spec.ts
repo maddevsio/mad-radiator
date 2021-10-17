@@ -5,9 +5,7 @@ import { defaultConfig } from '__tests__/fixtures/radiatorConfigs'
 import axios from 'axios'
 import { Slack } from 'messengers/Slack'
 
-jest.spyOn(axios, 'post').mockImplementation(
-  () => new Promise<void>(res => res()),
-)
+jest.spyOn(axios, 'post').mockImplementation(() => new Promise<void>(res => res()))
 
 describe('Slack messenger', () => {
   it('should correctly created an instance', () => {

@@ -12,7 +12,7 @@ export enum RepositoryTypes {
   goals = 'goals',
   devices = 'devices',
   chart = 'chart',
-  blogs = 'blogs'
+  blogs = 'blogs',
 }
 
 export type RepositoryType =

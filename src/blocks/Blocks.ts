@@ -66,10 +66,8 @@ export abstract class Blocks {
     return Rate.bad
   }
 
-
   public blogListItem({ pagePath, pageViews }: Blog): string {
     const rateEmoji = this.emojiService.getRateEmoji(Blocks.getRateForBlogsViews(pageViews))
     return `${rateEmoji} ${pagePath} - *${pageViews}* посещений`
   }
 }
-

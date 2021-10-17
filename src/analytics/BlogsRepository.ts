@@ -30,8 +30,11 @@ export class BlogsRepository extends Repository {
   /**
    * Format raw GA data
    */
-  private static format(reports: AnalyticsPayload, websiteUrl: string, pagesPathForViewsAnalytics: Array<string>): Array<Blog> {
-
+  private static format(
+    reports: AnalyticsPayload,
+    websiteUrl: string,
+    pagesPathForViewsAnalytics: Array<string>,
+  ): Array<Blog> {
     const reportsDataPath = reports[0].data.rows
 
     if (pagesPathForViewsAnalytics?.length) {
@@ -42,19 +45,25 @@ export class BlogsRepository extends Repository {
   }
 
   private static getTopPagesViewsStatistics(reports: Array<AnalyticsDataRow>, websiteUrl: string) {
-    return reports.map(
-      (report): Blog => ({
-        pagePath: `${websiteUrl}${report.dimensions[0]}`,
-        pageViews: Number(report.metrics[0].values[0]),
-      }))
+    return reports
+      .map(
+        (report): Blog => ({
+          pagePath: `${websiteUrl}${report.dimensions[0]}`,
+          pageViews: Number(report.metrics[0].values[0]),
+        }),
+      )
       .sort((a, b) => b.pageViews - a.pageViews)
       .slice(0, 3)
   }
 
   private static filterPages(allPages: Array<AnalyticsDataRow>, pagesPathList: Array<string>) {
-    return pagesPathList.map(pagePath => allPages.filter(filteredPage => {
-      const filteredPagePath = filteredPage.dimensions[0]
-      return filteredPagePath.includes(pagePath) && filteredPagePath !== pagePath
-    })).flat()
+    return pagesPathList
+      .map(pagePath =>
+        allPages.filter(filteredPage => {
+          const filteredPagePath = filteredPage.dimensions[0]
+          return filteredPagePath.includes(pagePath) && filteredPagePath !== pagePath
+        }),
+      )
+      .flat()
   }
 }

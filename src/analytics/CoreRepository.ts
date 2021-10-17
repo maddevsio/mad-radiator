@@ -38,12 +38,8 @@ export class CoreRepository extends Repository {
     const [users, sessions, bounceRate, duration] = reports[0].data.totals[0].values.map(n =>
       Number(Number(n).toFixed(2)),
     )
-    const [
-      usersPrev,
-      sessionsPrev,
-      bounceRatePrev,
-      durationPrev,
-    ] = reports[0].data.totals[1].values.map(n => Number(Number(n).toFixed(2)))
+    const [usersPrev, sessionsPrev, bounceRatePrev, durationPrev] =
+      reports[0].data.totals[1].values.map(n => Number(Number(n).toFixed(2)))
 
     const usersDifference = CoreRepository.getPercentage(users, usersPrev)
     const sessionsDifference = CoreRepository.getPercentage(sessions, sessionsPrev)

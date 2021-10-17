@@ -22,11 +22,11 @@ export abstract class MessageBuilder {
   public abstract getMessage(buildMessageData: BuildMessageData): string | Array<Object>
 
   protected buildMessage({
-                           analytics,
-                           range,
-                           lighthouse,
-                           imageURL,
-                         }: BuildMessageData): Array<string | SlackMessageBlock> {
+    analytics,
+    range,
+    lighthouse,
+    imageURL,
+  }: BuildMessageData): Array<string | SlackMessageBlock> {
     const { core, devices, goals, countries, blogs } = analytics
 
     const message = []
@@ -75,7 +75,6 @@ export abstract class MessageBuilder {
       message.push(this.blocksService.section(this.pagespeedRating(lighthouse.worst)))
       message.push(this.blocksService.divider())
     }
-
 
     // blog views statistics
     if (blogs.length) {
@@ -224,8 +223,6 @@ export abstract class MessageBuilder {
   }
 
   private blogsList(blogs: Array<Blog>) {
-    return this.blocksService.list(
-      blogs.map(blog => this.blocksService.blogListItem(blog)),
-    )
+    return this.blocksService.list(blogs.map(blog => this.blocksService.blogListItem(blog)))
   }
 }
