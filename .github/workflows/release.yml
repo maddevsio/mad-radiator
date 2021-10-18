@@ -17,7 +17,7 @@ jobs:
     steps:
       - uses: mikeal/merge-release@master
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.SECRETS_GITHUB_TOKEN }}
           NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
           DEPLOY_DIR: my/deploy/dir
           SRC_PACKAGE_DIR: my/src/package
