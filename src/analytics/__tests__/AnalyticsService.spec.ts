@@ -116,17 +116,16 @@ describe('AnalyticsService', () => {
     })
   })
   it('should correctly throw AnalyticsError', async () => {
-    const error = (err: string) => {
-      throw new AnalyticsError(err)
-    }
     // @ts-ignore
     google.analyticsreporting.mockImplementation(() => ({
       reports: {
         batchGet() {
-          return Promise.reject(error('API error'))
+          return Promise.reject(new Error('API error'))
         },
       },
     }))
-    expect(error).toThrow(AnalyticsError)
+
+    const service = new AnalyticsService(config, parsedRange)
+    await expect(service.getData()).rejects.toThrow(AnalyticsError)
   })
 })

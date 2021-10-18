@@ -1,5 +1,7 @@
+import { StorageError } from 'errors/types/StorageError'
 import { google } from 'googleapis'
 import { GoogleDriveStorage } from 'storage/GoogleDriveStorage'
+
 
 // @ts-ignore
 jest.spyOn(google, 'drive').mockImplementation(() => ({
@@ -47,5 +49,13 @@ describe('GoogleDriveStorage', () => {
     const link = await storage.storeFile(Buffer.from('123'))
 
     expect(link).toBeUndefined()
+  })
+  it('should correctly throw AnalyticsError', async () => {
+
+    // @ts-ignore
+    jest.spyOn(google, 'drive').mockImplementation(() => Promise.reject(new Error('api error')))
+
+    const storage = new GoogleDriveStorage()
+    await expect(storage.storeFile(Buffer.from('123'))).rejects.toThrow(StorageError)
   })
 })
