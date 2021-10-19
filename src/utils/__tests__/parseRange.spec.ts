@@ -5,10 +5,8 @@ import { RangeType } from 'interfaces'
 import { parseRange } from 'utils/parseRange'
 
 jest.mock('moment', () => () => ({
-  utc: () => ({
-    subtract: () => ({
-      format: () => '25/4/2021',
-    }),
+  subtract: () => ({
+    format: () => '25/4/2021',
   }),
 }))
 
