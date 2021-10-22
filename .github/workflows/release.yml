@@ -22,8 +22,8 @@ jobs:
         with:
           node-version: 16
 
-      - name: Install semantic-release extra plugins
-        run: npm install --save-dev @semantic-release/changelog @semantic-release/git
+#      - name: Install semantic-release extra plugins
+#        run: npm install --save-dev @semantic-release/changelog @semantic-release/git
 
       - name: "cat package.json"
         run: cat ./package.json
@@ -36,9 +36,9 @@ jobs:
 
 
       - name: Release new version to NPM
-        env:
-          GITHUB_TOKEN: ${{ secrets.SECRETS_GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.SECRETS_GITHUB_TOKEN }}
+#          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: npx semantic-release
 
 
