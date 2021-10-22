@@ -86,9 +86,11 @@
     "ts-node": "^9.0.0",
     "tsc-alias": "^1.2.10",
     "typescript": "^4.0.2",
-    "@semantic-release/changelog": "github:semantic-release/changelog",
-    "@semantic-release/git": "github:semantic-release/git",
-    "semantic-release": "^17.1.1"
+    "@semantic-release/commit-analyzer": "^9.0.0",
+    "@semantic-release/error": "^3.0.0",
+    "@semantic-release/github": "^8.0.0",
+    "@semantic-release/npm": "^8.0.0",
+    "@semantic-release/release-notes-generator": "^10.0.0"
   },
   "standard-version": {},
 
