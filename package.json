@@ -90,7 +90,7 @@
     "@semantic-release/git": "github:semantic-release/git",
     "semantic-release": "^17.1.1"
   },
-  "standard-version": {}
+  "standard-version": {},
 
   "release": {
     "plugins": [
