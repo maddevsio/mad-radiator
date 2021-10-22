@@ -3,7 +3,7 @@ name: Release CI
 on:
   push:
     branches:
-      - master
+      - MAR-2362
 
 jobs:
   main:
@@ -28,5 +28,5 @@ jobs:
       - name: Release new version to NPM
         env:
           GITHUB_TOKEN: ${{ secrets.SECRETS_GITHUB_TOKEN }}
-          NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: npx semantic-release
