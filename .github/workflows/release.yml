@@ -40,3 +40,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.SECRETS_GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: npx semantic-release
+
+
+
