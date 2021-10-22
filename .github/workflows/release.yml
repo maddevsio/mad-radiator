@@ -12,12 +12,23 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2
+
+      - name: "cat package.json"
+        run: cat ./package.json
 
       - name: Use Node v16
         uses: actions/setup-node@v1
         with:
           node-version: 16
+
+      - name: "Automated Version Bump"
+        uses: "phips28/gh-action-bump-version@master"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: "cat package.json"
+        run: cat ./package.json
 
       - name: Install dependencies
         run: yarn install
@@ -25,8 +36,9 @@ jobs:
       - name: Build package
         run: yarn build
 
-      - name: Release new version to NPM
-        env:
-          GITHUB_TOKEN: ${{ secrets.SECRETS_GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: npx semantic-release
+
+#      - name: Release new version to NPM
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.SECRETS_GITHUB_TOKEN }}
+#          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+#        run: npx semantic-release
