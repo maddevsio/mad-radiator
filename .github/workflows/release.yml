@@ -22,8 +22,8 @@ jobs:
         with:
           node-version: 16
 
-      - name: Install semantic-release extra plugins
-        run: npm install --save-dev @semantic-release/changelog @semantic-release/git
+#      - name: Install semantic-release extra plugins
+#        run: npm install --save-dev @semantic-release/changelog @semantic-release/git
 
       - name: "cat package.json"
         run: cat ./package.json
