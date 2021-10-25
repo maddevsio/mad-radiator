@@ -3,7 +3,7 @@ name: Release CI
 on:
   push:
     branches:
-      - MR2362
+      - MAR-2362
 
 jobs:
   main:
