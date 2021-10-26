@@ -12,9 +12,9 @@ import { Logger } from 'logger'
 const KEYS_FILEPATH = path.join(__dirname, 'keys.json')
 
 export class GoogleAuthorization {
-  private readonly config: any
+  private readonly config: EnvironmentConfig
 
-  constructor(config: any) {
+  constructor(config: EnvironmentConfig) {
     this.config = config
   }
 
