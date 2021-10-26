@@ -2,7 +2,8 @@ import { Blog } from 'analytics/interfaces/blogs.interface'
 import { CoreItems } from 'analytics/interfaces/core.interfaces'
 import { Country } from 'analytics/interfaces/countries.interfaces'
 import { Device } from 'analytics/interfaces/devices.interfaces'
-import { Goals } from 'analytics/interfaces/goals.interfaces'
+import { AnalyticsConversion, Goals } from 'analytics/interfaces/goals.interfaces'
+import { ChartConfig } from 'interfaces'
 
 export interface AnalyticsMetric {
   expression: string
@@ -26,6 +27,14 @@ export interface AnalyticsReport {
     totals: Array<AnalyticsValue>
     rows: Array<AnalyticsDataRow>
   }
+}
+
+export interface AnalyticsParams {
+  analyticsViewId: string
+  websiteUrl: string
+  chart?: ChartConfig
+  pagesPathForViewsAnalytics?: Array<string>
+  analyticsConversions?: Array<AnalyticsConversion>
 }
 
 export type AnalyticsPayload = Array<AnalyticsReport>

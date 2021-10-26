@@ -2,5 +2,5 @@ export type ChartType = 'users' | 'sessions'
 
 export interface ChartConfig {
   period: number // current day - period
-  type: ChartType
+  type: string
 }

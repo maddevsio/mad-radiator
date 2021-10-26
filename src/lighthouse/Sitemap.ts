@@ -1,11 +1,12 @@
 import axios from 'axios'
-import { RadiatorConfig } from 'interfaces'
 import { XmlParser } from 'lighthouse/XmlParser'
 
-export class Sitemap {
-  private readonly config: RadiatorConfig
+import { LighthouseParams } from './interfaces'
 
-  constructor(config: RadiatorConfig) {
+export class Sitemap {
+  private readonly config: LighthouseParams
+
+  constructor(config: LighthouseParams) {
     this.config = config
   }
 

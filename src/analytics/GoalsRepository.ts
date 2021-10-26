@@ -27,7 +27,7 @@ export class GoalsRepository extends Repository {
    * Get data from GA
    */
   public async getData(): Promise<Goals> {
-    const { analyticsConversions } = this.config
+    const { analyticsConversions = [] } = this.config
     const goals = await Promise.all(
       analyticsConversions.map(async conversion => this.getConversion(conversion)),
     )

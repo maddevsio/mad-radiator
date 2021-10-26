@@ -1,9 +1,7 @@
 import { RepositoryFactory, RepositoryType, RepositoryTypes } from 'analytics/RepositoryFactory'
-import { AnalyticsData, CoreItems, Country, Device, Goals } from 'analytics/interfaces'
+import { AnalyticsData, AnalyticsParams, CoreItems, Country, Device, Goals } from 'analytics/interfaces'
 import { AnalyticsError } from 'errors/types/AnalyticsError'
-import { ParsedRange, RadiatorConfig } from 'interfaces'
-
-
+import { ParsedRange } from 'interfaces'
 
 
 import { Blog } from './interfaces'
@@ -20,7 +18,7 @@ export class AnalyticsService {
   /**
    * Main radiator config
    */
-  protected config: RadiatorConfig
+  protected config: AnalyticsParams
 
   /**
    * Repositories factory
@@ -32,7 +30,7 @@ export class AnalyticsService {
    */
   private repositories: Record<RepositoryTypes, RepositoryType>
 
-  constructor(config: RadiatorConfig, range: ParsedRange) {
+  constructor(config: AnalyticsParams, range: ParsedRange) {
     this.config = config
     this.range = range
     this.factory = new RepositoryFactory()
