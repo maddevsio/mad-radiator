@@ -1,10 +1,9 @@
-import { defaultConfig } from '__tests__/fixtures/radiatorConfigs'
 import axios, { AxiosResponse } from 'axios'
-import { LighthouseError } from 'errors/types/LighthouseError'
-import { RadiatorConfig } from 'interfaces'
 import { Lighthouse } from 'lighthouse/Lighthouse'
 import { Sitemap } from 'lighthouse/Sitemap'
 import { LighthousePayload } from 'lighthouse/interfaces'
+
+import { LighthouseParams } from '../interfaces'
 
 const responseData: AxiosResponse<LighthousePayload> = {
   data: {
@@ -50,7 +49,7 @@ jest.mock('logger/Logger')
 const MockedSitemap = Sitemap as jest.Mock<Sitemap>
 
 describe('Lighthouse service', () => {
-  let config: RadiatorConfig
+  let config: LighthouseParams
 
   const getAllUrls = jest
     .fn()
@@ -59,7 +58,14 @@ describe('Lighthouse service', () => {
   beforeEach(() => {
     MockedSitemap.mockClear()
     jest.spyOn(axios, 'get').mockImplementation(() => Promise.resolve(responseData))
-    config = { ...defaultConfig }
+    config = {
+      'lighthouse': {
+        'urlTestRegexp': '(\\/blog\\/)|(\\/customer-university\\/)|(\\/ru\\/)[a-zA-Z0-9]{1}',
+        'topCount': 3,
+        'worstCount': 3,
+      },
+      'websiteUrl': 'https://maddevs.io',
+    }
 
     // @ts-ignore
     MockedSitemap.mockImplementation(() => ({
@@ -139,14 +145,21 @@ describe('Lighthouse service', () => {
     })
     expect(axios.get).toHaveBeenCalledTimes(2)
   })
+
   it('should correctly called getData method and catch error from lighthouse', async () => {
     config.lighthouse = {}
 
     jest.spyOn(axios, 'get').mockImplementation(() => Promise.reject(new Error('api error')))
 
     const service = new Lighthouse(config)
+    const data = await service.getLighthouseMetrics()
 
-    await expect(service.getLighthouseMetrics()).rejects.toThrow(LighthouseError)
+    expect(data).toEqual({
+      average: { accessibility: 0, best_practices: 0, performance: 0, pwa: 0, seo: 0 },
+      top: [],
+      urlCount: 0,
+      worst: [],
+    })
   })
   it('should correctly called getData method without lighthouse', async () => {
     config.lighthouse = undefined

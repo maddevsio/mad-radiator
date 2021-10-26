@@ -1,12 +1,13 @@
 import { analyticsData } from '__tests__/fixtures/analyticsData'
 import { lighthouseData } from '__tests__/fixtures/lighthouseData'
 import { parsedRange } from '__tests__/fixtures/parsedRange'
-import { defaultConfig } from '__tests__/fixtures/radiatorConfigs'
-import { RadiatorConfig } from 'interfaces'
+import { MessengersParams } from 'interfaces'
 import { Logger } from 'logger'
 import { MessengersService } from 'messengers/MessengersService'
 import { Slack } from 'messengers/Slack'
 import { Telegram } from 'messengers/Telegram'
+
+import { defaultMessengersParams } from '../../__tests__/fixtures/defaultMessengersParams'
 
 jest.mock('messengers/Slack')
 jest.mock('messengers/Telegram')
@@ -18,18 +19,18 @@ const MockedTG = Telegram as jest.Mock<Telegram>
 const MockedLogger = Logger as jest.mock<Logger>
 
 describe('Messengers service', () => {
-  let config: RadiatorConfig
+  let config: MessengersParams
 
   beforeEach(() => {
-    config = { ...defaultConfig }
+    config = { ...defaultMessengersParams }
     MockedSlack.mockClear()
     MockedTG.mockClear()
     MockedLogger.mockClear()
   })
 
   it('should correctly created service without Slack/TG instances', () => {
-    config.slack = false
-    config.telegram = false
+    config.slackWebhookUrl = ''
+    config.telegramToken = ''
     const service = new MessengersService(config)
 
     expect(Slack).toHaveBeenCalledTimes(1)
@@ -38,8 +39,8 @@ describe('Messengers service', () => {
   })
 
   it('should correctly called slack sendMessage method', () => {
-    config.slack = true
-    config.telegram = false
+    config.slackWebhookUrl = 'test'
+    config.telegramToken = ''
     const service = new MessengersService(config)
 
     const buildMessageData = {
@@ -56,8 +57,8 @@ describe('Messengers service', () => {
   })
 
   it('should correctly called slack sendMessage method and got error', () => {
-    config.slack = true
-    config.telegram = false
+    config.slackWebhookUrl = 'test'
+    config.telegramToken = ''
 
     const buildMessageData = {
       analytics: analyticsData,
@@ -82,8 +83,9 @@ describe('Messengers service', () => {
   })
 
   it('should correctly called tg sendMessage method', () => {
-    config.slack = false
-    config.telegram = true
+    config.slackWebhookUrl = ''
+    config.telegramToken = 'test'
+
     const buildMessageData = {
       analytics: analyticsData,
       lighthouse: lighthouseData,
@@ -100,8 +102,9 @@ describe('Messengers service', () => {
   })
 
   it('should correctly called tg sendMessage method and got error', () => {
-    config.slack = false
-    config.telegram = true
+    config.slackWebhookUrl = ''
+    config.telegramToken = 'test'
+
     const buildMessageData = {
       analytics: analyticsData,
       lighthouse: lighthouseData,

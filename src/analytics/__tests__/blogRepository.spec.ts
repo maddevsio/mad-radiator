@@ -2,10 +2,11 @@ import {
   blogFakeResponse,
 } from '__tests__/fixtures/analytics/fakeAnalyticsResponses'
 import { parsedRange } from '__tests__/fixtures/parsedRange'
-import { defaultConfig } from '__tests__/fixtures/radiatorConfigs'
 import { BlogsRepository } from 'analytics/BlogsRepository'
 import { google } from 'googleapis'
-import { RadiatorConfig } from 'interfaces'
+
+import { defaultAnalyticsParams } from '../../__tests__/fixtures/defaultAnalyticsParams'
+import { AnalyticsParams } from '../interfaces'
 
 jest.mock('googleapis', () => ({
   google: {
@@ -14,12 +15,12 @@ jest.mock('googleapis', () => ({
 }))
 
 describe('BlogRepository', () => {
-  let config: RadiatorConfig
-  let secondConfig: RadiatorConfig
+  let config: AnalyticsParams
+  let secondConfig: AnalyticsParams
 
   beforeEach(() => {
-    config = { ...defaultConfig }
-    secondConfig = { ...defaultConfig, pagesPathForViewsAnalytics: [] }
+    config = defaultAnalyticsParams
+    secondConfig = { ...defaultAnalyticsParams, pagesPathForViewsAnalytics: [] }
   })
 
   it('should correctly return an instance', () => {
@@ -42,11 +43,11 @@ describe('BlogRepository', () => {
     const data = await repository.getData()
     expect(data).toEqual([
       {
-        pagePath: '/customer-university/custom-software-development-pricing-strategies/',
+        pagePath: 'https://maddevs.io/customer-university/custom-software-development-pricing-strategies/',
         pageViews: 10,
       },
       {
-        pagePath: '/insights/blog/seo-analyzer/',
+        pagePath: 'https://maddevs.io/insights/blog/seo-analyzer/',
         pageViews: 10,
       },
     ])

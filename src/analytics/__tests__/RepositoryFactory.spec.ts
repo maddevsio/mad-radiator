@@ -1,11 +1,12 @@
 import { parsedRange } from '__tests__/fixtures/parsedRange'
-import { defaultConfig } from '__tests__/fixtures/radiatorConfigs'
 import { ChartRepository } from 'analytics/ChartRepository'
 import { CoreRepository } from 'analytics/CoreRepository'
 import { CountriesRepository } from 'analytics/CountriesRepository'
 import { DevicesRepository } from 'analytics/DevicesRepository'
 import { GoalsRepository } from 'analytics/GoalsRepository'
 import { RepositoryFactory, RepositoryType, RepositoryTypes } from 'analytics/RepositoryFactory'
+
+import { defaultAnalyticsParams } from '../../__tests__/fixtures/defaultAnalyticsParams'
 
 describe('RepositoryFactroy', () => {
   it('should correctly return an instance', () => {
@@ -28,7 +29,7 @@ describe('RepositoryFactroy', () => {
       const factory = new RepositoryFactory()
       const repository = factory.createRepository(
         args[0] as RepositoryTypes,
-        defaultConfig,
+        defaultAnalyticsParams,
         parsedRange,
       )
       expect(repository).toBeInstanceOf(Repository)
