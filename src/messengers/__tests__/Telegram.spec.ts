@@ -1,7 +1,7 @@
 import { analyticsData } from '__tests__/fixtures/analyticsData'
+import { defaultConfig } from '__tests__/fixtures/defaultRadiatorConfigs'
 import { lighthouseData } from '__tests__/fixtures/lighthouseData'
 import { parsedRange } from '__tests__/fixtures/parsedRange'
-import { defaultConfig } from '__tests__/fixtures/radiatorConfigs'
 import axios from 'axios'
 import { Telegram } from 'messengers/Telegram'
 
