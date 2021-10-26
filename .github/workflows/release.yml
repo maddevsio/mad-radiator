@@ -12,12 +12,13 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2
 
       - name: Use Node v16
         uses: actions/setup-node@v1
         with:
           node-version: 16
+
 
       - name: Install dependencies
         run: yarn install
@@ -25,8 +26,11 @@ jobs:
       - name: Build package
         run: yarn build
 
+
       - name: Release new version to NPM
         env:
           GITHUB_TOKEN: ${{ secrets.SECRETS_GITHUB_TOKEN }}
-          NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: npx semantic-release
+
+
