@@ -3,10 +3,8 @@ import path from 'path'
 
 import { AuthorizationError } from 'errors/types/AuthorizationError'
 import { google } from 'googleapis'
-import { RadiatorConfig } from 'interfaces'
+import { EnvironmentConfig } from 'interfaces'
 import { Logger } from 'logger'
-
-
 
 /**
  * Path to keys.json file
@@ -14,14 +12,14 @@ import { Logger } from 'logger'
 const KEYS_FILEPATH = path.join(__dirname, 'keys.json')
 
 export class GoogleAuthorization {
-  private readonly config: RadiatorConfig
+  private readonly config: any
 
-  constructor(config: RadiatorConfig) {
+  constructor(config: any) {
     this.config = config
   }
 
   public async authorize() {
-    try{
+    try {
       await this.buildKeysFile(this.config)
 
       const auth = new google.auth.GoogleAuth({
@@ -39,24 +37,23 @@ export class GoogleAuthorization {
         },
         google,
       }
-    }
-    catch (error){
+    } catch (error) {
       throw new AuthorizationError(error)
     }
   }
 
-  private async buildKeysFile(config: RadiatorConfig) {
+  private async buildKeysFile(config: EnvironmentConfig) {
     const fileData = `{
-    "type": "${config.env.authType}",
-    "project_id": "${config.env.analyticsProjectId}",
-    "private_key_id": "${config.env.analyticsPrivateKeyId}",
-    "private_key": "${config.env.analyticsPrivateKey}",
-    "client_email": "${config.env.analyticsClientEmail}",
-    "client_id": "${config.env.analyticsClientId}",
-    "auth_uri": "${config.env.analyticsAuthUrl}",
-    "token_uri": "${config.env.analyticsTokenUri}",
-    "auth_provider_x509_cert_url": "${config.env.analyticsProviderCertUrl}",
-    "client_x509_cert_url": "${config.env.analyticsClientCertUrl}"
+    "type": "${config.authType}",
+    "project_id": "${config.analyticsProjectId}",
+    "private_key_id": "${config.analyticsPrivateKeyId}",
+    "private_key": "${config.analyticsPrivateKey}",
+    "client_email": "${config.analyticsClientEmail}",
+    "client_id": "${config.analyticsClientId}",
+    "auth_uri": "${config.analyticsAuthUrl}",
+    "token_uri": "${config.analyticsTokenUri}",
+    "auth_provider_x509_cert_url": "${config.analyticsProviderCertUrl}",
+    "client_x509_cert_url": "${config.analyticsClientCertUrl}"
   }`
 
     await fs.writeFile(

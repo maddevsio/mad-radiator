@@ -3,8 +3,8 @@ import { ParsedRange } from 'interfaces'
 import { LighthouseData } from 'lighthouse/interfaces'
 
 export interface BuildMessageData {
-  analytics: AnalyticsData
+  analytics?: AnalyticsData
   range: ParsedRange
-  lighthouse: LighthouseData
+  lighthouse?: LighthouseData
   imageURL?: string
 }

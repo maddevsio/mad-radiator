@@ -4,7 +4,10 @@ import { CoreRepository } from 'analytics/CoreRepository'
 import { CountriesRepository } from 'analytics/CountriesRepository'
 import { DevicesRepository } from 'analytics/DevicesRepository'
 import { GoalsRepository } from 'analytics/GoalsRepository'
-import { ParsedRange, RadiatorConfig } from 'interfaces'
+import { ParsedRange } from 'interfaces'
+
+import { AnalyticsParams } from './interfaces'
+
 
 export enum RepositoryTypes {
   core = 'core',
@@ -32,7 +35,7 @@ export class RepositoryFactory {
    */
   createRepository(
     type: RepositoryTypes,
-    config: RadiatorConfig,
+    config: AnalyticsParams,
     range: ParsedRange,
   ): RepositoryType {
     switch (type) {

@@ -50,7 +50,7 @@ export class Telegram extends Messenger {
   }
 
   private getApiUrl(type: TelegramMessageType): string {
-    return `https://api.telegram.org/bot${this.config.env.telegramToken}/send${type}`
+    return `https://api.telegram.org/bot${this.config.telegramToken}/send${type}`
   }
 
   private async sendPhoto(imageURL: string) {

@@ -1,7 +1,7 @@
 import { Repository } from 'analytics/Repository'
 import { AnalyticsDataRow, AnalyticsPayload } from 'analytics/interfaces'
 
-import { Blog } from './interfaces/blogs.interface'
+import { Blog } from './interfaces'
 
 /**
  * Blogs repository
@@ -30,7 +30,7 @@ export class BlogsRepository extends Repository {
   /**
    * Format raw GA data
    */
-  private static format(reports: AnalyticsPayload, websiteUrl: string, pagesPathForViewsAnalytics: Array<string>): Array<Blog> {
+  private static format(reports: AnalyticsPayload, websiteUrl: string, pagesPathForViewsAnalytics?: Array<string>): Array<Blog> {
 
     const reportsDataPath = reports[0].data.rows
 
