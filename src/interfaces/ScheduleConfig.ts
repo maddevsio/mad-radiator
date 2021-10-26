@@ -5,7 +5,7 @@ export enum SchedulePeriod {
 }
 
 export interface ScheduleConfig {
-  period: SchedulePeriod
+  period: SchedulePeriod | string
   cron?: string
   time?: number // hour of days in UTC(0-23)
   weekDay?: number // 0-7 (0 or 7 is Sun)

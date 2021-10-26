@@ -1,12 +1,14 @@
 import fs from 'fs'
 
-import { defaultConfig } from '__tests__/fixtures/radiatorConfigs'
 import { GoogleAuthorization } from 'authorization/GoogleAuthorization'
 import { AuthorizationError } from 'errors/types/AuthorizationError'
-import { RadiatorConfig } from 'interfaces'
+import { EnvironmentConfig } from 'interfaces'
 import { Logger } from 'logger'
 
-jest.spyOn(Logger, 'error').mockImplementation(() => {})
+import { defaultGoogleAuthorizationParams } from '../../__tests__/fixtures/defaultGoogleAuthorizationParams'
+
+jest.spyOn(Logger, 'error').mockImplementation(() => {
+})
 
 jest.mock('googleapis', () => ({
   google: {
@@ -31,10 +33,10 @@ jest.spyOn(fs, 'unlink').mockImplementation(
 )
 
 describe('GoogleAuthorization', () => {
-  let config: RadiatorConfig
+  let config: EnvironmentConfig
 
   beforeEach(() => {
-    config = { ...defaultConfig }
+    config = defaultGoogleAuthorizationParams
   })
 
   it('should correctly create an instance', () => {
@@ -58,8 +60,8 @@ describe('GoogleAuthorization', () => {
 
   it('should correctly throw AuthorizationError', async () => {
     const error = () => {
-      throw new AuthorizationError("authorization error")
-    };
+      throw new AuthorizationError('authorization error')
+    }
     expect(error).toThrow(AuthorizationError)
   })
 

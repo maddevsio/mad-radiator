@@ -1,16 +1,15 @@
 import axios from 'axios'
-import { RadiatorConfig } from 'interfaces'
 import { MessageBuilder } from 'messengers/MessageBuilder'
 import { BuildMessageData } from 'messengers/interfaces'
 
 export abstract class Messenger {
-  protected readonly config: RadiatorConfig
+  protected readonly config: any
 
   protected abstract readonly messageBuilder: MessageBuilder
 
   public abstract sendMessage(buildMessageData: BuildMessageData): Promise<void>
 
-  constructor(config: RadiatorConfig) {
+  constructor(config: any) {
     this.config = config
   }
 

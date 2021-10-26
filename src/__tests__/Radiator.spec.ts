@@ -1,7 +1,8 @@
 /* eslint-disable max-classes-per-file */
+import * as Sentry from '@sentry/node'
 import { Radiator } from 'Radiator'
 import { analyticsData } from '__tests__/fixtures/analyticsData'
-import { defaultConfig } from '__tests__/fixtures/radiatorConfigs'
+import { defaultConfig } from '__tests__/fixtures/defaultRadiatorConfigs'
 import { AnalyticsService } from 'analytics'
 import { GoogleAuthorization } from 'authorization'
 import { ChartBuilder } from 'chartBuilder'
@@ -10,6 +11,10 @@ import { MessengersService } from 'messengers'
 import { Scheduler } from 'scheduler'
 import { GoogleDriveStorage } from 'storage'
 
+import { defaultAnalyticsParams } from './fixtures/defaultAnalyticsParams'
+import { defaultLighthouseParams } from './fixtures/defaultLighthouseParams'
+import { defaultMessengersParams } from './fixtures/defaultMessengersParams'
+
 jest.mock('analytics/AnalyticsService')
 jest.mock('chartBuilder/ChartBuilder')
 jest.mock('authorization/GoogleAuthorization')
@@ -17,7 +22,13 @@ jest.mock('lighthouse/Lighthouse')
 jest.mock('messengers/MessengersService')
 jest.mock('scheduler/Scheduler')
 jest.mock('storage/GoogleDriveStorage')
-
+jest.mock('@sentry/node')
+jest.mock('@sentry/node', () => (
+  {
+    init: jest.fn(),
+    captureException: jest.fn(),
+  }
+))
 const MockedAnalytics = AnalyticsService as jest.Mock<AnalyticsService>
 // @ts-ignore
 const MockedLighthouse = Lighthouse as jest.Mock<Lighthouse>
@@ -30,7 +41,9 @@ const MockedChart = ChartBuilder as jest.Mock<ChartBuilder>
 const MockedStorage = GoogleDriveStorage as jest.Mock<GoogleDriveStorage>
 
 describe('Radiator', () => {
-  jest.spyOn(console, 'log').mockImplementation(() => {})
+  jest.spyOn(console, 'log').mockImplementation(() => {
+  })
+
 
   let scheduleJob = jest.fn()
   let unlink = jest.fn()
@@ -91,32 +104,35 @@ describe('Radiator', () => {
 
   it('should correctly create an instance', () => {
     const radiator = new Radiator(defaultConfig)
-
-    expect(MockedAnalytics).toHaveBeenCalledTimes(1)
-    expect(MockedLighthouse).toHaveBeenCalledTimes(1)
-    expect(MockedMessengers).toHaveBeenCalledTimes(1)
-    expect(MockedScheduler).toHaveBeenCalledTimes(1)
-
+    expect(MockedGoogleAuth).toHaveBeenCalledTimes(1)
     expect(radiator.run).toBeTruthy()
   })
 
   it('should correctly called run', async () => {
-    const radiator = new Radiator({
-      ...defaultConfig,
-      schedule: undefined,
+
+    const radiator = new Radiator(defaultConfig)
+    radiator.useSentry({
+      sentryDSN: 'test',
+      tracesSampleRate: 1.0,
+    })
+    radiator.useAnalytics(defaultAnalyticsParams)
+    radiator.useLighthouse(defaultLighthouseParams)
+    radiator.useSlack(defaultMessengersParams)
+    radiator.useTelegram(defaultMessengersParams)
+    radiator.scheduleJob({
+      period: 'day',
+      time: 10,
     })
 
     const lighthouseInstance = MockedLighthouse.mock.instances[0]
-    const messengersInstance = MockedMessengers.mock.instances[0]
 
     await radiator.run()
-
-    expect(getData).toHaveBeenCalledTimes(1)
-    expect(lighthouseInstance.getLighthouseMetrics).toHaveBeenCalledTimes(1)
-    expect(messengersInstance.sendMessages).toHaveBeenCalledTimes(1)
-    expect(unlink).toHaveBeenCalledTimes(1)
-    expect(renderChart).toHaveBeenCalledTimes(1)
-    expect(storeFile).toHaveBeenCalledTimes(1)
+    expect(Sentry.init).toHaveBeenCalledTimes(2)
+    expect(getData).toHaveBeenCalledTimes(2)
+    expect(lighthouseInstance.getLighthouseMetrics).toHaveBeenCalledTimes(2)
+    expect(unlink).toHaveBeenCalledTimes(2)
+    expect(renderChart).toHaveBeenCalledTimes(2)
+    expect(storeFile).toHaveBeenCalledTimes(2)
   })
 
   it('should correctly called run without charts', async () => {
@@ -125,11 +141,8 @@ describe('Radiator', () => {
       getData: () => ({ ...analyticsData, chart: undefined }),
     }))
 
-    const radiator = new Radiator({
-      ...defaultConfig,
-      schedule: undefined,
-      chart: undefined,
-    })
+    const radiator = new Radiator(defaultConfig)
+    radiator.useAnalytics({ ...defaultAnalyticsParams, chart: undefined })
 
     await radiator.run()
     expect(renderChart).toHaveBeenCalledTimes(0)

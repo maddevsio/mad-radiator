@@ -12,7 +12,7 @@ export class Slack extends Messenger {
   async sendMessage(buildMessageData: BuildMessageData) {
     const message = this.messageBuilder.getMessage(buildMessageData)
     const requestData = this.getRequestData(message)
-    await this.sendRequest(this.config.env.slackWebhookUrl, requestData)
+    await this.sendRequest(this.config.slackWebhookUrl, requestData)
   }
 
   private getRequestData(message: string | Array<Object>) {
