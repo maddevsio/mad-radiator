@@ -1,4 +1,4 @@
-import { defaultConfig } from '__tests__/fixtures/radiatorConfigs'
+import { defaultConfig } from '__tests__/fixtures/defaultRadiatorConfigs'
 import { Integration } from 'interfaces'
 import { MessageBuilderFactory } from 'messengers/MessageBuilderFactory'
 import { SlackMessageBuilder } from 'messengers/SlackMessageBuilder'

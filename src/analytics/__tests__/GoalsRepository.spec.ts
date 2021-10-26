@@ -3,10 +3,11 @@ import {
   fakeResponseSecond,
 } from '__tests__/fixtures/analytics/fakeAnalyticsResponses'
 import { parsedRange } from '__tests__/fixtures/parsedRange'
-import { defaultConfig } from '__tests__/fixtures/radiatorConfigs'
 import { GoalsRepository } from 'analytics/GoalsRepository'
 import { google } from 'googleapis'
-import { RadiatorConfig } from 'interfaces'
+
+import { defaultAnalyticsParams } from '../../__tests__/fixtures/defaultAnalyticsParams'
+import { AnalyticsParams } from '../interfaces'
 
 jest.mock('googleapis', () => ({
   google: {
@@ -15,10 +16,10 @@ jest.mock('googleapis', () => ({
 }))
 
 describe('GoalsRepository', () => {
-  let config: RadiatorConfig
+  let config: AnalyticsParams
 
   beforeEach(() => {
-    config = { ...defaultConfig }
+    config = defaultAnalyticsParams
   })
 
   it('should correctly return an instance', () => {

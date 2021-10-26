@@ -1,0 +1,16 @@
+export const defaultGoogleAuthorizationParams = {
+  authType: '',
+  analyticsProjectId: '',
+  analyticsPrivateKeyId: '',
+  analyticsPrivateKey: '',
+  analyticsClientEmail: '',
+  analyticsClientId: '',
+  analyticsAuthUrl: '',
+  analyticsTokenUri: '',
+  analyticsProviderCertUrl: '',
+  analyticsClientCertUrl: '',
+  slackWebhookUrl: '',
+  googleapisKey: '',
+  telegramToken: '',
+  sentryDSN: '',
+}
