@@ -75,6 +75,7 @@ export class Radiator {
       {
         ...lighthouseParams,
         websiteUrl: this.config.websiteUrl,
+        googleapisKey: this.config.googleapisKey,
       },
     )
   }
