@@ -1,6 +1,5 @@
+import * as Sentry from '@sentry/node'
 import axios, { AxiosResponse } from 'axios'
-import { LighthouseError } from 'errors/types/LighthouseError'
-import { RadiatorConfig } from 'interfaces'
 import { Sitemap } from 'lighthouse/Sitemap'
 import {
   LighthouseData,
@@ -10,16 +9,16 @@ import {
 } from 'lighthouse/interfaces'
 import { Logger } from 'logger'
 
-
+import { LighthouseParams } from './interfaces'
 
 export class Lighthouse {
-  private readonly config: RadiatorConfig
+  private readonly config: LighthouseParams
 
   private readonly sitemap: Sitemap
 
   private static url: string = 'https://www.googleapis.com/pagespeedonline/v5/runPagespeed'
 
-  constructor(config: RadiatorConfig) {
+  constructor(config: LighthouseParams) {
     this.config = config
     this.sitemap = new Sitemap(this.config)
   }
@@ -41,7 +40,8 @@ export class Lighthouse {
         urlResults.push(Lighthouse.buildUrlResult(payload.data, url))
         Logger.success('Success')
       } catch (error) {
-        throw new LighthouseError(`Getting metrics for ${url} page, ${error}`)
+        Logger.error(`Getting metrics for ${url} page, ${error}`)
+        Sentry.captureException(`Getting metrics for ${url} page, ${error}`)
       }
     }
 
@@ -119,7 +119,7 @@ export class Lighthouse {
   private buildSearchParams(url: string) {
     const searchParams = []
     searchParams.push(['url', url])
-    searchParams.push(['key', this.config.env.googleapisKey])
+    searchParams.push(['key', this.config.googleapisKey])
     searchParams.push(['category', 'seo'])
     searchParams.push(['category', 'accessibility'])
     searchParams.push(['category', 'best-practices'])

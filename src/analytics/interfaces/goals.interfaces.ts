@@ -14,6 +14,6 @@ export type Goals = Array<Goal>
 
 export interface AnalyticsConversion {
   name: string
-  emoji: EmojiType
+  emoji: string
   goals: Array<number>
 }

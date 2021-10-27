@@ -6,7 +6,7 @@ import { LighthouseMetrics, LighthouseUrlResult } from 'lighthouse/interfaces'
 import { BuildMessageData, SlackMessageBlock } from 'messengers/interfaces'
 import { capitalize } from 'utils/capitalize'
 
-import { Blog } from '../analytics/interfaces/blogs.interface'
+import { Blog } from '../analytics/interfaces'
 
 export abstract class MessageBuilder {
   protected abstract readonly blocksService: Blocks
@@ -27,7 +27,7 @@ export abstract class MessageBuilder {
                            lighthouse,
                            imageURL,
                          }: BuildMessageData): Array<string | SlackMessageBlock> {
-    const { core, devices, goals, countries, blogs } = analytics
+    const { core, devices, goals, countries, blogs } = analytics || {}
 
     const message = []
 
@@ -35,50 +35,60 @@ export abstract class MessageBuilder {
     message.push(this.blocksService.header(this.headerMessage(range)))
     message.push(this.blocksService.divider())
 
-    // core section
-    message.push(this.blocksService.section(this.coreMessage(core)))
-    message.push(this.blocksService.section(this.coreList(core)))
-    message.push(this.blocksService.divider())
-
-    // devices
-    message.push(this.blocksService.section(MessageBuilder.devicesMessage()))
-    message.push(this.blocksService.section(this.devicesList(devices)))
-    message.push(this.blocksService.divider())
-
-    // countries
-    message.push(this.blocksService.section(MessageBuilder.countriesMessage()))
-    message.push(this.blocksService.section(this.countriesList(countries)))
-    message.push(this.blocksService.divider())
-
-    // conversions
-    message.push(this.blocksService.section(MessageBuilder.conversionMessage()))
-    message.push(this.blocksService.section(this.conversionList(goals)))
-    message.push(this.blocksService.divider())
-
-    // pagespeed average
-    message.push(
-      this.blocksService.section(MessageBuilder.pagespeedAverageMessage(lighthouse.urlCount)),
-    )
-    message.push(this.blocksService.section(this.pagespeedList(lighthouse.average)))
-    message.push(this.blocksService.divider())
-
-    // pagespeed top
-    if (lighthouse.top.length) {
-      message.push(this.blocksService.section(MessageBuilder.pagespeedBestMessage()))
-      message.push(this.blocksService.section(this.pagespeedRating(lighthouse.top)))
+    if (core) {
+      // core section
+      message.push(this.blocksService.section(this.coreMessage(core)))
+      message.push(this.blocksService.section(this.coreList(core)))
       message.push(this.blocksService.divider())
     }
 
-    // pagespeed worst
-    if (lighthouse.worst.length) {
-      message.push(this.blocksService.section(MessageBuilder.pagespeedWorstMessage()))
-      message.push(this.blocksService.section(this.pagespeedRating(lighthouse.worst)))
+    if (devices) {
+      // devices
+      message.push(this.blocksService.section(MessageBuilder.devicesMessage()))
+      message.push(this.blocksService.section(this.devicesList(devices)))
       message.push(this.blocksService.divider())
     }
 
+    if (countries) {
+      // countries
+      message.push(this.blocksService.section(MessageBuilder.countriesMessage()))
+      message.push(this.blocksService.section(this.countriesList(countries)))
+      message.push(this.blocksService.divider())
+    }
+
+    if (goals) {
+      // conversions
+      message.push(this.blocksService.section(MessageBuilder.conversionMessage()))
+      message.push(this.blocksService.section(this.conversionList(goals)))
+      message.push(this.blocksService.divider())
+    }
+
+    if (lighthouse) {
+      // pagespeed average
+      message.push(
+        this.blocksService.section(MessageBuilder.pagespeedAverageMessage(lighthouse.urlCount)),
+      )
+      message.push(this.blocksService.section(this.pagespeedList(lighthouse.average)))
+      message.push(this.blocksService.divider())
+
+      // pagespeed top
+      if (lighthouse.top.length) {
+        message.push(this.blocksService.section(MessageBuilder.pagespeedBestMessage()))
+        message.push(this.blocksService.section(this.pagespeedRating(lighthouse.top)))
+        message.push(this.blocksService.divider())
+      }
+
+      // pagespeed worst
+      if (lighthouse.worst.length) {
+        message.push(this.blocksService.section(MessageBuilder.pagespeedWorstMessage()))
+        message.push(this.blocksService.section(this.pagespeedRating(lighthouse.worst)))
+        message.push(this.blocksService.divider())
+      }
+
+    }
 
     // blog views statistics
-    if (blogs.length) {
+    if (blogs?.length) {
       message.push(this.blocksService.section(MessageBuilder.blogsMessage()))
       message.push(this.blocksService.section(this.blogsList(blogs)))
       message.push(this.blocksService.divider())

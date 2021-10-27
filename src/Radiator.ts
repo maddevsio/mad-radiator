@@ -2,7 +2,7 @@ import * as Sentry from '@sentry/node'
 import { AnalyticsService } from 'analytics'
 import { GoogleAuthorization } from 'authorization'
 import { ChartBuilder } from 'chartBuilder'
-import { ParsedRange, RadiatorConfig, ScheduleConfig } from 'interfaces'
+import { MessengersParams, ParsedRange, RadiatorConfig, ScheduleConfig, SentryParams } from 'interfaces'
 import { Lighthouse } from 'lighthouse'
 import { Logger } from 'logger'
 import { MessengersService } from 'messengers'
@@ -10,89 +10,145 @@ import { Scheduler } from 'scheduler'
 import { GoogleDriveStorage } from 'storage'
 import { parseRange } from 'utils/parseRange'
 
+import { AnalyticsParams } from './analytics/interfaces'
+import { LighthouseParams } from './lighthouse/interfaces'
+
 export class Radiator {
   private readonly config: RadiatorConfig
 
   private readonly parsedRange: ParsedRange
 
-  private readonly googleAuthorization: GoogleAuthorization
+  private sentryParams: SentryParams | undefined
 
-  private readonly scheduler: Scheduler
+  private messengersParams: MessengersParams | undefined
 
-  private readonly messengersService: MessengersService
+  private googleAuthorization: GoogleAuthorization
 
-  private readonly chartBuilder: ChartBuilder
+  private analyticsService: AnalyticsService | undefined
 
-  private readonly googleDriveStorage: GoogleDriveStorage
+  private lighthouse: Lighthouse | undefined
 
-  private readonly lighthouse: Lighthouse
+  private chartBuilder: ChartBuilder | undefined
 
-  private readonly analyticsService: AnalyticsService
+  private googleDriveStorage: GoogleDriveStorage | undefined
 
+  private scheduler: Scheduler | undefined
 
   constructor(config: RadiatorConfig) {
     this.config = config
     this.parsedRange = parseRange(this.config.range)
-
-    // eslint-disable-next-line
+    this.messengersParams = { websiteUrl: config.websiteUrl }
 
     // instances
     this.googleAuthorization = new GoogleAuthorization(this.config)
-    this.scheduler = new Scheduler(this.config.schedule || ({} as ScheduleConfig))
-    this.messengersService = new MessengersService(this.config)
-    this.chartBuilder = new ChartBuilder()
-    this.googleDriveStorage = new GoogleDriveStorage()
-    this.lighthouse = new Lighthouse(this.config)
-    this.analyticsService = new AnalyticsService(this.config, this.parsedRange)
-    if (this.config.schedule) this.scheduleJob()
   }
 
-  private scheduleJob() {
+  public scheduleJob(scheduleParams: ScheduleConfig) {
+    this.scheduler = new Scheduler(scheduleParams || ({} as ScheduleConfig))
     this.scheduler.scheduleJob(() => this.run())
     Logger.info('Job successfully scheduled')
   }
 
-  private sentryInit() {
-    if(this.config.env.sentryDSN){
-      Logger.info('Sentry initialization...')
-      Sentry.init({
-        dsn: this.config.env.sentryDSN,
-        tracesSampleRate: 1.0,
-      })
+  private static sentryInit(sentryParams: SentryParams) {
+    Logger.info('Sentry initialization...')
+    Sentry.init({
+      dsn: sentryParams.sentryDSN,
+      tracesSampleRate: sentryParams.tracesSampleRate,
+    })
+  }
+
+  public useSentry(sentryParams: SentryParams) {
+    this.sentryParams = sentryParams
+  }
+
+  public useAnalytics(analyticsParams: AnalyticsParams) {
+    this.analyticsService = new AnalyticsService({
+      ...analyticsParams,
+      websiteUrl: this.config.websiteUrl,
+    }, this.parsedRange)
+    this.useChartBuilder()
+    this.useGoogleDriveStorage()
+  }
+
+  public useLighthouse(lighthouseParams: LighthouseParams) {
+    this.lighthouse = new Lighthouse(
+      {
+        ...lighthouseParams,
+        websiteUrl: this.config.websiteUrl,
+        googleapisKey: this.config.googleapisKey,
+      },
+    )
+  }
+
+  private useChartBuilder() {
+    this.chartBuilder = new ChartBuilder()
+  }
+
+  private useGoogleDriveStorage() {
+    this.googleDriveStorage = new GoogleDriveStorage()
+  }
+
+  public useTelegram(telegramParams: MessengersParams) {
+    this.messengersParams = {
+      ...(this.messengersParams),
+      ...telegramParams,
     }
   }
 
+  public useSlack(slackParams: MessengersParams) {
+    this.messengersParams = {
+      ...(this.messengersParams),
+      ...slackParams,
+    }
+  }
 
   public async run() {
     try {
-      this.sentryInit()
+      let analytics
+      let lighthouse
+      let imageBuffer
+      let imageURL
+
+      if (this.sentryParams && this.sentryParams.sentryDSN) Radiator.sentryInit(this.sentryParams)
 
       Logger.info('Authorize with googleAuthorization...')
-      const { unlink } = await this.googleAuthorization.authorize()
+      const googleAuthorization = await this.googleAuthorization.authorize()
 
-      Logger.info('Getting analytics data...')
-      const analytics = await this.analyticsService.getData()
+      if (this.analyticsService) {
+        Logger.info('Getting analytics data...')
+        analytics = await this.analyticsService.getData()
+      }
 
-      Logger.info('Getting lighthouse data...')
-      const lighthouse = await this.lighthouse.getLighthouseMetrics()
+      if (this.lighthouse) {
+        Logger.info('Getting lighthouse data...')
+        lighthouse = await this.lighthouse.getLighthouseMetrics()
+      }
 
-      if (analytics.chart) Logger.info('Building an image...')
-      const imageBuffer = analytics.chart && (await this.chartBuilder.renderChart(analytics.chart))
+      if (analytics && this.chartBuilder) {
+        Logger.info('Building an image...')
+        imageBuffer = analytics.chart && (await this.chartBuilder.renderChart(analytics.chart))
+      }
 
-      if (imageBuffer) Logger.info('Saving an image in gdrive...')
-      const imageURL = imageBuffer && (await this.googleDriveStorage.storeFile(imageBuffer))
+      if (imageBuffer && this.googleDriveStorage) {
+        Logger.info('Saving an image in gdrive...')
+        imageURL = imageBuffer && (await this.googleDriveStorage.storeFile(imageBuffer))
+      }
 
-      Logger.info('Send messages...')
-      await this.messengersService.sendMessages({
-        analytics,
-        lighthouse,
-        range: this.parsedRange,
-        imageURL,
-      })
+      if (googleAuthorization && this.messengersParams) {
+        Logger.info('Send messages...')
+        const messengersService = new MessengersService(this.messengersParams)
+        await messengersService.sendMessages({
+          analytics,
+          lighthouse,
+          range: this.parsedRange,
+          imageURL,
+        })
+        await googleAuthorization.unlink()
+        Logger.success('Success!')
+      }
 
-      await unlink()
-      Logger.success('Success!')
     } catch (error) {
+      Logger.error(error)
       Sentry.captureException(error)
     }
   }

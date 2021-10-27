@@ -9,8 +9,6 @@ export interface EnvironmentConfig {
   analyticsTokenUri: string
   analyticsProviderCertUrl: string
   analyticsClientCertUrl: string
-  slackWebhookUrl: string
   googleapisKey: string
-  telegramToken: string
   sentryDSN?: string
 }

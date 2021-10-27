@@ -1,13 +1,15 @@
-import { defaultConfig } from '__tests__/fixtures/radiatorConfigs'
 import axios from 'axios'
 import { Sitemap } from 'lighthouse/Sitemap'
+import { LighthouseParams } from 'lighthouse/interfaces'
+
+import { defaultLighthouseParams } from '../../__tests__/fixtures/defaultLighthouseParams'
 
 describe('Sitemap', () => {
-  let config = defaultConfig
+  let config: LighthouseParams
 
   beforeEach(() => {
     config = {
-      ...defaultConfig,
+      ...defaultLighthouseParams,
     }
   })
 
