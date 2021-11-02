@@ -108,8 +108,8 @@ export class Lighthouse {
   ): { top: Array<LighthouseUrlResult>; worst: Array<LighthouseUrlResult> } {
     const sorted = urlResults.sort((a, b) => b.average - a.average)
 
-    const top = sorted.slice(0, this.config.lighthouse?.topCount || 3)
-    const worst = sorted.reverse().slice(0, this.config.lighthouse?.worstCount || 3)
+    const top = sorted.slice(0, this.config?.topCount || 3)
+    const worst = sorted.reverse().slice(0, this.config?.worstCount || 3)
     return {
       top,
       worst,

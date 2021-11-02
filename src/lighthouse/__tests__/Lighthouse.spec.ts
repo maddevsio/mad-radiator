@@ -59,11 +59,9 @@ describe('Lighthouse service', () => {
     MockedSitemap.mockClear()
     jest.spyOn(axios, 'get').mockImplementation(() => Promise.resolve(responseData))
     config = {
-      'lighthouse': {
-        'urlTestRegexp': '(\\/blog\\/)|(\\/customer-university\\/)|(\\/ru\\/)[a-zA-Z0-9]{1}',
-        'topCount': 3,
-        'worstCount': 3,
-      },
+      'urlTestRegexp': '(\\/blog\\/)|(\\/customer-university\\/)|(\\/ru\\/)[a-zA-Z0-9]{1}',
+      'topCount': 3,
+      'worstCount': 3,
       'websiteUrl': 'https://maddevs.io',
     }
 
@@ -80,7 +78,7 @@ describe('Lighthouse service', () => {
   })
 
   it('should correctly called getData method', async () => {
-    config.lighthouse = {}
+    config = {}
     const service = new Lighthouse(config)
 
     const data = await service.getLighthouseMetrics()
@@ -147,7 +145,7 @@ describe('Lighthouse service', () => {
   })
 
   it('should correctly called getData method and catch error from lighthouse', async () => {
-    config.lighthouse = {}
+    config = {}
 
     jest.spyOn(axios, 'get').mockImplementation(() => Promise.reject(new Error('api error')))
 
@@ -162,7 +160,8 @@ describe('Lighthouse service', () => {
     })
   })
   it('should correctly called getData method without lighthouse', async () => {
-    config.lighthouse = undefined
+    config.topCount = undefined
+    config.worstCount = undefined
 
     const service = new Lighthouse(config)
 
@@ -228,7 +227,7 @@ describe('Lighthouse service', () => {
     })
   })
   it('should correctly called getData method with top and worst', async () => {
-    config.lighthouse = {
+    config = {
       topCount: 1,
       worstCount: 1,
     }
