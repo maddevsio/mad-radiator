@@ -6,19 +6,31 @@ on:
       - master
 
 jobs:
-  build:
-
+  main:
+    name: NPM Release
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [ 14.x ]
-
     steps:
-      - uses: mikeal/merge-release@master
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Use Node v16
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16
+
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Build package
+        run: yarn build
+
+
+      - name: Release new version to NPM
         env:
           GITHUB_TOKEN: ${{ secrets.SECRETS_GITHUB_TOKEN }}
-          NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
-          DEPLOY_DIR: my/deploy/dir
-          SRC_PACKAGE_DIR: my/src/package
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npx semantic-release
+
 

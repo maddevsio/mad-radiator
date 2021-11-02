@@ -141,11 +141,11 @@ Analytics conversion array need to collect data from your analytics goals and ca
 separate your goals by 3 categories: `Leads`, `Contacts` and `Careers`. You can do it using this configuration
 parameter.
 
-| name                 | type           | description  |
-| -------------        |:-------------  |:-------------------|
+| name                 | type           | description                       |
+| -------------        |:-------------  |:----------------------------------|
 | name                 | string         | The name of your conversion group |
-| emoji                | Emoji          | Emoji to display your group |
-| goals                | Array<number>  | An array of your goals ids |
+| emoji                | Emoji          | Emoji to display your group       |
+| goals                | Array<number>  | An array of your goals ids        |
 
 Example. If you want to collect data for careers from goals 1,2,3 and for leads from 4,5,11 goals:
 
@@ -198,7 +198,7 @@ const lighthouseConfig = {
 | name                 | type           | description        |
 | -------------        |:-------------  |:-------------------|
 | slackWebhookUrl      | string         | slack webhook url  |
-| slackChannelId       | string         | slack channel Id    |
+| slackChannelId       | string         | slack channel Id   |
 
 #### Schedule *
 
@@ -207,13 +207,13 @@ Schedule options is used for set up custom scheduler for your radiator.
 **If you want to run your radiator manually(when run the script) you don't need to provide the `schedule`
 configuration**
 
-| name       | type            | description  |
-| -----------|:-------------  |:-------------------|
-| period     | day/week/month | Period for your schedule |
-| cron       | string         | A custom cron string(all other arguments will skip) |
-| time       | number         | Time to send a message(0-23) |
+| name       | type            | description                                                             |
+| -----------|:-------------  |:-------------------------------------------------------------------------|
+| period     | day/week/month | Period for your schedule                                                 |
+| cron       | string         | A custom cron string(all other arguments will skip)                      |
+| time       | number         | Time to send a message(0-23)                                             |
 | weekDay    | number         | Weekday to send a message(0-7, 0 and 7 is Sunday) - only for period=week |
-| monthDay   | number         | Monthday to send a message(0-31) - only for period=month |
+| monthDay   | number         | Monthday to send a message(0-31) - only for period=month                 |
 
 Example. You want to run your radiator script each day at 10AM. For this you need to use the following configuration:
 
@@ -235,3 +235,4 @@ BREAKING CHANGE: a commit that has a footer BREAKING CHANGE:, or appends a ! aft
 types other than fix: and feat: are allowed, for example @commitlint/config-conventional (based on the the Angular convention) recommends build:, chore:, ci:, docs:, style:, refactor:, perf:, test:, and others.
 footers other than BREAKING CHANGE: <description> may be provided and follow a convention similar to git trailer format.
 ```
+
