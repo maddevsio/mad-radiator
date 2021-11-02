@@ -17,9 +17,9 @@ export class Sitemap {
 
     const urls = XmlParser.parseTags(xml, 'loc')
 
-    if (!this.config.lighthouse?.urlTestRegexp) return urls
+    if (!this.config?.urlTestRegexp) return urls
 
-    const regexp = new RegExp(this.config.lighthouse.urlTestRegexp)
+    const regexp = new RegExp(this.config.urlTestRegexp)
     return urls.filter(urlToTest => !regexp.test(urlToTest))
   }
 

@@ -51,9 +51,7 @@ describe('Sitemap', () => {
        </sitemap>
     `
 
-    config.lighthouse = {
-      urlTestRegexp: '(\\/blog\\/)|(\\/customer-university\\/)[a-zA-Z0-9]{1}',
-    }
+    config.urlTestRegexp = '(\\/blog\\/)|(\\/customer-university\\/)[a-zA-Z0-9]{1}'
 
     jest.spyOn(axios, 'get').mockImplementation(
       () =>

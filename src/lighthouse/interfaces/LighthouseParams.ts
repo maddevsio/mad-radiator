@@ -1,7 +1,7 @@
-import { LighthouseConfig } from 'interfaces'
-
 export interface LighthouseParams {
-  lighthouse?: LighthouseConfig
-  websiteUrl: string
+  topCount?: number
+  worstCount?: number
+  urlTestRegexp?: string
+  websiteUrl?: string
   googleapisKey?: string
 }
