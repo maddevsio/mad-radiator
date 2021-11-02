@@ -21,7 +21,7 @@ $ npm install @maddevs/mad-radiator
 $ touch radiator.js
 ```
 
-* In the file you need to import radiator and build config for running(see config section):
+*In the file, you need to import the radiator and pass the configs optionally for each module (see the configuration section):
 
 ```javascript
 const { radiator } = require('@maddevs/mad-radiator')
@@ -50,7 +50,7 @@ Sorry! Running the radiator by CLI script isn't available for now
 
 #### Core
 
-It is a list of core technologies that we use to make a business logic
+It is a list of core technologies that we used to make a business logic
 
 * node.js
 * axios
@@ -70,10 +70,10 @@ Additional tools for development
 
 ### Configuration
 
-This is a most important part of the documentation. For running radiator you need to create the correct config. In this
+This is a most important part of the documentation. For running radiator you need to create the correct config (* required configs). In this
 section you can find all available options of the radiator:
 
-#### Base config
+#### Base config *
 
 | name                     | type           | description                           |
 | -------------------------|:-------------  |:--------------------------------------|
@@ -200,7 +200,7 @@ const lighthouseConfig = {
 | slackWebhookUrl      | string         | slack webhook url  |
 | slackChannelId       | string         | slack channel Id    |
 
-#### Schedule
+#### Schedule *
 
 Schedule options is used for set up custom scheduler for your radiator.
 
@@ -225,38 +225,13 @@ const scheduleConfig = {
 }
 ```
 
-#### Environment variables
-For getting access to analytics, lighthouse, slack and telegram you need to provide a part of tokens for this services.
-There is list of all tokens that you need to provide for correct working
+### Git commit format
+```
+The commit contains the following structural elements, to communicate intent to the consumers of your library:
 
-**Important: Do not push your private keys to the public repository**
-
-| name                     | type           | description  |
-| -------------            |:-------------  |:-------------------|
-| authType                 | string         | Analytics auth type |
-| analyticsProjectId       | string         | Analytics project id |
-| analyticsPrivateKeyId    | string         | Analytics private key id |
-| analyticsPrivateKey      | string         | Analytics private key |
-| analyticsClientEmail     | string         | Analytics client email |
-| analyticsClientId        | string         | Analytics client id |
-| analyticsAuthUrl         | string         | Analytics auth url |
-| analyticsTokenUri        | string         | Analytics token uri |
-| analyticsProviderCertUrl | string         | Analytics provider cert url |
-| analyticsClientCertUrl   | string         | Analytics client cert url |
-| slackWebhookUrl          | string         | Slack webhook url |
-| googleapisKey            | string         | Googleapis key |
-| telegramToken            | string         | Telegram bot token |
-
-Also, we have guides how to get tokens from different services, you can find it in separated docs:
-* How to get analytics auth keys
-* How to get googleapisKey for lighthouse
-* How to get telegram token and channel id
-* How to create slack webhook
-
-### Project structure
-
-### Developer environment setup
-
-### Tests
-
-### Code style
+fix: a commit of the type fix patches a bug in your codebase (this correlates with PATCH in Semantic Versioning).
+feat: a commit of the type feat introduces a new feature to the codebase (this correlates with MINOR in Semantic Versioning).
+BREAKING CHANGE: a commit that has a footer BREAKING CHANGE:, or appends a ! after the type/scope, introduces a breaking API change (correlating with MAJOR in Semantic Versioning). A BREAKING CHANGE can be part of commits of any type.
+types other than fix: and feat: are allowed, for example @commitlint/config-conventional (based on the the Angular convention) recommends build:, chore:, ci:, docs:, style:, refactor:, perf:, test:, and others.
+footers other than BREAKING CHANGE: <description> may be provided and follow a convention similar to git trailer format.
+```
