@@ -21,7 +21,7 @@ $ npm install @maddevs/mad-radiator
 $ touch radiator.js
 ```
 
-* In the file you need to import radiator and build config for running(see config section):
+*In the file, you need to import the radiator and pass the configs optionally for each module (see the configuration section):
 
 ```javascript
 const { radiator } = require('@maddevs/mad-radiator')
@@ -50,7 +50,7 @@ Sorry! Running the radiator by CLI script isn't available for now
 
 #### Core
 
-It is a list of core technologies that we use to make a business logic
+It is a list of core technologies that we used to make a business logic
 
 * node.js
 * axios
@@ -70,10 +70,10 @@ Additional tools for development
 
 ### Configuration
 
-This is a most important part of the documentation. For running radiator you need to create the correct config. In this
+This is a most important part of the documentation. For running radiator you need to create the correct config (* required configs). In this
 section you can find all available options of the radiator:
 
-#### Base config
+#### Base config *
 
 | name                     | type           | description                           |
 | -------------------------|:-------------  |:--------------------------------------|
@@ -141,11 +141,11 @@ Analytics conversion array need to collect data from your analytics goals and ca
 separate your goals by 3 categories: `Leads`, `Contacts` and `Careers`. You can do it using this configuration
 parameter.
 
-| name                 | type           | description  |
-| -------------        |:-------------  |:-------------------|
+| name                 | type           | description                       |
+| -------------        |:-------------  |:----------------------------------|
 | name                 | string         | The name of your conversion group |
-| emoji                | Emoji          | Emoji to display your group |
-| goals                | Array<number>  | An array of your goals ids |
+| emoji                | Emoji          | Emoji to display your group       |
+| goals                | Array<number>  | An array of your goals ids        |
 
 Example. If you want to collect data for careers from goals 1,2,3 and for leads from 4,5,11 goals:
 
@@ -198,22 +198,22 @@ const lighthouseConfig = {
 | name                 | type           | description        |
 | -------------        |:-------------  |:-------------------|
 | slackWebhookUrl      | string         | slack webhook url  |
-| slackChannelId       | string         | slack channel Id    |
+| slackChannelId       | string         | slack channel Id   |
 
-#### Schedule
+#### Schedule *
 
 Schedule options is used for set up custom scheduler for your radiator.
 
 **If you want to run your radiator manually(when run the script) you don't need to provide the `schedule`
 configuration**
 
-| name       | type            | description  |
-| -----------|:-------------  |:-------------------|
-| period     | day/week/month | Period for your schedule |
-| cron       | string         | A custom cron string(all other arguments will skip) |
-| time       | number         | Time to send a message(0-23) |
+| name       | type            | description                                                             |
+| -----------|:-------------  |:-------------------------------------------------------------------------|
+| period     | day/week/month | Period for your schedule                                                 |
+| cron       | string         | A custom cron string(all other arguments will skip)                      |
+| time       | number         | Time to send a message(0-23)                                             |
 | weekDay    | number         | Weekday to send a message(0-7, 0 and 7 is Sunday) - only for period=week |
-| monthDay   | number         | Monthday to send a message(0-31) - only for period=month |
+| monthDay   | number         | Monthday to send a message(0-31) - only for period=month                 |
 
 Example. You want to run your radiator script each day at 10AM. For this you need to use the following configuration:
 
@@ -225,42 +225,7 @@ const scheduleConfig = {
 }
 ```
 
-#### Environment variables
-For getting access to analytics, lighthouse, slack and telegram you need to provide a part of tokens for this services.
-There is list of all tokens that you need to provide for correct working
-
-**Important: Do not push your private keys to the public repository**
-
-| name                     | type           | description  |
-| -------------            |:-------------  |:-------------------|
-| authType                 | string         | Analytics auth type |
-| analyticsProjectId       | string         | Analytics project id |
-| analyticsPrivateKeyId    | string         | Analytics private key id |
-| analyticsPrivateKey      | string         | Analytics private key |
-| analyticsClientEmail     | string         | Analytics client email |
-| analyticsClientId        | string         | Analytics client id |
-| analyticsAuthUrl         | string         | Analytics auth url |
-| analyticsTokenUri        | string         | Analytics token uri |
-| analyticsProviderCertUrl | string         | Analytics provider cert url |
-| analyticsClientCertUrl   | string         | Analytics client cert url |
-| slackWebhookUrl          | string         | Slack webhook url |
-| googleapisKey            | string         | Googleapis key |
-| telegramToken            | string         | Telegram bot token |
-
-Also, we have guides how to get tokens from different services, you can find it in separated docs:
-* How to get analytics auth keys
-* How to get googleapisKey for lighthouse
-* How to get telegram token and channel id
-* How to create slack webhook
-
-### Project structure
-
-### Developer environment setup
-
-### Tests
-
-### Code style
-### Git commit format 
+### Git commit format
 ```
 The commit contains the following structural elements, to communicate intent to the consumers of your library:
 
@@ -270,3 +235,4 @@ BREAKING CHANGE: a commit that has a footer BREAKING CHANGE:, or appends a ! aft
 types other than fix: and feat: are allowed, for example @commitlint/config-conventional (based on the the Angular convention) recommends build:, chore:, ci:, docs:, style:, refactor:, perf:, test:, and others.
 footers other than BREAKING CHANGE: <description> may be provided and follow a convention similar to git trailer format.
 ```
+
