@@ -1,17 +1,20 @@
 import * as Sentry from '@sentry/node'
 import { AnalyticsService } from 'analytics'
+import { AnalyticsParams } from 'analytics/interfaces'
 import { GoogleAuthorization } from 'authorization'
 import { ChartBuilder } from 'chartBuilder'
+import { AnalyticsError } from 'errors/types/AnalyticsError'
+import { AuthorizationError } from 'errors/types/AuthorizationError'
 import { MessengersParams, ParsedRange, RadiatorConfig, ScheduleConfig, SentryParams } from 'interfaces'
 import { Lighthouse } from 'lighthouse'
+import { LighthouseParams } from 'lighthouse/interfaces'
 import { Logger } from 'logger'
 import { MessengersService } from 'messengers'
+import { RunCounter } from 'runCounter/RunCounter'
 import { Scheduler } from 'scheduler'
 import { GoogleDriveStorage } from 'storage'
 import { parseRange } from 'utils/parseRange'
 
-import { AnalyticsParams } from './analytics/interfaces'
-import { LighthouseParams } from './lighthouse/interfaces'
 
 export class Radiator {
   private readonly config: RadiatorConfig
@@ -34,6 +37,8 @@ export class Radiator {
 
   private scheduler: Scheduler | undefined
 
+  private runCounter: RunCounter
+
   constructor(config: RadiatorConfig) {
     this.config = config
     this.parsedRange = parseRange(this.config.range)
@@ -41,11 +46,15 @@ export class Radiator {
 
     // instances
     this.googleAuthorization = new GoogleAuthorization(this.config)
+    this.runCounter = new RunCounter()
   }
 
   public scheduleJob(scheduleParams: ScheduleConfig) {
     this.scheduler = new Scheduler(scheduleParams || ({} as ScheduleConfig))
-    this.scheduler.scheduleJob(() => this.run())
+    this.scheduler.scheduleJob(() => {
+      this.runCounter.resetRunCounter()
+      void this.run()
+    })
     Logger.info('Job successfully scheduled')
   }
 
@@ -102,12 +111,26 @@ export class Radiator {
     }
   }
 
+  private handleRadiatorError(error: Error | AnalyticsError | AuthorizationError) {
+    Sentry.captureException(error)
+
+    if (this.runCounter.getRunCounter() > this.config.retryAttempts) return
+
+    if (error instanceof AuthorizationError || error instanceof AnalyticsError) {
+      Logger.warning('Rerunning radiator...')
+      void this.run()
+    }
+  }
+
+
   public async run() {
     try {
       let analytics
       let lighthouse
       let imageBuffer
       let imageURL
+
+      this.runCounter.incrementRunCounter()
 
       if (this.sentryParams && this.sentryParams.sentryDSN) Radiator.sentryInit(this.sentryParams)
 
@@ -133,7 +156,6 @@ export class Radiator {
         Logger.info('Saving an image in gdrive...')
         imageURL = imageBuffer && (await this.googleDriveStorage.storeFile(imageBuffer))
       }
-
       if (googleAuthorization && this.messengersParams) {
         Logger.info('Send messages...')
         const messengersService = new MessengersService(this.messengersParams)
@@ -148,8 +170,7 @@ export class Radiator {
       }
 
     } catch (error) {
-      Logger.error(error)
-      Sentry.captureException(error)
+      this.handleRadiatorError(error)
     }
   }
 }

@@ -14,4 +14,5 @@ export const defaultConfig: RadiatorConfig = {
   googleapisKey: '',
   websiteUrl: '',
   range: RangeType.day,
+  retryAttempts: 2
 }
