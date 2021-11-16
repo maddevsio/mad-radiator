@@ -26,7 +26,8 @@
       "services": ["services"],
       "storage": ["storage"],
       "utils": ["utils"],
-      "errors": ["errors"]
+      "errors": ["errors"],
+      "runCounter": ["runCounter"]
     },
 
     "strict": true,
