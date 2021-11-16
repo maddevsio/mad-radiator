@@ -90,6 +90,7 @@ section you can find all available options of the radiator:
 | googleapisKey            | string         | Googleapis key                        |
 | range                    | day/week/month | range for collect data from analytics |
 | websiteUrl               | string         | Website url for lighthouse            |
+| retryAttempts            | number         | number of repeated starts of the radiator when an error occurs|
 
 #### Analytics config
 

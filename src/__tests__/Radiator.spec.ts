@@ -6,6 +6,7 @@ import { defaultConfig } from '__tests__/fixtures/defaultRadiatorConfigs'
 import { AnalyticsService } from 'analytics'
 import { GoogleAuthorization } from 'authorization'
 import { ChartBuilder } from 'chartBuilder'
+import { AuthorizationError } from 'errors/types/AuthorizationError'
 import { Lighthouse } from 'lighthouse'
 import { MessengersService } from 'messengers'
 import { Scheduler } from 'scheduler'
@@ -148,4 +149,18 @@ describe('Radiator', () => {
     expect(renderChart).toHaveBeenCalledTimes(0)
     expect(storeFile).toHaveBeenCalledTimes(0)
   })
+
+  it('should correctly called handleRadiatorError', async () => {
+    // @ts-ignore
+    MockedAnalytics.mockImplementation(() => ({
+      getData:() =>  Promise.reject(new AuthorizationError('api error'))
+    }))
+
+    const radiator = new Radiator(defaultConfig)
+    radiator.useAnalytics(defaultAnalyticsParams)
+    await radiator.run()
+
+    expect(Sentry.captureException).toHaveBeenCalledTimes(1)
+  })
 })
+

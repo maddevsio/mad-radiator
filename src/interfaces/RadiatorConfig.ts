@@ -14,4 +14,5 @@ export interface RadiatorConfig {
   googleapisKey: string,
   websiteUrl: string,
   range: RangeType
+  retryAttempts: number
 }
