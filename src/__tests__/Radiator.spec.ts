@@ -47,7 +47,6 @@ describe('Radiator', () => {
 
 
   let scheduleJob = jest.fn()
-  let unlink = jest.fn()
   let getData = jest.fn()
   let renderChart = jest.fn()
   let storeFile = jest.fn()
@@ -67,7 +66,6 @@ describe('Radiator', () => {
 
     getData = jest.fn(async () => analyticsData)
 
-    unlink = jest.fn()
 
     renderChart = jest.fn(async () => 'buffer')
 
@@ -81,15 +79,6 @@ describe('Radiator', () => {
     // @ts-ignore
     MockedAnalytics.mockImplementation(() => ({
       getData,
-    }))
-
-    // @ts-ignore
-    MockedGoogleAuth.mockImplementation(() => ({
-      authorize() {
-        return {
-          unlink,
-        }
-      },
     }))
 
     // @ts-ignore
@@ -131,7 +120,6 @@ describe('Radiator', () => {
     expect(Sentry.init).toHaveBeenCalledTimes(2)
     expect(getData).toHaveBeenCalledTimes(2)
     expect(lighthouseInstance.getLighthouseMetrics).toHaveBeenCalledTimes(2)
-    expect(unlink).toHaveBeenCalledTimes(2)
     expect(renderChart).toHaveBeenCalledTimes(2)
     expect(storeFile).toHaveBeenCalledTimes(2)
   })

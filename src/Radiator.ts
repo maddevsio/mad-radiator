@@ -165,7 +165,6 @@ export class Radiator {
           range: this.parsedRange,
           imageURL,
         })
-        await googleAuthorization.unlink()
         Logger.success('Success!')
       }
 

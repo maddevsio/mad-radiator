@@ -1,5 +1,5 @@
 export interface MessengersParams {
-  websiteUrl: string,
+  websiteUrl?: string,
   telegramToken?: string,
   telegramChannelId?: number,
   slackWebhookUrl?: string,
