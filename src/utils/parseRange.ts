@@ -19,7 +19,7 @@ function getLastMonth(): string {
   return `${start} - ${end}`
 }
 
-export function parseRange(range: RangeType = RangeType.day): ParsedRange {
+export function parseRange(range: string | RangeType = RangeType.day): ParsedRange {
   if (range === RangeType.day) {
     return {
       range,

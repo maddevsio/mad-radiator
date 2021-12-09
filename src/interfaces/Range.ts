@@ -14,7 +14,7 @@ export type RangeWithDisplay = Range & {
 }
 
 export interface ParsedRange {
-  range: RangeType
+  range:  RangeType | string
   originalRange: Range
   previousRange: Range
   text: string
