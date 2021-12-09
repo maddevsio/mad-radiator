@@ -8,6 +8,6 @@ export interface RadiatorConfig {
   refreshToken: string,
   googleapisKey: string,
   websiteUrl: string,
-  range: RangeType
+  range: RangeType | string,
   retryAttempts: number
 }
