@@ -77,16 +77,11 @@ section you can find all available options of the radiator:
 
 | name                     | type           | description                           |
 | -------------------------|:-------------  |:--------------------------------------|
-| authType                 | string         | Analytics auth type                   |
-| analyticsProjectId       | string         | Analytics project id                  |
-| analyticsPrivateKeyId    | string         | Analytics private key id              |
-| analyticsPrivateKey      | string         | Analytics private key                 |
-| analyticsClientEmail     | string         | Analytics client email                |
-| analyticsClientId        | string         | Analytics client id                   |
-| analyticsAuthUrl         | string         | Analytics auth url                    |
-| analyticsTokenUri        | string         | Analytics token uri                   |
-| analyticsProviderCertUrl | string         | Analytics provider cert url           |
-| analyticsClientCertUrl   | string         | Analytics client cert url             |
+| clientId                 | string         | Google client id                      |
+| clientSecret             | string         | Google client secret                  |
+| redirectUri              | string         | Google redirect Uri                   |
+| accessToken              | string         | Google accessToken                    |
+| refreshToken             | string         | Google refreshToken                   |
 | googleapisKey            | string         | Googleapis key                        |
 | range                    | day/week/month | range for collect data from analytics |
 | websiteUrl               | string         | Website url for lighthouse            |
