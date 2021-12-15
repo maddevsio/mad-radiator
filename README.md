@@ -138,7 +138,7 @@ separate your goals by 3 categories: `Leads`, `Contacts` and `Careers`. You can 
 parameter.
 
 | name                 | type           | description                       |
-| -------------        |:-------------  |:----------------------------------|
+| ------------------   |:-------------  |:----------------------------------|
 | name                 | string         | The name of your conversion group |
 | emoji                | Emoji          | Emoji to display your group       |
 | goals                | Array<number>  | An array of your goals ids        |
