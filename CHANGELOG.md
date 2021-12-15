@@ -1,3 +1,10 @@
+## [1.17.4](https://github.com/maddevsio/mad-radiator/compare/v1.17.3...v1.17.4) (2021-12-15)
+
+
+### Bug Fixes
+
+* Testing versioning and auto release ([c9df2e9](https://github.com/maddevsio/mad-radiator/commit/c9df2e9a6c2d99765066794a749d2e9d0dd00a95))
+
 ## [1.17.3](https://github.com/maddevsio/mad-radiator/compare/v1.17.2...v1.17.3) (2021-11-02)
 
 
