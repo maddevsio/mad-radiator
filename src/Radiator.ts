@@ -41,7 +41,7 @@ export class Radiator {
 
   constructor(config: RadiatorConfig) {
     this.config = config
-    this.parsedRange = parseRange(this.config.range)
+    this.parsedRange = parseRange(this.config.range, this.config.timeZone)
     this.messengersParams = { websiteUrl: config.websiteUrl }
 
     // instances

@@ -1,4 +1,5 @@
 import { analyticsData } from '__tests__/fixtures/analyticsData'
+import { defaultMessengersParams } from '__tests__/fixtures/defaultMessengersParams'
 import { lighthouseData } from '__tests__/fixtures/lighthouseData'
 import { parsedRange } from '__tests__/fixtures/parsedRange'
 import { MessengersParams } from 'interfaces'
@@ -7,7 +8,6 @@ import { MessengersService } from 'messengers/MessengersService'
 import { Slack } from 'messengers/Slack'
 import { Telegram } from 'messengers/Telegram'
 
-import { defaultMessengersParams } from '../../__tests__/fixtures/defaultMessengersParams'
 
 jest.mock('messengers/Slack')
 jest.mock('messengers/Telegram')

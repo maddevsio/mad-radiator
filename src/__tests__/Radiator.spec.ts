@@ -30,6 +30,28 @@ jest.mock('@sentry/node', () => (
     captureException: jest.fn(),
   }
 ))
+jest.mock('moment', () => () => ({
+  tz: () => ({
+    subtract: () => ({
+      format: () => '25/4/2021',
+    }),
+  }),
+  subtract: () => ({
+    format: () => '25/4/2021',
+  }),
+}))
+
+jest.mock('moment-timezone', () => () => ({
+  tz: () => ({
+    subtract: () => ({
+      format: () => '25/4/2021',
+    }),
+  }),
+  subtract: () => ({
+    format: () => '25/4/2021',
+  }),
+}))
+
 const MockedAnalytics = AnalyticsService as jest.Mock<AnalyticsService>
 // @ts-ignore
 const MockedLighthouse = Lighthouse as jest.Mock<Lighthouse>
