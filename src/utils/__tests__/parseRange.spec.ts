@@ -1,9 +1,14 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { MockedDate } from '__tests__/fixtures/MockedDate'
 import { RangeType } from 'interfaces'
 import { parseRange } from 'utils/parseRange'
+import 'moment-timezone'
 
 jest.mock('moment', () => () => ({
+  tz: () => ({
+    subtract: () => ({
+      format: () => '25/4/2021',
+    }),
+  }),
   subtract: () => ({
     format: () => '25/4/2021',
   }),
@@ -15,7 +20,11 @@ jest.mock('moment-timezone', () => () => ({
       format: () => '25/4/2021',
     }),
   }),
+  subtract: () => ({
+    format: () => '25/4/2021',
+  }),
 }))
+
 
 // const mockedMoment = moment as jest.Mock<moment>
 
