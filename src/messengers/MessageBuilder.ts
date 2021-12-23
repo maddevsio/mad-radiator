@@ -1,4 +1,4 @@
-import { CoreItems, Country, Device, Goals } from 'analytics/interfaces'
+import { Blog, CoreItems, Country, Device , Goals } from 'analytics/interfaces'
 import { Blocks } from 'blocks/Blocks'
 import { Emoji } from 'emoji/Emoji'
 import { ParsedRange, RadiatorConfig } from 'interfaces'
@@ -6,7 +6,6 @@ import { LighthouseMetrics, LighthouseUrlResult } from 'lighthouse/interfaces'
 import { BuildMessageData, SlackMessageBlock } from 'messengers/interfaces'
 import { capitalize } from 'utils/capitalize'
 
-import { Blog } from '../analytics/interfaces'
 
 export abstract class MessageBuilder {
   protected abstract readonly blocksService: Blocks
