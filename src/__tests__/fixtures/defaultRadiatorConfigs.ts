@@ -10,7 +10,7 @@ export const defaultConfig: RadiatorConfig = {
   websiteUrl: '',
   expiryDate: 0,
   tokenType: '',
-  id_token:'',
+  idToken:'',
   range: RangeType.day,
   retryAttempts: 2
 }
