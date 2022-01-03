@@ -9,7 +9,7 @@ export interface RadiatorConfig {
   googleapisKey: string,
   expiryDate?: number,
   tokenType?: string,
-  id_token?:string,
+  idToken?:string,
   websiteUrl: string,
   range: RangeType | string,
   retryAttempts: number
