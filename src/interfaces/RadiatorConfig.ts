@@ -7,8 +7,10 @@ export interface RadiatorConfig {
   accessToken: string,
   refreshToken: string,
   googleapisKey: string,
+  expiryDate?: number,
+  tokenType?: string,
+  idToken?:string,
   websiteUrl: string,
   range: RangeType | string,
-  timeZone: string,
   retryAttempts: number
 }

@@ -12,14 +12,17 @@ export class GoogleAuthorization {
 
   public async authorize() {
     try {
-      const { clientId, clientSecret, redirectUri, accessToken, refreshToken } = this.config
+      const { clientId, clientSecret, redirectUri, accessToken, refreshToken,expiryDate, tokenType, idToken } = this.config
 
       const { OAuth2 } = google.auth;
       const oauth2Client = new OAuth2( clientId, clientSecret, redirectUri);
 
       oauth2Client.setCredentials({
         access_token:accessToken,
-        refresh_token:refreshToken
+        refresh_token:refreshToken,
+        expiry_date:expiryDate,
+        token_type:tokenType,
+        id_token:idToken,
       })
 
       google.options({ auth:oauth2Client })
