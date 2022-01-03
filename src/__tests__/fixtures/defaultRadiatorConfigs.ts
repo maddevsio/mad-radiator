@@ -8,7 +8,9 @@ export const defaultConfig: RadiatorConfig = {
   refreshToken: '',
   googleapisKey: '',
   websiteUrl: '',
-  timeZone:'',
+  expiryDate: 0,
+  tokenType: '',
+  id_token:'',
   range: RangeType.day,
   retryAttempts: 2
 }

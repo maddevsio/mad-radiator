@@ -4,4 +4,7 @@ export interface EnvironmentConfig {
   redirectUri:string,
   accessToken: string,
   refreshToken: string,
+  expiryDate?: number,
+  tokenType?: string,
+  idToken?:string,
 }
