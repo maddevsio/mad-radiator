@@ -24,6 +24,7 @@ export class Sitemap {
   }
 
   private buildSitemapUrl(): string {
-    return `${this.config.websiteUrl}/sitemap.xml`
+    const correctUrl = this.config.websiteUrl?.replace(/\/?$/gm, '');
+    return `${correctUrl}/sitemap.xml`
   }
 }
