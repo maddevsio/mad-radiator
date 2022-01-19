@@ -15,7 +15,6 @@ import { Scheduler } from 'scheduler'
 import { GoogleDriveStorage } from 'storage'
 import { parseRange } from 'utils/parseRange'
 
-
 export class Radiator {
   private readonly config: RadiatorConfig
 
@@ -127,8 +126,8 @@ export class Radiator {
     try {
       let analytics
       let lighthouse
-      let imageBuffer
       let imageURL
+      let imageBuffer
 
       this.runCounter.incrementRunCounter()
 
@@ -156,6 +155,7 @@ export class Radiator {
         Logger.info('Saving an image in gdrive...')
         imageURL = imageBuffer && (await this.googleDriveStorage.storeFile(imageBuffer))
       }
+
       if (googleAuthorization && this.messengersParams) {
         Logger.info('Send messages...')
         const messengersService = new MessengersService(this.messengersParams)
