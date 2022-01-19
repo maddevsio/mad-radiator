@@ -8,7 +8,7 @@ const {
   scheduleConfig,
   telegramConfig,
   slackConfig,
-  useLighthouse
+  lighthouseConfig
 } = config
 
 const radiator = new Radiator(authConfig)
