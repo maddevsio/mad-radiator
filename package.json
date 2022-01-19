@@ -103,7 +103,6 @@
     "@bitauth/libauth": "^1.17.1",
     "@sentry/node": "^6.13.3",
     "@sentry/tracing": "^6.13.3",
-    "@types/sharp": "^0.28.4",
     "axios": "^0.21.1",
     "chalk": "^4.1.1",
     "fast-xml-parser": "^3.19.0",
@@ -113,7 +112,6 @@
     "node-emoji": "^1.10.0",
     "node-schedule": "^2.0.0",
     "quickchart-js": "^2.0.3",
-    "sharp": "^0.28.3",
     "vega": "^5.20.2",
     "yargs": "^17.0.1"
   },
