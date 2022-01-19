@@ -21,6 +21,7 @@ export class CountriesRepository extends Repository {
    */
   public async getData(): Promise<Array<Country>> {
     const reports = await this.getAnalytics(this.metrics, this.dimensions)
+    
     return CountriesRepository.format(reports)
   }
 
