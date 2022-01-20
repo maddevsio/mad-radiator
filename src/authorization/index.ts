@@ -1,1 +1,2 @@
-export * from 'authorization/GoogleAuthorization'
+export * from 'authorization/GoogleAuthorizationWithTokens'
+export * from 'authorization/GoogleAuthorizationWithJson'

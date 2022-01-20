@@ -1,5 +1,5 @@
 import { defaultGoogleAuthorizationParams } from '__tests__/fixtures/defaultGoogleAuthorizationParams'
-import { GoogleAuthorization } from 'authorization/GoogleAuthorization'
+import { GoogleAuthorization } from 'authorization/GoogleAuthorizationWithTokens'
 import { EnvironmentConfig } from 'interfaces'
 
 

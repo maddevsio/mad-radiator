@@ -12,6 +12,7 @@ const {
 } = config
 
 const radiator = new Radiator(authConfig)
+radiator.useAuthorization(authConfig)
 radiator.useSentry(sentryConfig)
 radiator.useAnalytics(analyticsConfig)
 radiator.useLighthouse(lighthouseConfig)

@@ -1,11 +1,19 @@
 import * as Sentry from '@sentry/node'
 import { AnalyticsService } from 'analytics'
 import { AnalyticsParams } from 'analytics/interfaces'
-import { GoogleAuthorization } from 'authorization'
+import { GoogleAuthorizationWithJson, GoogleAuthorizationWithTokens } from 'authorization'
 import { ChartBuilder } from 'chartBuilder'
 import { AnalyticsError } from 'errors/types/AnalyticsError'
 import { AuthorizationError } from 'errors/types/AuthorizationError'
-import { MessengersParams, ParsedRange, RadiatorConfig, ScheduleConfig, SentryParams } from 'interfaces'
+import {
+  AuthorizationWithKeyParams,
+  AuthorizationWithTokenParams,
+  MessengersParams,
+  ParsedRange,
+  RadiatorConfig,
+  ScheduleConfig,
+  SentryParams
+} from 'interfaces'
 import { Lighthouse } from 'lighthouse'
 import { LighthouseParams } from 'lighthouse/interfaces'
 import { Logger } from 'logger'
@@ -24,7 +32,7 @@ export class Radiator {
 
   private messengersParams: MessengersParams | undefined
 
-  private googleAuthorization: GoogleAuthorization
+  private googleAuthorization: GoogleAuthorizationWithJson | GoogleAuthorizationWithTokens
 
   private analyticsService: AnalyticsService | undefined
 
@@ -44,8 +52,15 @@ export class Radiator {
     this.messengersParams = { websiteUrl: config.websiteUrl }
 
     // instances
-    this.googleAuthorization = new GoogleAuthorization(this.config)
     this.runCounter = new RunCounter()
+  }
+
+  public useAuthorizationWithKeys(authorizationParams: AuthorizationWithKeyParams) {
+    this.googleAuthorization = new GoogleAuthorizationWithJson(authorizationParams)
+  }
+
+  public useAuthorizationWithTokens(authorizationParams: AuthorizationWithTokenParams) {
+    this.googleAuthorization = new GoogleAuthorizationWithTokens(authorizationParams)
   }
 
   public scheduleJob(scheduleParams: ScheduleConfig) {
@@ -165,6 +180,8 @@ export class Radiator {
           range: this.parsedRange,
           imageURL,
         })
+
+        // if (googleAuthorization instanceof GoogleAuthorizationWithJson) await googleAuthorization?.unlink()
         Logger.success('Success!')
       }
 
