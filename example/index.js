@@ -5,10 +5,10 @@ const {
   authConfig,
   sentryConfig,
   analyticsConfig,
-  lighthouseConfig,
+  scheduleConfig,
   telegramConfig,
   slackConfig,
-  scheduleConfig,
+  lighthouseConfig
 } = config
 
 const radiator = new Radiator(authConfig)

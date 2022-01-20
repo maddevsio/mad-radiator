@@ -47,7 +47,7 @@ export class AnalyticsService {
       const countries = (await this.repositories.countries.getData()) as Array<Country>
       const devices = (await this.repositories.devices.getData()) as Array<Device>
       const goals = (await this.repositories.goals.getData()) as Goals
-      const chart = this.config.chart
+      const chart = (this.config.chart && Object.keys(this.config.chart).length)
         ? ((await this.repositories.chart.getData()) as Record<string, number>)
         : undefined
       const blogs = (await this.repositories.blogs.getData()) as Array<Blog>
