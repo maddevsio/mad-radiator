@@ -4,7 +4,7 @@ import { Radiator } from 'Radiator'
 import { analyticsData } from '__tests__/fixtures/analyticsData'
 import { defaultConfig } from '__tests__/fixtures/defaultRadiatorConfigs'
 import { AnalyticsService } from 'analytics'
-import { GoogleAuthorization } from 'authorization'
+import { GoogleAuthorizationWithTokens } from 'authorization'
 import { ChartBuilder } from 'chartBuilder'
 import { AuthorizationError } from 'errors/types/AuthorizationError'
 import { Lighthouse } from 'lighthouse'
@@ -18,7 +18,7 @@ import { defaultMessengersParams } from './fixtures/defaultMessengersParams'
 
 jest.mock('analytics/AnalyticsService')
 jest.mock('chartBuilder/ChartBuilder')
-jest.mock('authorization/GoogleAuthorization')
+jest.mock('authorization/GoogleAuthorizationWithTokens')
 jest.mock('lighthouse/Lighthouse')
 jest.mock('messengers/MessengersService')
 jest.mock('scheduler/Scheduler')
@@ -57,7 +57,7 @@ const MockedAnalytics = AnalyticsService as jest.Mock<AnalyticsService>
 const MockedLighthouse = Lighthouse as jest.Mock<Lighthouse>
 const MockedMessengers = MessengersService as jest.Mock<MessengersService>
 const MockedScheduler = Scheduler as jest.Mock<Scheduler>
-const MockedGoogleAuth = GoogleAuthorization as jest.Mock<GoogleAuthorization>
+const MockedGoogleAuth = GoogleAuthorizationWithTokens as jest.Mock<GoogleAuthorizationWithTokens>
 // @ts-ignore
 const MockedChart = ChartBuilder as jest.Mock<ChartBuilder>
 // @ts-ignore

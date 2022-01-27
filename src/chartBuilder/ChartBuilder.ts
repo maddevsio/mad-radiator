@@ -23,7 +23,7 @@ export class ChartBuilder {
 
       return await this.renderService.toBinary()
     }
-    catch (error) {
+    catch (error: any) {
      throw new ChartError(error)
     }
   }

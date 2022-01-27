@@ -32,7 +32,7 @@ export class Radiator {
 
   private messengersParams: MessengersParams | undefined
 
-  private googleAuthorization: GoogleAuthorizationWithJson | GoogleAuthorizationWithTokens
+  private googleAuthorization: GoogleAuthorizationWithJson | GoogleAuthorizationWithTokens | undefined
 
   private analyticsService: AnalyticsService | undefined
 
@@ -50,7 +50,6 @@ export class Radiator {
     this.config = config
     this.parsedRange = parseRange(this.config.range)
     this.messengersParams = { websiteUrl: config.websiteUrl }
-
     // instances
     this.runCounter = new RunCounter()
   }
@@ -84,7 +83,7 @@ export class Radiator {
     this.sentryParams = sentryParams
   }
 
-  public useAnalytics(analyticsParams: AnalyticsParams) {
+  public useAnalytics(analyticsParams: AnalyticsParams) {    
     this.analyticsService = new AnalyticsService({
       ...analyticsParams,
       websiteUrl: this.config.websiteUrl,
@@ -136,20 +135,22 @@ export class Radiator {
     }
   }
 
-
   public async run() {
     try {
       let analytics
       let lighthouse
       let imageURL
       let imageBuffer
+      let googleAuthorization
 
       this.runCounter.incrementRunCounter()
 
       if (this.sentryParams && this.sentryParams.sentryDSN) Radiator.sentryInit(this.sentryParams)
 
-      Logger.info('Authorize with googleAuthorization...')
-      const googleAuthorization = await this.googleAuthorization.authorize()
+      if (this.googleAuthorization) {
+        Logger.info('Authorize with googleAuthorization...')
+        googleAuthorization = await this.googleAuthorization.authorize()
+      }
 
       if (this.analyticsService) {
         Logger.info('Getting analytics data...')
@@ -185,7 +186,7 @@ export class Radiator {
         Logger.success('Success!')
       }
 
-    } catch (error) {
+    } catch (error: any) {      
       this.handleRadiatorError(error)
     }
   }

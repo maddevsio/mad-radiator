@@ -38,11 +38,13 @@ export class GoogleAuthorizationWithTokens {
       })
 
       google.options({ auth: oauth2Client })
-      
+
       return {
         google,
       }
-    } catch (error) {
+    } catch (error: any) {
+      console.log('Error', error);
+      
       throw new AuthorizationError(error)
     }
   }

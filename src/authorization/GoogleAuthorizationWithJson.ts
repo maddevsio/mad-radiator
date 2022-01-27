@@ -31,13 +31,14 @@ export class GoogleAuthorizationWithJson {
       })
 
       google.options({ auth })
+      
       return {
         unlink: async () => {
           fs.unlink(KEYS_FILEPATH, error => error && Logger.error(`Unlink error: ${error}`))
         },
         google,
       }
-    } catch (error) {
+    } catch (error: any) {
       throw new AuthorizationError(error)
     }
   }

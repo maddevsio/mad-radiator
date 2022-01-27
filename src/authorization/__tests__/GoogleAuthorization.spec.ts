@@ -1,5 +1,5 @@
 import { defaultGoogleAuthorizationParams } from '__tests__/fixtures/defaultGoogleAuthorizationParams'
-import { GoogleAuthorization } from 'authorization/GoogleAuthorizationWithTokens'
+import { GoogleAuthorizationWithTokens } from 'authorization/GoogleAuthorizationWithTokens'
 import { EnvironmentConfig } from 'interfaces'
 
 
@@ -21,7 +21,7 @@ describe('GoogleAuthorization', () => {
   })
 
   it('should correctly create an instance', () => {
-    const service = new GoogleAuthorization(config)
+    const service = new GoogleAuthorizationWithTokens(config)
 
     expect(service.authorize).toBeTruthy()
   })
