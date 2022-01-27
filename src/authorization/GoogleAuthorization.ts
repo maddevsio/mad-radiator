@@ -15,7 +15,7 @@ export class GoogleAuthorization {
       const { clientId, clientSecret, redirectUri, accessToken, refreshToken,expiryDate, tokenType, idToken } = this.config
 
       const { OAuth2 } = google.auth;
-      const oauth2Client = new OAuth2( clientId, clientSecret, redirectUri);
+      const oauth2Client = new OAuth2(clientId, clientSecret, redirectUri);
 
       oauth2Client.setCredentials({
         access_token:accessToken,
@@ -29,7 +29,7 @@ export class GoogleAuthorization {
       return {
         google,
       }
-    } catch (error) {
+    } catch (error: any) {
       throw new AuthorizationError(error)
     }
   }
