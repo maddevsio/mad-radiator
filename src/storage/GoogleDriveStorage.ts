@@ -23,7 +23,7 @@ export class GoogleDriveStorage extends Storage {
       await this.drive.permissions.create(GoogleDriveStorage.getPermissionsRequestParams(id))
 
       return id ? GoogleDriveStorage.buildPreviewLink(id) : undefined
-    } catch (error) {
+    } catch (error: any) {
       throw new StorageError(error)
     }
   }

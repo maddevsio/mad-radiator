@@ -168,7 +168,7 @@ export class Radiator {
         Logger.success('Success!')
       }
 
-    } catch (error) {
+    } catch (error: any) {
       this.handleRadiatorError(error)
     }
   }

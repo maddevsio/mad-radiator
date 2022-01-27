@@ -59,7 +59,7 @@ export class AnalyticsService {
         chart,
         blogs,
       }
-    } catch (error) {
+    } catch (error: any) {
       throw new AnalyticsError(error)
     }
   }
