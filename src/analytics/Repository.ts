@@ -9,7 +9,7 @@ export abstract class Repository {
   /**
    * Range for requests
    */
-  private readonly range: ParsedRange
+  readonly range: ParsedRange
 
   /**
    * GA instance
@@ -45,8 +45,8 @@ export abstract class Repository {
     dimensions: Array<AnalyticsDimension> = [],
     dateRanges: Array<Range> = [this.range.originalRange, this.range.previousRange],
   ): Promise<AnalyticsPayload> {
+    
     const response = await this.googleAnalytics.reports.batchGet({
-      // @ts-ignore
       requestBody: {
         reportRequests: [
           {
@@ -58,8 +58,9 @@ export abstract class Repository {
         ],
       },
     })
-
+    
     const payload = response.data.reports as AnalyticsPayload | undefined
+
     return payload || ([] as AnalyticsPayload)
   }
 }
