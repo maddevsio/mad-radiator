@@ -80,7 +80,8 @@ describe('ChartRepository', () => {
 
   it('should correctly return data with filtred range', async () => {
     config.chart = {
-      period: 100,
+      chartView: 'line',
+      period: 90,
       type: 'users',
     }
     // @ts-ignore

@@ -74,7 +74,8 @@ export class Radiator {
       ...analyticsParams,
       websiteUrl: this.config.websiteUrl,
     }, this.parsedRange)
-    this.useChartBuilder()
+
+    this.useChartBuilder(analyticsParams)
     this.useGoogleDriveStorage()
   }
 
@@ -88,8 +89,8 @@ export class Radiator {
     )
   }
 
-  private useChartBuilder() {
-    this.chartBuilder = new ChartBuilder()
+  private useChartBuilder(analyticsParams: AnalyticsParams) {
+    this.chartBuilder = new ChartBuilder(analyticsParams)
   }
 
   private useGoogleDriveStorage() {
@@ -146,7 +147,7 @@ export class Radiator {
         lighthouse = await this.lighthouse.getLighthouseMetrics()
       }
 
-      if (analytics && this.chartBuilder) {
+      if (analytics && this.chartBuilder) {        
         Logger.info('Building an image...')
         imageBuffer = analytics.chart && (await this.chartBuilder.renderChart(analytics.chart))
       }
