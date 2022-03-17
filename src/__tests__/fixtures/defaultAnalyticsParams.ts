@@ -4,8 +4,9 @@ export const defaultAnalyticsParams =
     websiteUrl: 'https://maddevs.io',
     range: 'day',
     chart: {
-      period: 3,
       type: 'users',
+      period: 3,
+      chartView: 'bar',
     },
     pagesPathForViewsAnalytics: [
       '/customer-university/',

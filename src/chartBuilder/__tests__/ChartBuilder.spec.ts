@@ -2,7 +2,23 @@ import { ChartBuilder } from 'chartBuilder/ChartBuilder'
 
 describe('ChartBuilder', () => {
   it('should correctly create an instance', () => {
-    const builder = new ChartBuilder()
+    const analyticsParams = {
+      analyticsViewId: '1',
+      websiteUrl: 'https://maddevs.io/',
+      chart: {
+        type: 'users',
+        period: 90,
+        chartView: 'line'
+      },
+      pagesPathForViewsAnalytics: ['some', 'strings'],
+      analyticsConversions: [{
+        name: 'name',
+        emoji: 'emoji',
+        goals: [1, 2, 3]
+      }]
+    }
+
+    const builder = new ChartBuilder(analyticsParams)
 
     expect(builder.renderChart).toBeTruthy()
   })

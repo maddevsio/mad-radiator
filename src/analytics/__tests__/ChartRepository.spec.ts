@@ -60,6 +60,7 @@ describe('ChartRepository', () => {
 
     const repository = new ChartRepository(config, parsedRange)
     const chartData = await repository.getData()
+    
     expect(chartData).toEqual({
       '16/7/2021': 10,
       '17/7/2021': 10,
@@ -80,6 +81,7 @@ describe('ChartRepository', () => {
 
   it('should correctly return data with filtred range', async () => {
     config.chart = {
+      chartView: 'line',
       period: 100,
       type: 'users',
     }
