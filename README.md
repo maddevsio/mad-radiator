@@ -98,10 +98,11 @@ section you can find all available options of the radiator:
 
 #### Chart
 
-| name                 | type           | description                |
-| -------------        |:-------------  |:---------------------------|
-| period               | day/week/month | Period for your chart      |
-| type                 | users          | Statistics on user traffic |
+| name                 | type                | description                |
+| -------------        |:-------------       |:---------------------------|
+| period               | day/week/month      | Period for your chart      |
+| type                 | users               | Statistics on user traffic |
+| chartView            | line/bar/radar/etc. | View of chart              |
 
 Example
 
@@ -109,6 +110,7 @@ Example
 const analyticsConfig = {
   //...
   chart: {
+    chartView: "line",
     period: 150,
     type: "users"
   },

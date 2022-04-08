@@ -32,11 +32,13 @@ export class BlogsRepository extends Repository {
    */
   private static format(reports: AnalyticsPayload, websiteUrl: string, pagesPathForViewsAnalytics?: Array<string>): Array<Blog> {
 
+    const correctWebsiteUrl = websiteUrl.replace(/\/*$/gi, '')
+
     const reportsDataPath = reports[0].data.rows
 
     if (pagesPathForViewsAnalytics?.length) {
       const filteredPages = BlogsRepository.filterPages(reportsDataPath, pagesPathForViewsAnalytics)
-      return BlogsRepository.getTopPagesViewsStatistics(filteredPages, websiteUrl)
+      return BlogsRepository.getTopPagesViewsStatistics(filteredPages, correctWebsiteUrl)
     }
     return []
   }
