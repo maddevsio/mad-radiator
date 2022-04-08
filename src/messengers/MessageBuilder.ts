@@ -6,7 +6,6 @@ import { LighthouseMetrics, LighthouseUrlResult } from 'lighthouse/interfaces'
 import { BuildMessageData, SlackMessageBlock } from 'messengers/interfaces'
 import { capitalize } from 'utils/capitalize'
 
-
 export abstract class MessageBuilder {
   protected abstract readonly blocksService: Blocks
 

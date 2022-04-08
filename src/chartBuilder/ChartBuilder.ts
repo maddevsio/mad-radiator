@@ -15,7 +15,7 @@ export class ChartBuilder {
   }
 
   public async renderChart(chartData: Record<string, number>) {
-    try {      
+    try {
       this.renderService
         .setConfig({
           type: this.view,
