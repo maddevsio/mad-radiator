@@ -40,6 +40,7 @@ export class BlogsRepository extends Repository {
       const filteredPages = BlogsRepository.filterPages(reportsDataPath, pagesPathForViewsAnalytics)
       return BlogsRepository.getTopPagesViewsStatistics(filteredPages, correctWebsiteUrl)
     }
+    
     return []
   }
 
