@@ -8,6 +8,7 @@ export const defaultConfig: RadiatorConfig = {
   refreshToken: '',
   googleapisKey: '',
   websiteUrl: '',
+  sitemapUrl: 'sitemap.xml',
   expiryDate: 0,
   tokenType: '',
   idToken:'',

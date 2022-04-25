@@ -1,7 +1,6 @@
-import axios from 'axios'
-import { XmlParser } from 'lighthouse/XmlParser'
-
 import { LighthouseParams } from './interfaces'
+
+const sitemaps = require('sitemap-stream-parser');
 
 export class Sitemap {
   private readonly config: LighthouseParams
@@ -10,21 +9,33 @@ export class Sitemap {
     this.config = config
   }
 
-  public async getAllUrls(): Promise<Array<string>> {
+  public async getAllUrls() {
     const url = this.buildSitemapUrl()
+    const parsedUrls: Array<string> = await this.parseSitemapUrls(url);    
 
-    const { data: xml } = await axios.get<string>(url)
-
-    const urls = XmlParser.parseTags(xml, 'loc')
-
-    if (!this.config?.urlTestRegexp) return urls
-
-    const regexp = new RegExp(this.config.urlTestRegexp)
-    return urls.filter(urlToTest => !regexp.test(urlToTest))
+    return this.filterByRegexp(parsedUrls);
   }
 
-  private buildSitemapUrl(): string {
-    const correctUrl = this.config.websiteUrl?.replace(/\/?$/gm, '');
-    return `${correctUrl}/sitemap.xml`
+  private buildSitemapUrl() {
+    return `${this.config.websiteUrl?.replace(/\/?$/gm, '')}/${this.config?.sitemapUrl}`
+  }
+
+  private parseSitemapUrls(link: string) {
+    return new Promise<Array<string>>(resolve => {
+      const parsedUrls: Array<string> = [];
+
+      sitemaps.parseSitemaps(
+        link,
+        (xml: string) => parsedUrls.push(xml),
+        () => resolve(parsedUrls)
+      );
+    })
+  }
+
+  private filterByRegexp(parsedUrls: Array<string>) {
+    if (!this.config?.urlTestRegexp) return parsedUrls
+    const regexp = new RegExp(this.config.urlTestRegexp)
+
+    return parsedUrls.filter(urlToTest => !regexp.test(urlToTest))
   }
 }

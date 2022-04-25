@@ -64,8 +64,7 @@ const MockedChart = ChartBuilder as jest.Mock<ChartBuilder>
 const MockedStorage = GoogleDriveStorage as jest.Mock<GoogleDriveStorage>
 
 describe('Radiator', () => {
-  jest.spyOn(console, 'log').mockImplementation(() => {
-  })
+  jest.spyOn(console, 'log').mockImplementation(() => {})
 
 
   let scheduleJob = jest.fn()

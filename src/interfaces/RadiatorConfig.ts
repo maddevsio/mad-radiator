@@ -11,6 +11,7 @@ export interface RadiatorConfig {
   tokenType?: string,
   idToken?:string,
   websiteUrl: string,
+  sitemapUrl: string,
   range: RangeType | string,
   retryAttempts: number
 }
