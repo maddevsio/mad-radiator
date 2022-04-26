@@ -1,4 +1,3 @@
-import axios from 'axios'
 import { Sitemap } from 'lighthouse/Sitemap'
 import { LighthouseParams } from 'lighthouse/interfaces'
 
@@ -6,65 +5,38 @@ import { defaultLighthouseParams } from '../../__tests__/fixtures/defaultLightho
 
 describe('Sitemap', () => {
   let config: LighthouseParams
+  let sitemap: Sitemap
+  const urls: Array<string> = [
+    'https://maddevs.io/services/',
+    'https://maddevs.io/careers/',
+    'https://maddevs.io/ru/careers/',
+    'https://maddevs.io/blog/'
+  ];
 
   beforeEach(() => {
     config = {
       ...defaultLighthouseParams,
     }
+    sitemap = new Sitemap(config);
   })
 
-  it('should correctly return an instance', () => {
-    const sitemap = new Sitemap(config)
+  const parseSitemapUrlsMock = jest.spyOn(Sitemap.prototype as any, 'parseSitemapUrls');
+  parseSitemapUrlsMock.mockImplementation(() => new Promise(res => res(urls)));
 
+  it('should correctly return an instance', () => {
     expect(sitemap.getAllUrls).toBeTruthy()
   })
 
-  it('should getAllUrls method return all urls', async () => {
-    const resultString = `
-      <sitemap>
-        <url><loc>maddevs.io</loc></url>
-        <url><loc>google.com</loc></url>
-       </sitemap>
-    `
-    jest.spyOn(axios, 'get').mockImplementation(
-      () =>
-        new Promise(res =>
-          res({
-            data: resultString,
-          }),
-        ),
-    )
-    const sitemap = new Sitemap(config)
+  it('should the getAllUrls method return urls', async () => {
+    const allUrls = await sitemap.getAllUrls();
 
-    const urls = await sitemap.getAllUrls()
-
-    expect(urls).toEqual(['maddevs.io', 'google.com'])
+    expect(allUrls).toEqual(urls);
   })
 
-  it('should getAllUrls method return correct filtered urls', async () => {
-    const resultString = `
-      <sitemap>
-        <url><loc>https://maddevs.io</loc></url>
-        <url><loc>https://maddevs.io/test</loc></url>
-        <url><loc>https://maddevs.io/blog/123</loc></url>
-        <url><loc>https://maddevs.io/customer-university/123</loc></url>
-       </sitemap>
-    `
+  it('should the getAllUrls method return urls filtered by the regexp', async () => {
+    config.urlTestRegexp = '(\\/blog\\/)|(\\/customer-university\\/)|(\\/ru\\/)[a-zA-Z0-9]{1}';
+    const allUrls = await sitemap.getAllUrls();
 
-    config.urlTestRegexp = '(\\/blog\\/)|(\\/customer-university\\/)[a-zA-Z0-9]{1}'
-
-    jest.spyOn(axios, 'get').mockImplementation(
-      () =>
-        new Promise(res =>
-          res({
-            data: resultString,
-          }),
-        ),
-    )
-    const sitemap = new Sitemap(config)
-
-    const urls = await sitemap.getAllUrls()
-
-    expect(urls).toEqual(['https://maddevs.io', 'https://maddevs.io/test'])
+    expect(allUrls).toEqual(['https://maddevs.io/services/', 'https://maddevs.io/careers/']);
   })
 })

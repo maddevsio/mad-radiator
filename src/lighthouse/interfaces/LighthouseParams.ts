@@ -3,5 +3,6 @@ export interface LighthouseParams {
   worstCount?: number
   urlTestRegexp?: string
   websiteUrl?: string
+  sitemapUrl?: string
   googleapisKey?: string
 }

@@ -46,7 +46,7 @@
     "listFiles": false,
     "pretty": true,
     "lib": ["es2017"],
-    "typeRoots": ["node_modules/@types", "src/types"]
+    "typeRoots": ["node_modules/@types", "src/types", "@types"]
   },
   "include": ["src/**/*.ts"],
   "exclude": ["node_modules/**", "lib/**/*"],
