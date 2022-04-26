@@ -112,7 +112,6 @@
     "node-emoji": "^1.10.0",
     "node-schedule": "^2.0.0",
     "quickchart-js": "^2.0.3",
-    "rewire": "^6.0.0",
     "sitemap-stream-parser": "^1.7.0",
     "vega": "^5.20.2",
     "yargs": "^17.0.1"

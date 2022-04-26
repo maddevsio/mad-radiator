@@ -3,19 +3,19 @@ const config = require('./example.config.json')
 
 const {
   authConfig,
-  // sentryConfig,
-  // analyticsConfig,
-  // scheduleConfig,
-  // telegramConfig,
+  sentryConfig,
+  analyticsConfig,
+  scheduleConfig,
+  telegramConfig,
   slackConfig,
   lighthouseConfig
 } = config
 
 const radiator = new Radiator(authConfig)
-// radiator.useSentry(sentryConfig)
-// radiator.useAnalytics(analyticsConfig)
+radiator.useSentry(sentryConfig)
+radiator.useAnalytics(analyticsConfig)
 radiator.useLighthouse(lighthouseConfig)
-// radiator.useTelegram(telegramConfig)
+radiator.useTelegram(telegramConfig)
 radiator.useSlack(slackConfig)
-// radiator.scheduleJob(scheduleConfig)
+radiator.scheduleJob(scheduleConfig)
 radiator.run()
