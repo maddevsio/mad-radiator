@@ -1,4 +1,3 @@
-/* eslint-disable */
 declare module 'sitemap-stream-parser' {
   export function parseSitemaps(
     link: string,
