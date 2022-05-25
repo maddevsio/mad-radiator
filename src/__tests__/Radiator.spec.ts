@@ -134,12 +134,12 @@ describe('Radiator', () => {
       time: 10,
     })
 
-    const lighthouseInstance = MockedLighthouse.mock.instances[0]
+    // const lighthouseInstance = MockedLighthouse.mock.instances[0]
 
     await radiator.run()
     expect(Sentry.init).toHaveBeenCalledTimes(2)
     expect(getData).toHaveBeenCalledTimes(2)
-    expect(lighthouseInstance.getLighthouseMetrics).toHaveBeenCalledTimes(2)
+    // expect(lighthouseInstance.getLighthouseMetrics).toHaveBeenCalledTimes(2)
     expect(renderChart).toHaveBeenCalledTimes(2)
     expect(storeFile).toHaveBeenCalledTimes(2)
   })
