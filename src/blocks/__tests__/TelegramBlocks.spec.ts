@@ -139,6 +139,6 @@ describe('TelegramBlocks', () => {
     const divider = service.divider()
 
     expect(empty).toEqual(divider)
-    expect(image).toEqual('[Activity graph](url)\n\n')
+    expect(image).toBe('[Activity graph](url)\n\n')
   })
 })
