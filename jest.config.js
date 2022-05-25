@@ -23,8 +23,8 @@ module.exports = {
     global: {
       branches: 65,
       statements: 80,
-      functions: 85,
-      lines: 84,
+      functions: 82,
+      lines: 83,
     },
   },
   moduleNameMapper: pathsToModuleNameMapper(tsconfig.compilerOptions.paths, '<rootDir>/src'),
