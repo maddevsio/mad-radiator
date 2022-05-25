@@ -6,8 +6,8 @@ import { ChartBuilder } from 'chartBuilder'
 import { AnalyticsError } from 'errors/types/AnalyticsError'
 import { AuthorizationError } from 'errors/types/AuthorizationError'
 import { MessengersParams, ParsedRange, RadiatorConfig, ScheduleConfig, SentryParams } from 'interfaces'
-import { Lighthouse } from 'lighthouse'
-import { LighthouseParams } from 'lighthouse/interfaces'
+// import { Lighthouse } from 'lighthouse'
+// import { LighthouseParams } from 'lighthouse/interfaces'
 import { Logger } from 'logger'
 import { MessengersService } from 'messengers'
 import { RunCounter } from 'runCounter'
@@ -28,7 +28,7 @@ export class Radiator {
 
   private analyticsService: AnalyticsService | undefined
 
-  private lighthouse: Lighthouse | undefined
+  // private lighthouse: Lighthouse | undefined
 
   private chartBuilder: ChartBuilder | undefined
 
@@ -79,15 +79,15 @@ export class Radiator {
     this.useGoogleDriveStorage()
   }
 
-  public useLighthouse(lighthouseParams: LighthouseParams) {
-    this.lighthouse = new Lighthouse(
-      {
-        ...lighthouseParams,
-        websiteUrl: this.config.websiteUrl,
-        googleapisKey: this.config.googleapisKey,
-      },
-    )
-  }
+  // public useLighthouse(lighthouseParams: LighthouseParams) {
+  //   this.lighthouse = new Lighthouse(
+  //     {
+  //       ...lighthouseParams,
+  //       websiteUrl: this.config.websiteUrl,
+  //       googleapisKey: this.config.googleapisKey,
+  //     },
+  //   )
+  // }
 
   private useChartBuilder(analyticsParams: AnalyticsParams) {
     this.chartBuilder = new ChartBuilder(analyticsParams)
@@ -139,15 +139,15 @@ export class Radiator {
 
       if (this.analyticsService) {
         Logger.info('Getting analytics data...')
-        analytics = await this.analyticsService.getData()        
+        analytics = await this.analyticsService.getData()
       }
 
-      if (this.lighthouse) {
-        Logger.info('Getting lighthouse data...')
-        lighthouse = await this.lighthouse.getLighthouseMetrics()
-      }
+      // if (this.lighthouse) {
+      //   Logger.info('Getting lighthouse data...')
+      //   lighthouse = await this.lighthouse.getLighthouseMetrics()
+      // }
 
-      if (analytics && this.chartBuilder) {        
+      if (analytics && this.chartBuilder) {
         Logger.info('Building an image...')
         imageBuffer = analytics.chart && (await this.chartBuilder.renderChart(analytics.chart))
       }

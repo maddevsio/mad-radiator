@@ -13,7 +13,7 @@ import { Scheduler } from 'scheduler'
 import { GoogleDriveStorage } from 'storage'
 
 import { defaultAnalyticsParams } from './fixtures/defaultAnalyticsParams'
-import { defaultLighthouseParams } from './fixtures/defaultLighthouseParams'
+// import { defaultLighthouseParams } from './fixtures/defaultLighthouseParams'
 import { defaultMessengersParams } from './fixtures/defaultMessengersParams'
 
 jest.mock('analytics/AnalyticsService')
@@ -126,7 +126,7 @@ describe('Radiator', () => {
       tracesSampleRate: 1.0,
     })
     radiator.useAnalytics(defaultAnalyticsParams)
-    radiator.useLighthouse(defaultLighthouseParams)
+    // radiator.useLighthouse(defaultLighthouseParams)
     radiator.useSlack(defaultMessengersParams)
     radiator.useTelegram(defaultMessengersParams)
     radiator.scheduleJob({

@@ -3,7 +3,7 @@ const config = require('./example.config.json')
 
 const {
   authConfig,
-  // sentryConfig,
+  sentryConfig,
   analyticsConfig,
   // scheduleConfig,
   // telegramConfig,
@@ -12,7 +12,7 @@ const {
 } = config
 
 const radiator = new Radiator(authConfig)
-// radiator.useSentry(sentryConfig)
+radiator.useSentry(sentryConfig)
 radiator.useAnalytics(analyticsConfig)
 // radiator.useLighthouse(lighthouseConfig)
 // radiator.useTelegram(telegramConfig)
