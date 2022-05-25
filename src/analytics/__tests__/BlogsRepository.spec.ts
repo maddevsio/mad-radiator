@@ -1,6 +1,4 @@
-import {
-  blogFakeResponse,
-} from '__tests__/fixtures/analytics/fakeAnalyticsResponses'
+import { blogFakeResponse } from '__tests__/fixtures/analytics/fakeAnalyticsResponses'
 import { parsedRange } from '__tests__/fixtures/parsedRange'
 import { BlogsRepository } from 'analytics/BlogsRepository'
 import { google } from 'googleapis'
@@ -10,7 +8,7 @@ import { AnalyticsParams } from '../interfaces'
 
 jest.mock('googleapis', () => ({
   google: {
-    analyticsreporting: jest.fn(),
+    analyticsdata: jest.fn(),
   },
 }))
 
@@ -30,34 +28,30 @@ describe('BlogRepository', () => {
 
   it('should correctly return data', async () => {
     // @ts-ignore
-    google.analyticsreporting.mockImplementation(() => ({
-      reports: {
-        batchGet() {
+    google.analyticsdata.mockImplementation(() => ({
+      properties: {
+        runReport() {
           return new Promise(res => res(blogFakeResponse))
         },
       },
     }))
 
     const repository = new BlogsRepository(config, parsedRange)
-
     const data = await repository.getData()
+
     expect(data).toEqual([
       {
-        pagePath: 'https://maddevs.io/customer-university/custom-software-development-pricing-strategies/',
-        pageViews: 10,
-      },
-      {
-        pagePath: 'https://maddevs.io/insights/blog/seo-analyzer/',
-        pageViews: 10,
-      },
+        pagePath: 'https://maddevs.io/blog/main-software-development-metrics-and-kpis/',
+        pageViews: 112
+      }
     ])
   })
 
   it('you should correctly return an empty array if there is no pagesPathForViewsAnalytics in the settings', async () => {
     // @ts-ignore
-    google.analyticsreporting.mockImplementation(() => ({
-      reports: {
-        batchGet() {
+    google.analyticsdata.mockImplementation(() => ({
+      properties: {
+        runReport() {
           return new Promise(res => res(blogFakeResponse))
         },
       },

@@ -60,23 +60,6 @@ describe('SlackMessageBuilder', () => {
       },
       {
         text: {
-          text: 'Сайт просматривают на разных устройствах. Соотношение:\n\n',
-          type: 'mrkdwn',
-        },
-        type: 'section',
-      },
-      {
-        text: {
-          text: ':neutral_face: :iphone: Mobile: *100%* (50%)\n\n',
-          type: 'mrkdwn',
-        },
-        type: 'section',
-      },
-      {
-        type: 'divider',
-      },
-      {
-        text: {
           text: 'Топ-3 страны, в которых находятся пользователи, посетившие сайт:\n\n',
           type: 'mrkdwn',
         },
@@ -85,23 +68,6 @@ describe('SlackMessageBuilder', () => {
       {
         text: {
           text: ':flag-ru: Russia: *100%* от всех посетителей сайта\n\n',
-          type: 'mrkdwn',
-        },
-        type: 'section',
-      },
-      {
-        type: 'divider',
-      },
-      {
-        text: {
-          text: 'Клики и конверсии произведенные пользователями:\n\n',
-          type: 'mrkdwn',
-        },
-        type: 'section',
-      },
-      {
-        text: {
-          text: ':yum: :thumbsup: Name: *100* (95)\n\n',
           type: 'mrkdwn',
         },
         type: 'section',

@@ -11,10 +11,10 @@ export class CoreRepository extends Repository {
    * GA metrics
    */
   metrics = [
-    { expression: 'ga:users' },
-    { expression: 'ga:sessions' },
-    { expression: 'ga:bounceRate' },
-    { expression: 'ga:avgSessionDuration' },
+    { name: 'totalUsers' },
+    { name: 'sessions' },
+    { name: 'bounceRate' },
+    { name: 'averageSessionDuration' },
   ]
 
   /**
@@ -28,6 +28,7 @@ export class CoreRepository extends Repository {
    */
   public async getData(): Promise<CoreItems> {
     const reports: AnalyticsPayload = await this.getAnalytics(this.metrics)
+
     return CoreRepository.format(reports)
   }
 
@@ -35,15 +36,21 @@ export class CoreRepository extends Repository {
    * Format raw GA data
    */
   private static format(reports: AnalyticsPayload): CoreItems {
-    const [users, sessions, bounceRate, duration] = reports[0].data.totals[0].values.map(n =>
-      Number(Number(n).toFixed(2)),
-    )
+    const [
+      users,
+      sessions,
+      bounceRate,
+      duration
+    ] = reports.rows[1]?.metricValues
+      .map((n: { value: number }) => Number(Number(n.value).toFixed(2)))
+
     const [
       usersPrev,
       sessionsPrev,
       bounceRatePrev,
       durationPrev,
-    ] = reports[0].data.totals[1].values.map(n => Number(Number(n).toFixed(2)))
+    ] = reports.rows[0].metricValues
+      .map((n: { value: number }) => Number(Number(n.value).toFixed(2)))
 
     const usersDifference = CoreRepository.getPercentage(users, usersPrev)
     const sessionsDifference = CoreRepository.getPercentage(sessions, sessionsPrev)

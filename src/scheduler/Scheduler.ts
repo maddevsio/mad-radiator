@@ -8,7 +8,7 @@ export class Scheduler {
     this.config = config
   }
 
-  public scheduleJob(callback: (...args: any[]) => void): void {
+  public scheduleJob(callback: (...args: Array<any>) => void): void {
     schedule.scheduleJob(this.cronString(), callback)
   }
 

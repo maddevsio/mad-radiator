@@ -1,121 +1,201 @@
-import { AnalyticsPayload } from 'analytics/interfaces'
-
 export const fakeResponse = {
   data: {
-    reports: [
-      {
-        data: {
-          rows: [
-            {
-              dimensions: ['(not set)', '2', '3'],
-              metrics: [
-                {
-                  values: [10, 2, 3],
-                },
-                {
-                  values: [5, 10, 3],
-                },
-              ],
-            },
-          ],
-          totals: [
-            {
-              values: [10, 2, 12, 4, 5],
-            },
-            {
-              values: [5, 10, 4, 4, 16],
-            },
-          ],
-        },
-      },
-    ] as AnalyticsPayload,
-  },
+    "dimensionHeaders": [
+      { "name": "country" },
+      { "name": "dateRange" },
+      { "name": 'pagePath' },
+    ],
+    "metricHeaders": [
+      { "name": "totalUsers", "type": "TYPE_INTEGER" },
+      { "name": 'sessions', "type": 'TYPE_INTEGER' },
+      { "name": 'bounceRate', "type": 'TYPE_FLOAT' },
+      { "name": 'averageSessionDuration', "type": 'TYPE_SECONDS' },
+      { "name": 'screenPageViews', "type": 'TYPE_INTEGER' }
+    ],
+    "rows": [{
+      "dimensionValues": [{
+        "value": "Saudi Arabia"
+      }, {
+        "value": "date_range_0"
+      }],
+      "metricValues": [{
+        "value": "0"
+      }]
+    }, {
+      "dimensionValues": [{
+        "value": "Seychelles"
+      }, {
+        "value": "date_range_0"
+      }],
+      "metricValues": [{
+        "value": "0"
+      }]
+    }, {
+      "dimensionValues": [{
+        "value": "Slovakia"
+      }, {
+        "value": "date_range_1"
+      }],
+      "metricValues": [{
+        "value": "0"
+      }]
+    }, {
+      "dimensionValues": [{
+        "value": "Trinidad & Tobago"
+      }, {
+        "value": "date_range_1"
+      }],
+      "metricValues": [{
+        "value": "0"
+      }]
+    }, {
+      "dimensionValues": [{
+        "value": "Tunisia"
+      }, {
+        "value": "date_range_1"
+      }],
+      "metricValues": [{
+        "value": "0"
+      }]
+    }],
+    "totals": [{
+      "dimensionValues": [{
+        "value": "RESERVED_TOTAL"
+      }, {
+        "value": "date_range_0"
+      }],
+      "metricValues": [{
+        "value": "344"
+      }]
+    }, {
+      "dimensionValues": [{
+        "value": "RESERVED_TOTAL"
+      }, {
+        "value": "date_range_1"
+      }],
+      "metricValues": [{
+        "value": "523"
+      }]
+    }],
+    "maximums": [{
+      "dimensionValues": [{
+        "value": "RESERVED_MAX"
+      }, {
+        "value": "date_range_0"
+      }],
+      "metricValues": [{
+        "value": "54"
+      }]
+    }, {
+      "dimensionValues": [{
+        "value": "RESERVED_MAX"
+      }, {
+        "value": "date_range_1"
+      }],
+      "metricValues": [{
+        "value": "71"
+      }]
+    }],
+    "minimums": [{
+      "dimensionValues": [{
+        "value": "RESERVED_MIN"
+      }, {
+        "value": "date_range_0"
+      }],
+      "metricValues": [{
+        "value": "1"
+      }]
+    }, {
+      "dimensionValues": [{
+        "value": "RESERVED_MIN"
+      }, {
+        "value": "date_range_1"
+      }],
+      "metricValues": [{
+        "value": "1"
+      }]
+    }],
+  }
+}
+
+export const fakeResponseForCountries = {
+  data: {
+    dimensionHeaders: [{ name: 'country' }, { name: 'dateRange' }],
+    metricHeaders: [{ name: 'totalUsers', type: 'TYPE_INTEGER' }],
+    rows: [{ "dimensionValues": [{ "value": "United States" }, { "value": "date_range_0" }], "metricValues": [{ "value": "81" }] }, { "dimensionValues": [{ "value": "Kyrgyzstan" }, { "value": "date_range_1" }], "metricValues": [{ "value": "71" }] }, { "dimensionValues": [{ "value": "India" }, { "value": "date_range_1" }], "metricValues": [{ "value": "69" }] }, { "dimensionValues": [{ "value": "Vietnam" }, { "value": "date_range_1" }], "metricValues": [{ "value": "13" }] }, { "dimensionValues": [{ "value": "South Korea" }, { "value": "date_range_1" }], "metricValues": [{ "value": "12" }] }, { "dimensionValues": [{ "value": "Turkey" }, { "value": "date_range_1" }], "metricValues": [{ "value": "11" }] }, { "dimensionValues": [{ "value": "Ukraine" }, { "value": "date_range_0" }], "metricValues": [{ "value": "11" }] }, { "dimensionValues": [{ "value": "Ukraine" }, { "value": "date_range_1" }], "metricValues": [{ "value": "11" }] }, { "dimensionValues": [{ "value": "Indonesia" }, { "value": "date_range_0" }], "metricValues": [{ "value": "10" }] }, { "dimensionValues": [{ "value": "Indonesia" }, { "value": "date_range_1" }], "metricValues": [{ "value": "10" }] }, { "dimensionValues": [{ "value": "Singapore" }, { "value": "date_range_1" }], "metricValues": [{ "value": "10" }] }, { "dimensionValues": [{ "value": "France" }, { "value": "date_range_1" }], "metricValues": [{ "value": "9" }] }, { "dimensionValues": [{ "value": "Italy" }, { "value": "date_range_1" }], "metricValues": [{ "value": "9" }] }, { "dimensionValues": [{ "value": "Malaysia" }, { "value": "date_range_0" }], "metricValues": [{ "value": "9" }] }, { "dimensionValues": [{ "value": "Australia" }, { "value": "date_range_1" }], "metricValues": [{ "value": "8" }] }, { "dimensionValues": [{ "value": "South Africa" }, { "value": "date_range_1" }], "metricValues": [{ "value": "8" }] }, { "dimensionValues": [{ "value": "Turkey" }, { "value": "date_range_0" }], "metricValues": [{ "value": "8" }] }, { "dimensionValues": [{ "value": "Austria" }, { "value": "date_range_0" }], "metricValues": [{ "value": "7" }] }, { "dimensionValues": [{ "value": "Hong Kong" }, { "value": "date_range_1" }], "metricValues": [{ "value": "7" }] }, { "dimensionValues": [{ "value": "Japan" }, { "value": "date_range_0" }], "metricValues": [{ "value": "7" }] }, { "dimensionValues": [{ "value": "Pakistan" }, { "value": "date_range_0" }], "metricValues": [{ "value": "7" }] }, { "dimensionValues": [{ "value": "Poland" }, { "value": "date_range_1" }], "metricValues": [{ "value": "7" }] }, { "dimensionValues": [{ "value": "Spain" }, { "value": "date_range_1" }], "metricValues": [{ "value": "7" }] }, { "dimensionValues": [{ "value": "Australia" }, { "value": "date_range_0" }], "metricValues": [{ "value": "6" }] }, { "dimensionValues": [{ "value": "Canada" }, { "value": "date_range_0" }], "metricValues": [{ "value": "6" }] }, { "dimensionValues": [{ "value": "Denmark" }, { "value": "date_range_1" }], "metricValues": [{ "value": "6" }] }, { "dimensionValues": [{ "value": "Netherlands" }, { "value": "date_range_1" }], "metricValues": [{ "value": "6" }] }, { "dimensionValues": [{ "value": "Nigeria" }, { "value": "date_range_1" }], "metricValues": [{ "value": "6" }] }, { "dimensionValues": [{ "value": "South Africa" }, { "value": "date_range_0" }], "metricValues": [{ "value": "6" }] }, { "dimensionValues": [{ "value": "Spain" }, { "value": "date_range_0" }], "metricValues": [{ "value": "6" }] }, { "dimensionValues": [{ "value": "Sweden" }, { "value": "date_range_0" }], "metricValues": [{ "value": "6" }] }, { "dimensionValues": [{ "value": "Vietnam" }, { "value": "date_range_0" }], "metricValues": [{ "value": "6" }] }, { "dimensionValues": [{ "value": "Bangladesh" }, { "value": "date_range_1" }], "metricValues": [{ "value": "5" }] }, { "dimensionValues": [{ "value": "Belgium" }, { "value": "date_range_0" }], "metricValues": [{ "value": "5" }] }, { "dimensionValues": [{ "value": "Finland" }, { "value": "date_range_0" }], "metricValues": [{ "value": "5" }] }, { "dimensionValues": [{ "value": "Israel" }, { "value": "date_range_1" }], "metricValues": [{ "value": "5" }] }, { "dimensionValues": [{ "value": "Italy" }, { "value": "date_range_0" }], "metricValues": [{ "value": "5" }] }, { "dimensionValues": [{ "value": "Kazakhstan" }, { "value": "date_range_1" }], "metricValues": [{ "value": "5" }] }, { "dimensionValues": [{ "value": "Kenya" }, { "value": "date_range_1" }], "metricValues": [{ "value": "5" }] }, { "dimensionValues": [{ "value": "Taiwan" }, { "value": "date_range_1" }], "metricValues": [{ "value": "5" }] }, { "dimensionValues": [{ "value": "Bangladesh" }, { "value": "date_range_0" }], "metricValues": [{ "value": "4" }] }, { "dimensionValues": [{ "value": "Belarus" }, { "value": "date_range_0" }], "metricValues": [{ "value": "4" }] }, { "dimensionValues": [{ "value": "Denmark" }, { "value": "date_range_0" }], "metricValues": [{ "value": "4" }] }, { "dimensionValues": [{ "value": "Kazakhstan" }, { "value": "date_range_0" }], "metricValues": [{ "value": "4" }] }, { "dimensionValues": [{ "value": "Malaysia" }, { "value": "date_range_1" }], "metricValues": [{ "value": "4" }] }, { "dimensionValues": [{ "value": "Nigeria" }, { "value": "date_range_0" }], "metricValues": [{ "value": "4" }] }, { "dimensionValues": [{ "value": "Philippines" }, { "value": "date_range_0" }], "metricValues": [{ "value": "4" }] }, { "dimensionValues": [{ "value": "Romania" }, { "value": "date_range_0" }], "metricValues": [{ "value": "4" }] }, { "dimensionValues": [{ "value": "Singapore" }, { "value": "date_range_0" }], "metricValues": [{ "value": "4" }] }, { "dimensionValues": [{ "value": "South Korea" }, { "value": "date_range_0" }], "metricValues": [{ "value": "4" }] }, { "dimensionValues": [{ "value": "Thailand" }, { "value": "date_range_1" }], "metricValues": [{ "value": "4" }] }, { "dimensionValues": [{ "value": "Algeria" }, { "value": "date_range_0" }], "metricValues": [{ "value": "3" }] }, { "dimensionValues": [{ "value": "Azerbaijan" }, { "value": "date_range_0" }], "metricValues": [{ "value": "3" }] }, { "dimensionValues": [{ "value": "Brazil" }, { "value": "date_range_0" }], "metricValues": [{ "value": "3" }] }, { "dimensionValues": [{ "value": "Brazil" }, { "value": "date_range_1" }], "metricValues": [{ "value": "3" }] }, { "dimensionValues": [{ "value": "China" }, { "value": "date_range_0" }], "metricValues": [{ "value": "3" }] }, { "dimensionValues": [{ "value": "Colombia" }, { "value": "date_range_0" }], "metricValues": [{ "value": "3" }] }, { "dimensionValues": [{ "value": "Czechia" }, { "value": "date_range_1" }], "metricValues": [{ "value": "3" }] }, { "dimensionValues": [{ "value": "Hong Kong" }, { "value": "date_range_0" }], "metricValues": [{ "value": "3" }] }, { "dimensionValues": [{ "value": "Iran" }, { "value": "date_range_1" }], "metricValues": [{ "value": "3" }] }, { "dimensionValues": [{ "value": "Japan" }, { "value": "date_range_1" }], "metricValues": [{ "value": "3" }] }, { "dimensionValues": [{ "value": "New Zealand" }, { "value": "date_range_1" }], "metricValues": [{ "value": "3" }] }, { "dimensionValues": [{ "value": "Pakistan" }, { "value": "date_range_1" }], "metricValues": [{ "value": "3" }] }, { "dimensionValues": [{ "value": "Philippines" }, { "value": "date_range_1" }], "metricValues": [{ "value": "3" }] }, { "dimensionValues": [{ "value": "Romania" }, { "value": "date_range_1" }], "metricValues": [{ "value": "3" }] }, { "dimensionValues": [{ "value": "Saudi Arabia" }, { "value": "date_range_1" }], "metricValues": [{ "value": "3" }] }, { "dimensionValues": [{ "value": "Slovakia" }, { "value": "date_range_0" }], "metricValues": [{ "value": "3" }] }, { "dimensionValues": [{ "value": "Sri Lanka" }, { "value": "date_range_1" }], "metricValues": [{ "value": "3" }] }, { "dimensionValues": [{ "value": "Switzerland" }, { "value": "date_range_1" }], "metricValues": [{ "value": "3" }] }, { "dimensionValues": [{ "value": "Argentina" }, { "value": "date_range_1" }], "metricValues": [{ "value": "2" }] }, { "dimensionValues": [{ "value": "Armenia" }, { "value": "date_range_1" }], "metricValues": [{ "value": "2" }] }, { "dimensionValues": [{ "value": "Austria" }, { "value": "date_range_1" }], "metricValues": [{ "value": "2" }] }, { "dimensionValues": [{ "value": "Cambodia" }, { "value": "date_range_0" }], "metricValues": [{ "value": "2" }] }, { "dimensionValues": [{ "value": "Canada" }, { "value": "date_range_1" }], "metricValues": [{ "value": "2" }] }],
+    totals: [{ "dimensionValues": [{ "value": "RESERVED_TOTAL" }, { "value": "date_range_0" }], "metricValues": [{ "value": "538" }] }, { "dimensionValues": [{ "value": "RESERVED_TOTAL" }, { "value": "date_range_1" }], "metricValues": [{ "value": "523" }] }]
+  }
+}
+
+export const fakeResponseForCoreData = {
+  data: {
+    dimensionHeaders: [{ name: 'dateRange' }],
+    metricHeaders: [
+      { name: 'totalUsers', type: 'TYPE_INTEGER' },
+      { name: 'sessions', type: 'TYPE_INTEGER' },
+      { name: 'bounceRate', type: 'TYPE_FLOAT' },
+      { name: 'averageSessionDuration', type: 'TYPE_SECONDS' }
+    ],
+    rows: [{ "dimensionValues": [{ "value": "date_range_0" }], "metricValues": [{ "value": "538" }, { "value": "633" }, { "value": "0.20695102685624012" }, { "value": "204.91806357977885" }] }, { "dimensionValues": [{ "value": "date_range_1" }], "metricValues": [{ "value": "523" }, { "value": "625" }, { "value": "0.2128" }, { "value": "172.49769403040003" }] }]
+  }
+}
+
+export const fakeResponseForChartData = {
+  data: {
+    metricHeaders: [{ name: 'totalUsers', type: 'TYPE_INTEGER' }],
+    rows: [{ "metricValues": [{ "value": "373" }] }, { "value": "377" }, { "value": "217" }, { "value": "411" }]
+  }
 }
 
 export const fakeResponseSecond = {
   data: {
-    reports: [
+    rows: [
       {
-        data: {
-          rows: [
-            {
-              dimensions: ['123'],
-              metrics: [
-                {
-                  values: [5, 10, 3],
-                },
-                {
-                  values: [10, 2, 3],
-                },
-              ],
-            },
-            {
-              dimensions: ['Russia'],
-              metrics: [
-                {
-                  values: [15, 10, 3],
-                },
-                {
-                  values: [12, 23, 30],
-                },
-              ],
-            },
-          ],
-          totals: [
-            {
-              values: [5, 10, 4, 5, 16],
-            },
-            {
-              values: [10, 2, 12, 4, 5],
-            },
-          ],
-        },
+        "dimensionValues": [{ "value": "Kyrgyzstan" }, { "value": "date_range_0" }],
+        "metricValues": [{ "value": "71" }]
       },
-    ] as AnalyticsPayload,
+      {
+        "dimensionValues": [{ "value": "India" }, { "value": "date_range_0" }],
+        "metricValues": [{ "value": "69" }]
+      },
+      {
+        "dimensionValues": [{ "value": "United States" }, { "value": "date_range_0" }],
+        "metricValues": [{ "value": "51" }]
+      }
+    ],
+
+    totals: [
+      {
+        "dimensionValues": [{ "value": "Kyrgyzstan" }, { "value": "date_range_0" }],
+        "metricValues": [{ "value": "71" }]
+      },
+      {
+        "dimensionValues": [{ "value": "India" }, { "value": "date_range_0" }],
+        "metricValues": [{ "value": "69" }]
+      }
+    ]
   },
 }
 
 export const blogFakeResponse = {
   data: {
-    reports: [
+    rows: [
       {
-        data: {
-          rows: [
-            {
-              dimensions: ['/insights/blog/seo-analyzer/'],
-              metrics: [
-                {
-                  values: [10, 2, 3],
-                },
-              ],
-            },
-            {
-              dimensions: ['/customer-university/custom-software-development-pricing-strategies/'],
-              metrics: [
-                {
-                  values: [10, 2, 3],
-                }
-              ],
-            },
-            {
-              dimensions: ['/insights/blog/'],
-              metrics: [
-                {
-                  values: [10, 2, 3],
-                },
-              ],
-            },
-          ],
-          totals: [
-            {
-              values: [10, 2, 12, 4, 5],
-            },
-            {
-              values: [5, 10, 4, 4, 16],
-            },
-          ],
-        },
+        "dimensionValues": [{ "value": "/" }, { "value": "date_range_0" }],
+        "metricValues": [{ "value": "209" }]
       },
-    ] as AnalyticsPayload,
-  },
+      {
+        "dimensionValues": [{ "value": "/blog/main-software-development-metrics-and-kpis/" }, { "value": "date_range_0" }],
+        "metricValues": [{ "value": "112" }]
+      },
+      {
+        "dimensionValues": [{ "value": "/" }, { "value": "date_range_1" }],
+        "metricValues": [{ "value": "79" }]
+      },
+      {
+        "dimensionValues": [{ "value": "/blog/" }, { "value": "date_range_0" }],
+        "metricValues": [{ "value": "59" }]
+      }
+    ]
+  }
 }

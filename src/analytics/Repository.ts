@@ -1,6 +1,8 @@
-import { AnalyticsDimension, AnalyticsMetric, AnalyticsParams, AnalyticsPayload } from 'analytics/interfaces'
-import { analyticsreporting_v4, google } from 'googleapis'
+import { AnalyticsDimension, AnalyticsMetric, AnalyticsParams } from 'analytics/interfaces'
+import { AnalyticsError } from 'errors/types/AnalyticsError'
+import { analyticsdata_v1beta, google } from 'googleapis'
 import { ParsedRange, Range } from 'interfaces'
+
 
 /**
  * Abstract Analytics repository
@@ -14,7 +16,7 @@ export abstract class Repository {
   /**
    * GA instance
    */
-  private readonly googleAnalytics: analyticsreporting_v4.Analyticsreporting
+  private readonly googleAnalytics: analyticsdata_v1beta.Analyticsdata
 
   /**
    * Main radiator config
@@ -34,7 +36,7 @@ export abstract class Repository {
   constructor(config: AnalyticsParams, range: ParsedRange) {
     this.config = config
     this.range = range
-    this.googleAnalytics = google.analyticsreporting('v4')
+    this.googleAnalytics = google.analyticsdata('v1beta')
   }
 
   /**
@@ -44,23 +46,26 @@ export abstract class Repository {
     metrics: Array<AnalyticsMetric> = [],
     dimensions: Array<AnalyticsDimension> = [],
     dateRanges: Array<Range> = [this.range.originalRange, this.range.previousRange],
-  ): Promise<AnalyticsPayload> {
-    
-    const response = await this.googleAnalytics.reports.batchGet({
-      requestBody: {
-        reportRequests: [
-          {
-            viewId: this.config.analyticsViewId,
-            dateRanges,
-            metrics,
-            dimensions,
-          },
-        ],
-      },
-    })
-    
-    const payload = response.data.reports as AnalyticsPayload | undefined
+  ): Promise<any> {
+    try {
+      const response = await this.googleAnalytics.properties.runReport({
+        property: `properties/${this.config.analyticsViewId}`,
+        requestBody: {
+          dateRanges,
+          dimensions,
+          metrics,
+          metricAggregations: [
+            "TOTAL",
+            "MAXIMUM",
+            "MINIMUM"
+          ]
+        }
+      });
 
-    return payload || ([] as AnalyticsPayload)
+      const payload = response?.data
+      return payload
+    } catch (error: any) {
+      throw new AnalyticsError(error)
+    }
   }
 }

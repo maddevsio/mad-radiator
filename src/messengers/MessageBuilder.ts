@@ -1,10 +1,10 @@
-import { Blog, CoreItems, Country, Device , Goals } from 'analytics/interfaces'
+import { Blog, CoreItems, Country } from 'analytics/interfaces'
 import { Blocks } from 'blocks/Blocks'
 import { Emoji } from 'emoji/Emoji'
 import { ParsedRange, RadiatorConfig } from 'interfaces'
 import { LighthouseMetrics, LighthouseUrlResult } from 'lighthouse/interfaces'
 import { BuildMessageData, SlackMessageBlock } from 'messengers/interfaces'
-import { capitalize } from 'utils/capitalize'
+// import { capitalize } from 'utils/capitalize'
 
 export abstract class MessageBuilder {
   protected abstract readonly blocksService: Blocks
@@ -23,9 +23,9 @@ export abstract class MessageBuilder {
                            analytics,
                            range,
                            lighthouse,
-                           imageURL,
+                           imageURL
                          }: BuildMessageData): Array<string | SlackMessageBlock> {
-    const { core, devices, goals, countries, blogs } = analytics || {}
+    const { core, countries, blogs } = analytics || {}
 
     const message = []
 
@@ -40,12 +40,12 @@ export abstract class MessageBuilder {
       message.push(this.blocksService.divider())
     }
 
-    if (devices) {
-      // devices
-      message.push(this.blocksService.section(MessageBuilder.devicesMessage()))
-      message.push(this.blocksService.section(this.devicesList(devices)))
-      message.push(this.blocksService.divider())
-    }
+    // if (devices) {
+    //   // devices
+    //   message.push(this.blocksService.section(MessageBuilder.devicesMessage()))
+    //   message.push(this.blocksService.section(this.devicesList(devices)))
+    //   message.push(this.blocksService.divider())
+    // }
 
     if (countries) {
       // countries
@@ -54,12 +54,12 @@ export abstract class MessageBuilder {
       message.push(this.blocksService.divider())
     }
 
-    if (goals) {
-      // conversions
-      message.push(this.blocksService.section(MessageBuilder.conversionMessage()))
-      message.push(this.blocksService.section(this.conversionList(goals)))
-      message.push(this.blocksService.divider())
-    }
+    // if (goals) {
+    //   // conversions
+    //   message.push(this.blocksService.section(MessageBuilder.conversionMessage()))
+    //   message.push(this.blocksService.section(this.conversionList(goals)))
+    //   message.push(this.blocksService.divider())
+    // }
 
     if (lighthouse) {
       // pagespeed average
@@ -82,11 +82,10 @@ export abstract class MessageBuilder {
         message.push(this.blocksService.section(this.pagespeedRating(lighthouse.worst)))
         message.push(this.blocksService.divider())
       }
-
     }
 
     // blog views statistics
-    if (blogs?.length) {
+    if (blogs?.length) {      
       message.push(this.blocksService.section(MessageBuilder.blogsMessage()))
       message.push(this.blocksService.section(this.blogsList(blogs)))
       message.push(this.blocksService.divider())
@@ -100,9 +99,7 @@ export abstract class MessageBuilder {
   }
 
   private headerMessage(range: ParsedRange): string {
-    return `${this.emojiService.getEmoji('calendar')} Отчет радиатора по ключевым метрикам за ${
-      range.text
-    }`
+    return `${this.emojiService.getEmoji('calendar')} Отчет радиатора по ключевым метрикам за ${range.text}`
   }
 
   private coreMessage({ users, duration, sessions, bounceRate }: CoreItems): string {
@@ -143,23 +140,23 @@ export abstract class MessageBuilder {
     ])
   }
 
-  private static devicesMessage() {
-    return 'Сайт просматривают на разных устройствах. Соотношение:'
-  }
+  // private static devicesMessage() {
+  //   return 'Сайт просматривают на разных устройствах. Соотношение:'
+  // }
 
-  private devicesList(devices: Array<Device>) {
-    return this.blocksService.list(
-      devices.map(device =>
-        this.blocksService.listItem(device, {
-          title: capitalize(device.title),
-          emojiType: this.emojiService.getEmojiTypeForDevice(device.title),
-          parensKey: 'previous',
-          valueType: '%',
-          parensType: '%',
-        }),
-      ),
-    )
-  }
+  // private devicesList(devices: Array<Device>) {
+  //   return this.blocksService.list(
+  //     devices.map(device =>
+  //       this.blocksService.listItem(device, {
+  //         title: capitalize(device.title),
+  //         emojiType: this.emojiService.getEmojiTypeForDevice(device.title),
+  //         parensKey: 'previous',
+  //         valueType: '%',
+  //         parensType: '%',
+  //       }),
+  //     ),
+  //   )
+  // }
 
   private static countriesMessage() {
     return 'Топ-3 страны, в которых находятся пользователи, посетившие сайт:'
@@ -171,21 +168,21 @@ export abstract class MessageBuilder {
     )
   }
 
-  private static conversionMessage() {
-    return 'Клики и конверсии произведенные пользователями:'
-  }
+  // private static conversionMessage() {
+  //   return 'Клики и конверсии произведенные пользователями:'
+  // }
 
-  private conversionList(goals: Goals) {
-    return this.blocksService.list(
-      goals.map(goal =>
-        this.blocksService.listItem(goal, {
-          title: goal.name,
-          emojiType: goal.emoji,
-          parensKey: 'previous',
-        }),
-      ),
-    )
-  }
+  // private conversionList(goals: Goals) {
+  //   return this.blocksService.list(
+  //     goals.map(goal =>
+  //       this.blocksService.listItem(goal, {
+  //         title: goal.name,
+  //         emojiType: goal.emoji,
+  //         parensKey: 'previous',
+  //       }),
+  //     ),
+  //   )
+  // }
 
   private static pagespeedAverageMessage(count: number) {
     return `Средняя производительность сайта от Google PageSpeed(Проанализировано ${count} страниц):`

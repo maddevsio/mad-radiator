@@ -8,7 +8,7 @@ export class ChartRepository extends Repository {
   /**
    * GA metrics
    */
-  metrics = [{ expression: `ga:${this.config.chart?.type}` }]
+  metrics = [{ name: `${this.config.chart?.type}` }]
 
   /**
    * GA dimensions
@@ -29,18 +29,13 @@ export class ChartRepository extends Repository {
    */
   public async getData(): Promise<Record<string, number>> {
     const rangeList = ChartRepository.buildRange(this.range, this.config.chart?.period)
-    
+
     const result: Record<string, number> = {}
 
     for (const { dateToDisplay, startDate, endDate } of rangeList) {
-      const payload = await this.getAnalytics(this.metrics, [], [{ startDate, endDate }])      
-      result[dateToDisplay] = Number(payload[0].data.rows[0].metrics[0].values[0])
+      const payload: any = await this.getAnalytics(this.metrics, [], [{ startDate, endDate }])
+      result[dateToDisplay] = Number(payload?.rows[0].metricValues[0].value)
     }
-    
-    // for (const [originalDate, range] of Object.entries(rangeList)) {
-    //   const payload = await this.getAnalytics(this.metrics, [], [range])
-    //   result[originalDate] = Number(payload[0].data.rows[0].metrics[0].values[0])
-    // }
 
     return result
   }
@@ -81,8 +76,8 @@ export class ChartRepository extends Repository {
         const dateToDisplay = ChartRepository.getDatestring(idx)
         return {
           dateToDisplay,
-          startDate: `${range.range === 'week' ? idx + ChartRepository.filterDivisor : idx}DaysAgo`,
-          endDate: `${idx}DaysAgo`,
+          startDate: `${range.range === 'week' ? idx + ChartRepository.filterDivisor : idx}daysAgo`,
+          endDate: `${idx}daysAgo`,
         }
       })
   }

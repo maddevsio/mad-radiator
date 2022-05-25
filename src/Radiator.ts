@@ -139,7 +139,7 @@ export class Radiator {
 
       if (this.analyticsService) {
         Logger.info('Getting analytics data...')
-        analytics = await this.analyticsService.getData()
+        analytics = await this.analyticsService.getData()        
       }
 
       if (this.lighthouse) {

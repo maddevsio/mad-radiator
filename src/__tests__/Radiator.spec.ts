@@ -64,8 +64,7 @@ const MockedChart = ChartBuilder as jest.Mock<ChartBuilder>
 const MockedStorage = GoogleDriveStorage as jest.Mock<GoogleDriveStorage>
 
 describe('Radiator', () => {
-  jest.spyOn(console, 'log').mockImplementation(() => {})
-
+  jest.spyOn(console, 'log').mockImplementation(() => { })
 
   let scheduleJob = jest.fn()
   let getData = jest.fn()
@@ -162,7 +161,7 @@ describe('Radiator', () => {
   it('should correctly called handleRadiatorError', async () => {
     // @ts-ignore
     MockedAnalytics.mockImplementation(() => ({
-      getData:() =>  Promise.reject(new AuthorizationError('api error'))
+      getData: () => Promise.reject(new AuthorizationError('api error'))
     }))
 
     const radiator = new Radiator(defaultConfig)

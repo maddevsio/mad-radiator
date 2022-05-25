@@ -1,12 +1,12 @@
 import { Blog } from 'analytics/interfaces/blogs.interface'
 import { CoreItems } from 'analytics/interfaces/core.interfaces'
 import { Country } from 'analytics/interfaces/countries.interfaces'
-import { Device } from 'analytics/interfaces/devices.interfaces'
-import { AnalyticsConversion, Goals } from 'analytics/interfaces/goals.interfaces'
+// import { Device } from 'analytics/interfaces/devices.interfaces'
+import { AnalyticsConversion } from 'analytics/interfaces/goals.interfaces'
 import { ChartConfig } from 'interfaces'
 
 export interface AnalyticsMetric {
-  expression: string
+  name: string
 }
 
 export interface AnalyticsDimension {
@@ -17,16 +17,22 @@ export interface AnalyticsValue {
   values: Array<number>
 }
 
-export interface AnalyticsDataRow {
-  dimensions: Array<string>
-  metrics: Array<AnalyticsValue>
+export type AnalyticDataRows = {
+  dimensionValues: Array<{ value: string }>
+  metricValues: Array<{ value: number }>
 }
 
-export interface AnalyticsReport {
-  data: {
-    totals: Array<AnalyticsValue>
-    rows: Array<AnalyticsDataRow>
+export interface AnalyticsPayload {
+  dimensionHeaders: Array<{ name: string }>
+  metricHeaders: Array<{ name: string }>
+  rows: Array<AnalyticDataRows>
+  rowCount: number
+  metadata?: {
+    currencyCode: string,
+    timeZone: string
   }
+  kind?: string
+  totals: Array<AnalyticDataRows>
 }
 
 export interface AnalyticsParams {
@@ -37,13 +43,11 @@ export interface AnalyticsParams {
   analyticsConversions?: Array<AnalyticsConversion>
 }
 
-export type AnalyticsPayload = Array<AnalyticsReport>
-
 export interface AnalyticsData {
   core: CoreItems
   countries: Array<Country>
-  devices: Array<Device>
-  goals: Goals
+  // devices: Array<Device>
+  // goals: Goals
   chart?: Record<string, number>
   blogs: Array<Blog>
 }

@@ -1,5 +1,5 @@
 import { Repository } from 'analytics/Repository'
-import { AnalyticsPayload, Country } from 'analytics/interfaces'
+import { AnalyticDataRows, AnalyticsPayload, Country } from 'analytics/interfaces'
 import { Rate } from 'interfaces'
 
 /**
@@ -9,35 +9,38 @@ export class CountriesRepository extends Repository {
   /**
    * GA metrics
    */
-  metrics = [{ expression: 'ga:users' }]
+  metrics = [{ name: 'totalUsers' }]
 
   /**
-   * GA dimensions
+   * GA4 dimensions
    */
-  dimensions = [{ name: 'ga:country' }]
+  dimensions = [{ name: 'country' }]
 
   /**
-   * Get data from GA
+   * Get data from GA4
    */
   public async getData(): Promise<Array<Country>> {
     const reports = await this.getAnalytics(this.metrics, this.dimensions)
-    
+
+    reports.rows = reports.rows
+      .filter((row: AnalyticDataRows) => row.dimensionValues[1]?.value === 'date_range_0')
+
     return CountriesRepository.format(reports)
   }
 
   /**
-   * Format raw GA data
+   * Format raw GA4 data
    */
   private static format(reports: AnalyticsPayload): Array<Country> {
     const total: number = CountriesRepository.getTotal(reports)
 
-    return reports[0].data.rows
+    return reports?.rows
       .map(
-        (row): Country => ({
-          title: row.dimensions[0] === '(not set)' ? 'Other' : row.dimensions[0],
-          value: Number(row.metrics[0].values[0]),
-          percentage: CountriesRepository.getPercentage(Number(row.metrics[0].values[0]), total),
-          rate: Rate.neutral,
+        (row: AnalyticDataRows): Country => ({
+          title: row.dimensionValues[0].value === '(not set)' ? 'Other' : row.dimensionValues[0].value,
+          value: Number(row.metricValues[0].value),
+          percentage: CountriesRepository.getPercentage(Number(row.metricValues[0].value), total),
+          rate: Rate.neutral
         }),
       )
       .sort((a, b) => b.value - a.value)
@@ -48,7 +51,7 @@ export class CountriesRepository extends Repository {
    * Get total from report
    */
   private static getTotal(reports: AnalyticsPayload): number {
-    return reports[0].data.totals[0].values[0]
+    return reports?.totals[0].metricValues[0].value
   }
 
   /**
