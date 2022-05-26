@@ -1,7 +1,4 @@
-import {
-  fakeResponse,
-  fakeResponseSecond,
-} from '__tests__/fixtures/analytics/fakeAnalyticsResponses'
+import { fakeResponseForCoreData } from '__tests__/fixtures/analytics/fakeAnalyticsResponses'
 import { parsedRange } from '__tests__/fixtures/parsedRange'
 import { CoreRepository } from 'analytics/CoreRepository'
 import { google } from 'googleapis'
@@ -11,7 +8,7 @@ import { AnalyticsParams } from '../interfaces'
 
 jest.mock('googleapis', () => ({
   google: {
-    analyticsreporting: jest.fn(),
+    analyticsdata: jest.fn(),
   },
 }))
 
@@ -29,10 +26,10 @@ describe('CoreRepository', () => {
 
   it('should correctly return data', async () => {
     // @ts-ignore
-    google.analyticsreporting.mockImplementation(() => ({
-      reports: {
-        batchGet() {
-          return new Promise(res => res(fakeResponse))
+    google.analyticsdata.mockImplementation(() => ({
+      properties: {
+        runReport() {
+          return new Promise(res => res(fakeResponseForCoreData))
         },
       },
     }))
@@ -40,71 +37,31 @@ describe('CoreRepository', () => {
     const repository = new CoreRepository(config, parsedRange)
 
     const data = await repository.getData()
+
     expect(data).toEqual({
       bounceRate: {
-        difference: '+100',
-        previous: 4,
-        rate: 'bad',
-        value: 12,
-      },
-      duration: {
         difference: '0',
-        previous: '4s',
+        previous: 0.21,
         rate: 'bad',
-        value: '4s',
-      },
-      sessions: {
-        difference: '-133.33',
-        previous: 10,
-        rate: 'bad',
-        value: 2,
-      },
-      users: {
-        difference: '+66.67',
-        previous: 5,
-        rate: 'good',
-        value: 10,
-      },
-    })
-  })
-
-  it('should correctly return data(alternative case)', async () => {
-    // @ts-ignore
-    google.analyticsreporting.mockImplementation(() => ({
-      reports: {
-        batchGet() {
-          return new Promise(res => res(fakeResponseSecond))
-        },
-      },
-    }))
-
-    const repository = new CoreRepository(config, parsedRange)
-
-    const data = await repository.getData()
-    expect(data).toEqual({
-      bounceRate: {
-        difference: '-100',
-        previous: 12,
-        rate: 'good',
-        value: 4,
+        value: 0.21,
       },
       duration: {
-        difference: '+22.22',
-        previous: '4s',
-        rate: 'good',
-        value: '5s',
+        difference: '-17.18',
+        previous: '3m 24s',
+        rate: 'bad',
+        value: '2m 52s',
       },
       sessions: {
-        difference: '+133.33',
-        previous: 2,
-        rate: 'good',
-        value: 10,
+        difference: '-1.27',
+        previous: 633,
+        rate: 'bad',
+        value: 625,
       },
       users: {
-        difference: '-66.67',
-        previous: 10,
+        difference: '-2.83',
+        previous: 538,
         rate: 'bad',
-        value: 5,
+        value: 523,
       },
     })
   })

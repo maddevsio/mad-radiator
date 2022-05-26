@@ -36,22 +36,6 @@ export const analyticsData: AnalyticsData = {
       percentage: 100,
     },
   ],
-  devices: [
-    {
-      title: 'mobile',
-      value: 100,
-      previous: 50,
-    },
-  ],
-  goals: [
-    {
-      name: 'Name',
-      emoji: '+1',
-      value: 100,
-      previous: 95,
-      rate: Rate.good,
-    },
-  ],
   chart: {
     key: 0,
     key2: 10,

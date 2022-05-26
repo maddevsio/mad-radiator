@@ -5,17 +5,17 @@ const {
   authConfig,
   sentryConfig,
   analyticsConfig,
-  scheduleConfig,
-  telegramConfig,
+  // scheduleConfig,
+  // telegramConfig,
   slackConfig,
-  lighthouseConfig
+  // lighthouseConfig
 } = config
 
 const radiator = new Radiator(authConfig)
 radiator.useSentry(sentryConfig)
 radiator.useAnalytics(analyticsConfig)
-radiator.useLighthouse(lighthouseConfig)
-radiator.useTelegram(telegramConfig)
+// radiator.useLighthouse(lighthouseConfig)
+// radiator.useTelegram(telegramConfig)
 radiator.useSlack(slackConfig)
-radiator.scheduleJob(scheduleConfig)
+// radiator.scheduleJob(scheduleConfig)
 radiator.run()

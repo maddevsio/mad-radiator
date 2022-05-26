@@ -101,6 +101,7 @@
   },
   "dependencies": {
     "@bitauth/libauth": "^1.17.1",
+    "@google-analytics/data": "^2.8.0",
     "@sentry/node": "^6.13.3",
     "@sentry/tracing": "^6.13.3",
     "axios": "^0.21.1",
@@ -114,7 +115,8 @@
     "quickchart-js": "^2.0.3",
     "sitemap-stream-parser": "^1.7.0",
     "vega": "^5.20.2",
-    "yargs": "^17.0.1"
+    "yargs": "^17.0.1",
+    "yarn": "^1.22.18"
   },
   "devDependencies": {
     "@semantic-release/changelog": "github:semantic-release/changelog",

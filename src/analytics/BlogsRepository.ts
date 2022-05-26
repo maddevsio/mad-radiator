@@ -1,5 +1,5 @@
 import { Repository } from 'analytics/Repository'
-import { AnalyticsDataRow, AnalyticsPayload } from 'analytics/interfaces'
+import { AnalyticDataRows, AnalyticsPayload } from 'analytics/interfaces'
 
 import { Blog } from './interfaces'
 
@@ -10,12 +10,12 @@ export class BlogsRepository extends Repository {
   /**
    * GA metrics
    */
-  metrics = [{ expression: 'ga:pageviews' }]
+  metrics = [{ name: 'screenPageViews' }]
 
   /**
    * GA dimensions
    */
-  dimensions = [{ name: 'ga:pagePath' }]
+  dimensions = [{ name: 'pagePath' }]
 
   /**
    * Get data from GA
@@ -24,39 +24,39 @@ export class BlogsRepository extends Repository {
   public async getData(): Promise<Array<Blog>> {
     const { websiteUrl, pagesPathForViewsAnalytics } = this.config
     const reports = await this.getAnalytics(this.metrics, this.dimensions)
+
     return BlogsRepository.format(reports, websiteUrl, pagesPathForViewsAnalytics)
   }
 
   /**
-   * Format raw GA data
+   * Format row GA4 data
    */
   private static format(reports: AnalyticsPayload, websiteUrl: string, pagesPathForViewsAnalytics?: Array<string>): Array<Blog> {
 
     const correctWebsiteUrl = websiteUrl.replace(/\/*$/gi, '')
-
-    const reportsDataPath = reports[0].data.rows
+    const reportsDataPath = reports?.rows
 
     if (pagesPathForViewsAnalytics?.length) {
       const filteredPages = BlogsRepository.filterPages(reportsDataPath, pagesPathForViewsAnalytics)
       return BlogsRepository.getTopPagesViewsStatistics(filteredPages, correctWebsiteUrl)
     }
-    
+
     return []
   }
 
-  private static getTopPagesViewsStatistics(reports: Array<AnalyticsDataRow>, websiteUrl: string) {
+  private static getTopPagesViewsStatistics(reports: Array<AnalyticDataRows>, websiteUrl: string) {
     return reports.map(
       (report): Blog => ({
-        pagePath: `${websiteUrl}${report.dimensions[0]}`,
-        pageViews: Number(report.metrics[0].values[0]),
+        pagePath: `${websiteUrl}${report.dimensionValues[0].value}`,
+        pageViews: Number(report.metricValues[0].value),
       }))
       .sort((a, b) => b.pageViews - a.pageViews)
       .slice(0, 3)
   }
 
-  private static filterPages(allPages: Array<AnalyticsDataRow>, pagesPathList: Array<string>) {
-    return pagesPathList.map(pagePath => allPages.filter(filteredPage => {
-      const filteredPagePath = filteredPage.dimensions[0]
+  private static filterPages(allPages: Array<AnalyticDataRows>, pagesPathList: Array<string>) {
+    return pagesPathList.map(pagePath => allPages.filter((filteredPage: AnalyticDataRows) => {
+      const filteredPagePath = filteredPage.dimensionValues[0].value
       return filteredPagePath.includes(pagePath) && filteredPagePath !== pagePath
     })).flat()
   }

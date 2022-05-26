@@ -2,8 +2,8 @@ import { BlogsRepository } from 'analytics/BlogsRepository'
 import { ChartRepository } from 'analytics/ChartRepository'
 import { CoreRepository } from 'analytics/CoreRepository'
 import { CountriesRepository } from 'analytics/CountriesRepository'
-import { DevicesRepository } from 'analytics/DevicesRepository'
-import { GoalsRepository } from 'analytics/GoalsRepository'
+// import { DevicesRepository } from 'analytics/DevicesRepository'
+// import { GoalsRepository } from 'analytics/GoalsRepository'
 import { ParsedRange } from 'interfaces'
 
 import { AnalyticsParams } from './interfaces'
@@ -12,17 +12,17 @@ import { AnalyticsParams } from './interfaces'
 export enum RepositoryTypes {
   core = 'core',
   countries = 'countries',
-  goals = 'goals',
-  devices = 'devices',
+  // goals = 'goals',
+  // devices = 'devices',
   chart = 'chart',
   blogs = 'blogs'
 }
 
 export type RepositoryType =
   | CountriesRepository
-  | GoalsRepository
+  // | GoalsRepository
   | ChartRepository
-  | DevicesRepository
+  // | DevicesRepository
   | CoreRepository
   | BlogsRepository
 
@@ -41,10 +41,10 @@ export class RepositoryFactory {
     switch (type) {
       case RepositoryTypes.countries:
         return new CountriesRepository(config, range)
-      case RepositoryTypes.goals:
-        return new GoalsRepository(config, range)
-      case RepositoryTypes.devices:
-        return new DevicesRepository(config, range)
+      // case RepositoryTypes.goals:
+      //   return new GoalsRepository(config, range)
+      // case RepositoryTypes.devices:
+      //   return new DevicesRepository(config, range)
       case RepositoryTypes.chart:
         return new ChartRepository(config, range)
       case RepositoryTypes.blogs:

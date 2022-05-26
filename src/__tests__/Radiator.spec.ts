@@ -13,7 +13,7 @@ import { Scheduler } from 'scheduler'
 import { GoogleDriveStorage } from 'storage'
 
 import { defaultAnalyticsParams } from './fixtures/defaultAnalyticsParams'
-import { defaultLighthouseParams } from './fixtures/defaultLighthouseParams'
+// import { defaultLighthouseParams } from './fixtures/defaultLighthouseParams'
 import { defaultMessengersParams } from './fixtures/defaultMessengersParams'
 
 jest.mock('analytics/AnalyticsService')
@@ -64,8 +64,7 @@ const MockedChart = ChartBuilder as jest.Mock<ChartBuilder>
 const MockedStorage = GoogleDriveStorage as jest.Mock<GoogleDriveStorage>
 
 describe('Radiator', () => {
-  jest.spyOn(console, 'log').mockImplementation(() => {})
-
+  jest.spyOn(console, 'log').mockImplementation(() => { })
 
   let scheduleJob = jest.fn()
   let getData = jest.fn()
@@ -127,7 +126,7 @@ describe('Radiator', () => {
       tracesSampleRate: 1.0,
     })
     radiator.useAnalytics(defaultAnalyticsParams)
-    radiator.useLighthouse(defaultLighthouseParams)
+    // radiator.useLighthouse(defaultLighthouseParams)
     radiator.useSlack(defaultMessengersParams)
     radiator.useTelegram(defaultMessengersParams)
     radiator.scheduleJob({
@@ -135,12 +134,12 @@ describe('Radiator', () => {
       time: 10,
     })
 
-    const lighthouseInstance = MockedLighthouse.mock.instances[0]
+    // const lighthouseInstance = MockedLighthouse.mock.instances[0]
 
     await radiator.run()
     expect(Sentry.init).toHaveBeenCalledTimes(2)
     expect(getData).toHaveBeenCalledTimes(2)
-    expect(lighthouseInstance.getLighthouseMetrics).toHaveBeenCalledTimes(2)
+    // expect(lighthouseInstance.getLighthouseMetrics).toHaveBeenCalledTimes(2)
     expect(renderChart).toHaveBeenCalledTimes(2)
     expect(storeFile).toHaveBeenCalledTimes(2)
   })
@@ -162,7 +161,7 @@ describe('Radiator', () => {
   it('should correctly called handleRadiatorError', async () => {
     // @ts-ignore
     MockedAnalytics.mockImplementation(() => ({
-      getData:() =>  Promise.reject(new AuthorizationError('api error'))
+      getData: () => Promise.reject(new AuthorizationError('api error'))
     }))
 
     const radiator = new Radiator(defaultConfig)

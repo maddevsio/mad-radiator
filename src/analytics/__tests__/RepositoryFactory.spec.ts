@@ -2,8 +2,7 @@ import { parsedRange } from '__tests__/fixtures/parsedRange'
 import { ChartRepository } from 'analytics/ChartRepository'
 import { CoreRepository } from 'analytics/CoreRepository'
 import { CountriesRepository } from 'analytics/CountriesRepository'
-import { DevicesRepository } from 'analytics/DevicesRepository'
-import { GoalsRepository } from 'analytics/GoalsRepository'
+// import { GoalsRepository } from 'analytics/GoalsRepository'
 import { RepositoryFactory, RepositoryType, RepositoryTypes } from 'analytics/RepositoryFactory'
 
 import { defaultAnalyticsParams } from '../../__tests__/fixtures/defaultAnalyticsParams'
@@ -16,8 +15,7 @@ describe('RepositoryFactroy', () => {
 
   const createRepositoryCases = [
     [RepositoryTypes.countries, CountriesRepository],
-    [RepositoryTypes.goals, GoalsRepository],
-    [RepositoryTypes.devices, DevicesRepository],
+    // [RepositoryTypes.goals, GoalsRepository],
     [RepositoryTypes.chart, ChartRepository],
     [RepositoryTypes.core, CoreRepository],
   ]

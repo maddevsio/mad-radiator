@@ -1,5 +1,5 @@
 import { Repository } from 'analytics/Repository'
-import { AnalyticsConversion, AnalyticsMetric, AnalyticsPayload, Goals } from 'analytics/interfaces'
+import { AnalyticsConversion, AnalyticsPayload, Goals } from 'analytics/interfaces'
 import { Rate } from 'interfaces'
 
 export interface ComputedGoal {
@@ -39,7 +39,7 @@ export class GoalsRepository extends Repository {
    */
   private async getConversion(conversion: AnalyticsConversion): Promise<ComputedGoal> {
     const payload = await this.getAnalytics(
-      GoalsRepository.transformGoalsToMetrics(conversion.goals),
+      [{ name: 'conversions' }],
     )
     return {
       payload,
@@ -66,23 +66,23 @@ export class GoalsRepository extends Repository {
   }
 
   /**
-   * Transform goals from config to a correct GA metrics
+   * Transform goals from config to a correct GA4 metrics
    */
-  private static transformGoalsToMetrics(goals: Array<Number>): Array<AnalyticsMetric> {
-    return goals.map(goal => ({
-      expression: `ga:goal${goal}Completions`,
-    }))
-  }
+  // private static transformGoalsToMetrics(goals: Array<Number>): Array<AnalyticsMetric> {
+  //   return goals.map(goal => ({
+  //     name: `goal${goal}Completions`,
+  //   }))
+  // }
 
   /**
    * Calculate current and previous values
    */
-  private static calculateValue(entity: AnalyticsPayload) {
+  private static calculateValue(entity: any) {
     return {
       value:
-        entity[0] && entity[0].data.totals[0].values.reduce((acc, curr) => acc + Number(curr), 0),
+        entity[0] && entity[0].data.totals[0].values.reduce((acc: number, curr: number | string) => acc + Number(curr), 0),
       previous:
-        entity[0] && entity[0].data.totals[1].values.reduce((acc, curr) => acc + Number(curr), 0),
+        entity[0] && entity[0].data.totals[1].values.reduce((acc: number, curr: number | string) => acc + Number(curr), 0),
     }
   }
 }

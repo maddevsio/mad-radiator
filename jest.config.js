@@ -21,10 +21,10 @@ module.exports = {
   coverageReporters: ['lcov'],
   coverageThreshold: {
     global: {
-      branches: 65,
+      branches: 62,
       statements: 80,
-      functions: 85,
-      lines: 84,
+      functions: 79,
+      lines: 82,
     },
   },
   moduleNameMapper: pathsToModuleNameMapper(tsconfig.compilerOptions.paths, '<rootDir>/src'),
