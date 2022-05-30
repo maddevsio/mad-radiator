@@ -117,7 +117,6 @@
     "node-schedule": "^2.0.0",
     "passport": "^0.6.0",
     "passport-google-oauth": "^2.0.0",
-    "passport-google-oauth20": "^2.0.0",
     "quickchart-js": "^2.0.3",
     "sitemap-stream-parser": "^1.7.0",
     "vega": "^5.20.2",
