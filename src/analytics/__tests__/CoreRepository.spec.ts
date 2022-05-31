@@ -40,29 +40,35 @@ describe('CoreRepository', () => {
 
     expect(data).toEqual({
       bounceRate: {
-        difference: '0',
-        previous: 0.21,
-        rate: 'bad',
-        value: 0.21,
+        difference: '-199.99',
+        previous: 9750,
+        rate: 'good',
+        value: 0.23,
       },
       duration: {
-        difference: '+17.18',
-        previous: '2m 52s',
-        rate: 'good',
-        value: '3m 24s',
+        difference: '-52.54',
+        previous: '5m 19s',
+        rate: 'bad',
+        value: '3m 6s',
+      },
+      monthlyUsers: {
+        value: 9919,
       },
       sessions: {
-        difference: '+1.27',
-        previous: 625,
-        rate: 'good',
-        value: 633,
+        difference: '-127.81',
+        previous: 2888,
+        rate: 'bad',
+        value: 636,
       },
       users: {
-        difference: '+2.83',
-        previous: 523,
+        difference: '+61.48',
+        previous: 285,
         rate: 'good',
         value: 538,
       },
+      weeklyUsers: {
+        value: 2898,
+      }
     })
   })
 })

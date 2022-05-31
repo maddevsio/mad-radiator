@@ -118,7 +118,7 @@ export abstract class MessageBuilder {
     return `За отчетный период сайт ${this.config.websiteUrl} посетило *${users.value} пользователей*. Всего *${sessions.value} сессий*, средняя длительность 1 сессии составляет *${duration.value}*. *${bounceRate.value}%* пользователей закрыли сайт никак с ним не провзаимодействовав.`
   }
 
-  private coreList({ users, duration, sessions, bounceRate }: CoreItems) {
+  private coreList({ users, weeklyUsers, monthlyUsers, duration, sessions, bounceRate }: CoreItems) {
     return this.blocksService.list([
       this.blocksService.listItem(users, {
         title: 'Users',
@@ -147,6 +147,16 @@ export abstract class MessageBuilder {
         parensKey: 'difference',
         valueType: '',
         parensType: '%',
+      }),
+      this.blocksService.totalListItem(weeklyUsers, {
+        title: 'Пользователей за последние 7 дней',
+        total: 3000,
+        emojiType: weeklyUsers.value > 3000 ? 'white_check_mark' : 'x',
+      }),
+      this.blocksService.totalListItem(monthlyUsers, {
+        title: 'Пользователей за последние 28 дней',
+        total: 11000,
+        emojiType: monthlyUsers.value > 11000 ? 'white_check_mark' : 'x',
       }),
     ])
   }
