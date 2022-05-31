@@ -49,8 +49,11 @@ export abstract class MessageBuilder {
 
     if (countries) {
       // countries
+      const goalsCountries = ['United States', 'United Kingdom', 'Germany', 'France', 'Indonesia', 'Vietnam']
       message.push(this.blocksService.section(MessageBuilder.countriesMessage()))
       message.push(this.blocksService.section(this.countriesList(countries)))
+      const isMatch = countries.every(item => goalsCountries.includes(item.title))
+      message.push(this.blocksService.section(MessageBuilder.matchGoalsCountries(isMatch, goalsCountries)))
       message.push(this.blocksService.divider())
     }
 
@@ -85,7 +88,7 @@ export abstract class MessageBuilder {
     }
 
     // blog views statistics
-    if (blogs?.length) {      
+    if (blogs?.length) {
       message.push(this.blocksService.section(MessageBuilder.blogsMessage()))
       message.push(this.blocksService.section(this.blogsList(blogs)))
       message.push(this.blocksService.divider())
@@ -166,6 +169,10 @@ export abstract class MessageBuilder {
     return this.blocksService.list(
       countries.map(country => this.blocksService.countryListItem(country)),
     )
+  }
+
+  private static matchGoalsCountries(isMatch: boolean, goalsCountries: Array<string>) {
+    return `${isMatch ? ':white_check_mark:' : ':x:'} Should be -> ${goalsCountries.join(', ')}`
   }
 
   // private static conversionMessage() {

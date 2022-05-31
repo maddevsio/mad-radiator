@@ -60,6 +60,8 @@ describe('TelegramMessageBuilder', () => {
 
 🇷🇺 Russia: *100%* от всех посетителей сайта
 
+:x: Should be -> United States, United Kingdom, Germany, France, Indonesia, Vietnam
+
 ———
 Средняя производительность сайта от Google PageSpeed(Проанализировано 100 страниц):
 

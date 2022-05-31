@@ -73,6 +73,13 @@ describe('SlackMessageBuilder', () => {
         type: 'section',
       },
       {
+        text: {
+          text: ':x: Should be -> United States, United Kingdom, Germany, France, Indonesia, Vietnam\n\n',
+          type: 'mrkdwn',
+        },
+        type: 'section',
+      },
+      {
         type: 'divider',
       },
       {
