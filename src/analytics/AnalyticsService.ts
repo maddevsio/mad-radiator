@@ -43,6 +43,7 @@ export class AnalyticsService {
     try {
       // TODO: Fix "as"
       const core = (await this.repositories.core.getData()) as CoreItems
+
       const countries = (await this.repositories.countries.getData()) as Array<Country>
       // const devices = (await this.repositories.devices.getData()) as Array<Device>
       // const goals = (await this.repositories.goals.getData()) as Goals

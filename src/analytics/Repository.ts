@@ -63,6 +63,7 @@ export abstract class Repository {
       });
 
       const payload = response?.data
+
       return payload
     } catch (error: any) {
       throw new AnalyticsError(error)

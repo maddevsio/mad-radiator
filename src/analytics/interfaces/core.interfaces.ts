@@ -2,9 +2,9 @@ import { Rate } from 'interfaces'
 
 export interface CoreItem {
   value: number | string
-  previous: number | string
-  difference: string
-  rate: Rate
+  previous?: number | string
+  difference?: string
+  rate?: Rate
 }
 
 export interface CoreItems {
@@ -12,4 +12,6 @@ export interface CoreItems {
   sessions: CoreItem
   bounceRate: CoreItem
   duration: CoreItem
+  weeklyUsers: CoreItem
+  monthlyUsers: CoreItem
 }

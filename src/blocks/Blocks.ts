@@ -22,12 +22,17 @@ export abstract class Blocks {
 
   public listItem(
     entity: CoreItem | Goal | Device,
-    { title, emojiType, parensKey, valueType = '', parensType = '' }: ListItemParameters,
+    { title, emojiType, parensKey = "difference", valueType = '', parensType = '' }: ListItemParameters,
   ): string {
     const rateEmoji = this.emojiService.getRateEmoji(entity.rate)
     const emoji = this.emojiService.getEmoji(emojiType)
 
     return `${rateEmoji} ${emoji} ${title}: *${entity.value}${valueType}* (${entity[parensKey]}${parensType})`
+  }
+
+  public totalListItem(entity: CoreItem, { title, total, emojiType }: ListItemParameters): string {
+    const emoji = this.emojiService.getEmoji(emojiType)
+    return `${emoji} ${title}: *${entity.value}* / Should be > *${total}*`
   }
 
   public performanceListItem(title: string, value: number, emojiType: EmojiType): string {

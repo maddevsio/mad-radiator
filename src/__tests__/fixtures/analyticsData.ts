@@ -27,6 +27,14 @@ export const analyticsData: AnalyticsData = {
       difference: '100%',
       rate: Rate.good,
     },
+    weeklyUsers: {
+      value: 2888,
+      rate: Rate.good,
+    },
+    monthlyUsers: {
+      value: 10001,
+      rate: Rate.good
+    }
   },
   countries: [
     {

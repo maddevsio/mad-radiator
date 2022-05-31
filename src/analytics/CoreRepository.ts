@@ -12,9 +12,11 @@ export class CoreRepository extends Repository {
    */
   metrics = [
     { name: 'totalUsers' },
+    { name: 'active7DayUsers' },
+    { name: 'active28DayUsers' },
     { name: 'sessions' },
     { name: 'bounceRate' },
-    { name: 'averageSessionDuration' },
+    { name: 'averageSessionDuration' }
   ]
 
   /**
@@ -38,9 +40,11 @@ export class CoreRepository extends Repository {
   private static format(reports: AnalyticsPayload): CoreItems {
     const [
       users,
+      usersForWeek,
+      usersForMonth,
       sessions,
       bounceRate,
-      duration
+      duration,
     ] = reports.rows[0]?.metricValues
       .map((n: { value: number }) => Number(Number(n.value).toFixed(2)))
 
@@ -84,6 +88,12 @@ export class CoreRepository extends Repository {
         difference: String(durationDifference > 0 ? `+${durationDifference}` : durationDifference),
         rate: durationDifference > 0 ? Rate.good : Rate.bad,
       },
+      weeklyUsers: {
+        value: usersForWeek,
+      },
+      monthlyUsers: {
+        value: usersForMonth,
+      }
     }
   }
 
