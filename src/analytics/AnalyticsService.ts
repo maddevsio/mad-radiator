@@ -1,5 +1,5 @@
 import { RepositoryFactory, RepositoryType, RepositoryTypes } from 'analytics/RepositoryFactory'
-import { AnalyticsData, AnalyticsParams, Blog, CoreItems, Country } from 'analytics/interfaces'
+import { AnalyticsData, AnalyticsParams, Blog, ContactMe, CoreItems, Country } from 'analytics/interfaces'
 import { AnalyticsError } from 'errors/types/AnalyticsError'
 import { ParsedRange } from 'interfaces'
 
@@ -50,12 +50,14 @@ export class AnalyticsService {
         ? ((await this.repositories.chart.getData()) as Record<string, number>)
         : undefined
       const blogs = (await this.repositories.blogs.getData()) as Array<Blog>
+      const contactMe = (await this.repositories.contactMe.getData()) as ContactMe
 
       return {
         core,
         countries,
         chart,
         blogs,
+        contactMe,
       }
     } catch (error: any) {
       throw new AnalyticsError(error)
@@ -73,6 +75,7 @@ export class AnalyticsService {
       // goals: this.factory.createRepository(RepositoryTypes.goals, this.config, this.range),
       chart: this.factory.createRepository(RepositoryTypes.chart, this.config, this.range),
       blogs: this.factory.createRepository(RepositoryTypes.blogs, this.config, this.range),
+      contactMe: this.factory.createRepository(RepositoryTypes.contactMe, this.config, this.range)
     }
   }
 }
