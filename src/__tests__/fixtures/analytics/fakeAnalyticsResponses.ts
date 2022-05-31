@@ -132,18 +132,20 @@ export const fakeResponseForCoreData = {
     dimensionHeaders: [{ name: 'dateRange' }],
     metricHeaders: [
       { name: 'totalUsers', type: 'TYPE_INTEGER' },
+      { name: 'active7DayUsers', type: 'TYPE_INTEGER' },
+      { name: 'active28DayUsers', type: 'TYPE_INTEGER' },
       { name: 'sessions', type: 'TYPE_INTEGER' },
       { name: 'bounceRate', type: 'TYPE_FLOAT' },
       { name: 'averageSessionDuration', type: 'TYPE_SECONDS' }
     ],
-    rows: [{ "dimensionValues": [{ "value": "date_range_0" }], "metricValues": [{ "value": "538" }, { "value": "633" }, { "value": "0.20695102685624012" }, { "value": "204.91806357977885" }] }, { "dimensionValues": [{ "value": "date_range_1" }], "metricValues": [{ "value": "523" }, { "value": "625" }, { "value": "0.2128" }, { "value": "172.49769403040003" }] }]
+    rows: [{ "dimensionValues": [{ "value": "date_range_0" }], "metricValues": [{ "value": "538" }, { "value": "2898" }, { "value": "9919" }, { "value": "636" }, { "value": "0.23113207547169812" }, { "value": "186.2663308553459" }] }, { "dimensionValues": [{ "value": "date_range_1" }], "metricValues": [{ "value": "285" }, { "value": "2888" }, { "value": "9750" }, { "value": "319" }, { "value": "0.19749216300940439" }, { "value": "104.15423423197493" }] }]
   }
 }
 
 export const fakeResponseForChartData = {
   data: {
     metricHeaders: [{ name: 'totalUsers', type: 'TYPE_INTEGER' }],
-    rows: [{ "metricValues": [{ "value": "373" }] }, { "value": "377" }, { "value": "217" }, { "value": "411" }]
+    rows: [{ "dimensionValues": [{ "value": "date_range_0" }], "metricValues": [{ "value": "538" }, { "value": "2898" }, { "value": "9919" }, { "value": "636" }, { "value": "0.23113207547169812" }, { "value": "186.2663308553459" }] }, { "dimensionValues": [{ "value": "date_range_1" }], "metricValues": [{ "value": "285" }, { "value": "2888" }, { "value": "9750" }, { "value": "319" }, { "value": "0.19749216300940439" }, { "value": "104.15423423197493" }] }]
   }
 }
 

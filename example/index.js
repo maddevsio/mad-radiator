@@ -62,7 +62,7 @@ app.get('/authorized',
   (req, res) => {
     const {
       authConfig,
-      sentryConfig,
+      // sentryConfig,
       analyticsConfig,
       slackConfig,
     } = config
@@ -70,7 +70,7 @@ app.get('/authorized',
     Object.assign(authConfig, userInfo)
 
     const radiator = new Radiator(authConfig)
-    radiator.useSentry(sentryConfig)
+    // radiator.useSentry(sentryConfig)
     radiator.useAnalytics(analyticsConfig)
     radiator.useSlack(slackConfig)
     radiator.run()
