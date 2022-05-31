@@ -10,16 +10,16 @@ const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy
 
 const app = express();
 
-const CLIENT_ID=process.env.GOOGLE_CLIENT_ID
-const CLIENT_SECRET=process.env.GOOGLE_CLIENT_SECRET
-const CALLBACK_URL='http://localhost:3000/authorized'
+const CLIENT_ID = process.env.GOOGLE_CLIENT_ID
+const CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET
+const CALLBACK_URL ='http://localhost:3000/authorized'
 const PORT=3000
 let userInfo = {}
 
 app.use(session({
   resave: false,
   saveUninitialized: true,
-  secret: 'SECRET' 
+  secret: 'SECRET'
 }));
 app.use(passport.initialize());
 app.use(passport.session());
@@ -54,10 +54,7 @@ app.get('/google/auth',
       scope: ['profile', 'email', 'https://www.googleapis.com/auth/drive', 'https://www.googleapis.com/auth/analytics.readonly'],
       accessType: 'offline',
       prompt: 'consent',
-  }),
-    (req, res) => {
-        console.log('GOOGLE AUTH: ', res)
-    }
+  })
 );
 
 app.get('/authorized',
@@ -69,9 +66,9 @@ app.get('/authorized',
       analyticsConfig,
       slackConfig,
     } = config
-    
+
     Object.assign(authConfig, userInfo)
-    
+
     const radiator = new Radiator(authConfig)
     radiator.useSentry(sentryConfig)
     radiator.useAnalytics(analyticsConfig)

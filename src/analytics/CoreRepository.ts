@@ -41,7 +41,7 @@ export class CoreRepository extends Repository {
       sessions,
       bounceRate,
       duration
-    ] = reports.rows[1]?.metricValues
+    ] = reports.rows[0]?.metricValues
       .map((n: { value: number }) => Number(Number(n.value).toFixed(2)))
 
     const [
@@ -49,7 +49,7 @@ export class CoreRepository extends Repository {
       sessionsPrev,
       bounceRatePrev,
       durationPrev,
-    ] = reports.rows[0].metricValues
+    ] = reports.rows[1].metricValues
       .map((n: { value: number }) => Number(Number(n.value).toFixed(2)))
 
     const usersDifference = CoreRepository.getPercentage(users, usersPrev)
