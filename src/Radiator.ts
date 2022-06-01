@@ -6,14 +6,16 @@ import { ChartBuilder } from 'chartBuilder'
 import { AnalyticsError } from 'errors/types/AnalyticsError'
 import { AuthorizationError } from 'errors/types/AuthorizationError'
 import { MessengersParams, ParsedRange, RadiatorConfig, ScheduleConfig, SentryParams } from 'interfaces'
-// import { Lighthouse } from 'lighthouse'
-// import { LighthouseParams } from 'lighthouse/interfaces'
+import { Lighthouse } from 'lighthouse'
+import { LighthouseParams } from 'lighthouse/interfaces'
 import { Logger } from 'logger'
-import { MessengersService } from 'messengers'
+// import { MessengersService } from 'messengers'
 import { RunCounter } from 'runCounter'
 import { Scheduler } from 'scheduler'
 import { GoogleDriveStorage } from 'storage'
 import { parseRange } from 'utils/parseRange'
+
+import { PageAnalytics } from "./pagesAnalytics";
 
 export class Radiator {
   private readonly config: RadiatorConfig
@@ -28,7 +30,7 @@ export class Radiator {
 
   private analyticsService: AnalyticsService | undefined
 
-  // private lighthouse: Lighthouse | undefined
+  private lighthouse: Lighthouse | undefined
 
   private chartBuilder: ChartBuilder | undefined
 
@@ -37,6 +39,8 @@ export class Radiator {
   private scheduler: Scheduler | undefined
 
   private runCounter: RunCounter
+
+  private pageAnalytics: PageAnalytics | undefined
 
   constructor(config: RadiatorConfig) {
     this.config = config
@@ -79,15 +83,19 @@ export class Radiator {
     this.useGoogleDriveStorage()
   }
 
-  // public useLighthouse(lighthouseParams: LighthouseParams) {
-  //   this.lighthouse = new Lighthouse(
-  //     {
-  //       ...lighthouseParams,
-  //       websiteUrl: this.config.websiteUrl,
-  //       googleapisKey: this.config.googleapisKey,
-  //     },
-  //   )
-  // }
+  public useLighthouse(lighthouseParams: LighthouseParams) {
+    this.lighthouse = new Lighthouse(
+      {
+        ...lighthouseParams,
+        websiteUrl: this.config.websiteUrl,
+        googleapisKey: this.config.googleapisKey,
+      },
+    )
+  }
+
+  public usePageAnalytics() {
+    this.pageAnalytics = new PageAnalytics()
+  }
 
   private useChartBuilder(analyticsParams: AnalyticsParams) {
     this.chartBuilder = new ChartBuilder(analyticsParams)
@@ -127,7 +135,8 @@ export class Radiator {
     try {
       let analytics
       let lighthouse
-      let imageURL
+      // let imageURL
+      let pageAnalytics
       let imageBuffer
 
       this.runCounter.incrementRunCounter()
@@ -142,10 +151,16 @@ export class Radiator {
         analytics = await this.analyticsService.getData()
       }
 
-      // if (this.lighthouse) {
-      //   Logger.info('Getting lighthouse data...')
-      //   lighthouse = await this.lighthouse.getLighthouseMetrics()
-      // }
+      if (this.pageAnalytics) {
+        Logger.info('Getting firebase data...')
+        pageAnalytics = await this.pageAnalytics.getPageAnalyticsMetrics()
+      }
+
+      if (this.lighthouse) {
+        Logger.info('Getting lighthouse data...')
+        lighthouse = await this.lighthouse.getLighthouseMetrics()
+      }
+
 
       if (analytics && this.chartBuilder) {
         Logger.info('Building an image...')
@@ -154,18 +169,20 @@ export class Radiator {
 
       if (imageBuffer && this.googleDriveStorage) {
         Logger.info('Saving an image in gdrive...')
-        imageURL = imageBuffer && (await this.googleDriveStorage.storeFile(imageBuffer))
+        // imageURL = imageBuffer && (await this.googleDriveStorage.storeFile(imageBuffer))
       }
 
       if (googleAuthorization && this.messengersParams) {
         Logger.info('Send messages...')
-        const messengersService = new MessengersService(this.messengersParams)
-        await messengersService.sendMessages({
-          analytics,
-          lighthouse,
-          range: this.parsedRange,
-          imageURL,
-        })
+        console.log('pageAnalytics', pageAnalytics)
+        console.log('lighthouse', lighthouse)
+        // const messengersService = new MessengersService(this.messengersParams)
+        // await messengersService.sendMessages({
+        //   analytics,
+        //   lighthouse,
+        //   range: this.parsedRange,
+        //   imageURL,
+        // })
         Logger.success('Success!')
       }
 
