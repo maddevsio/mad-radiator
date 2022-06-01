@@ -84,6 +84,23 @@ describe('SlackMessageBuilder', () => {
       },
       {
         text: {
+          text: 'Заполнения формы contact me\n\n',
+          type: 'mrkdwn',
+        },
+        type: 'section',
+      },
+      {
+        text: {
+          text: ':x: Заполнения за последние 30 дней: 4 / Should be > 5\n\n',
+          type: 'mrkdwn',
+        },
+        type: 'section',
+      },
+      {
+        type: 'divider',
+      },
+      {
+        text: {
           text:
             'Средняя производительность сайта от Google PageSpeed(Проанализировано 100 страниц):\n\n',
           type: 'mrkdwn',

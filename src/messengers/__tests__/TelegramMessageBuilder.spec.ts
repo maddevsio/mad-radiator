@@ -65,6 +65,11 @@ describe('TelegramMessageBuilder', () => {
 :x: Should be -> United States, United Kingdom, Germany, France, Indonesia, Vietnam
 
 ———
+Заполнения формы contact me
+
+:x: Заполнения за последние 30 дней: 4 / Should be > 5
+
+———
 Средняя производительность сайта от Google PageSpeed(Проанализировано 100 страниц):
 
 😋 📈 Performance: *100%*

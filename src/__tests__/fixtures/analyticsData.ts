@@ -54,4 +54,7 @@ export const analyticsData: AnalyticsData = {
       pageViews: 19,
     },
   ],
+  contactMe: {
+      value: 4
+  },
 }

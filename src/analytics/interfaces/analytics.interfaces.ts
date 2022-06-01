@@ -5,6 +5,8 @@ import { Country } from 'analytics/interfaces/countries.interfaces'
 import { AnalyticsConversion } from 'analytics/interfaces/goals.interfaces'
 import { ChartConfig } from 'interfaces'
 
+import { ContactMe } from "./contactMe.interfaces";
+
 export interface AnalyticsMetric {
   name: string
 }
@@ -50,4 +52,5 @@ export interface AnalyticsData {
   // goals: Goals
   chart?: Record<string, number>
   blogs: Array<Blog>
+  contactMe: ContactMe
 }
