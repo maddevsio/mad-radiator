@@ -6,7 +6,7 @@ import { BuildMessageData } from 'messengers/interfaces'
 export class Slack extends Messenger {
   protected messageBuilder = MessageBuilderFactory.createMessageBuilder(
     Integration.slack,
-    this.config,
+    this.config
   )
 
   async sendMessage(buildMessageData: BuildMessageData) {

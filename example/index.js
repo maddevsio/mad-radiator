@@ -74,7 +74,8 @@ app.get('/authorized',
     // radiator.useSentry(sentryConfig)
     // radiator.useAnalytics(analyticsConfig)
     radiator.useSlack(slackConfig)
-    radiator.usePageAnalytics()
+    // radiator.usePageAnalytics()
+    radiator.useQuoraAnalytics()
     // radiator.useLighthouse(lighthouseConfig)
     radiator.run()
 

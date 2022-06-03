@@ -9,13 +9,15 @@ import { MessengersParams, ParsedRange, RadiatorConfig, ScheduleConfig, SentryPa
 import { Lighthouse } from 'lighthouse'
 import { LighthouseParams } from 'lighthouse/interfaces'
 import { Logger } from 'logger'
-// import { MessengersService } from 'messengers'
+import { MessengersService } from 'messengers'
+import { QuoraService } from 'quora'
 import { RunCounter } from 'runCounter'
 import { Scheduler } from 'scheduler'
 import { GoogleDriveStorage } from 'storage'
 import { parseRange } from 'utils/parseRange'
 
-import { PageAnalytics } from "./pagesAnalytics";
+
+// import { PageAnalytics } from "./pagesAnalytics";
 
 export class Radiator {
   private readonly config: RadiatorConfig
@@ -40,7 +42,8 @@ export class Radiator {
 
   private runCounter: RunCounter
 
-  private pageAnalytics: PageAnalytics | undefined
+  // private pageAnalytics: PageAnalytics | undefined
+  private quoraAnalytics: QuoraService | undefined
 
   constructor(config: RadiatorConfig) {
     this.config = config
@@ -93,8 +96,12 @@ export class Radiator {
     )
   }
 
-  public usePageAnalytics() {
-    this.pageAnalytics = new PageAnalytics()
+  // public usePageAnalytics() {
+  //   this.pageAnalytics = new PageAnalytics()
+  // }
+
+  public useQuoraAnalytics() {
+    this.quoraAnalytics = new QuoraService()
   }
 
   private useChartBuilder(analyticsParams: AnalyticsParams) {
@@ -135,9 +142,10 @@ export class Radiator {
     try {
       let analytics
       let lighthouse
-      // let imageURL
-      let pageAnalytics
+      let imageURL
+      // let pageAnalytics
       let imageBuffer
+      let quoraAnalytics
 
       this.runCounter.incrementRunCounter()
 
@@ -151,16 +159,20 @@ export class Radiator {
         analytics = await this.analyticsService.getData()
       }
 
-      if (this.pageAnalytics) {
+      // if (this.pageAnalytics) {
+      //   Logger.info('Getting firebase data...')
+      //   pageAnalytics = await this.pageAnalytics.getPageAnalyticsMetrics()
+      // }
+
+      if (this.quoraAnalytics) {
         Logger.info('Getting firebase data...')
-        pageAnalytics = await this.pageAnalytics.getPageAnalyticsMetrics()
+        quoraAnalytics = await this.quoraAnalytics.calculateCountOfPosts()
       }
 
       if (this.lighthouse) {
         Logger.info('Getting lighthouse data...')
         lighthouse = await this.lighthouse.getLighthouseMetrics()
       }
-
 
       if (analytics && this.chartBuilder) {
         Logger.info('Building an image...')
@@ -169,20 +181,19 @@ export class Radiator {
 
       if (imageBuffer && this.googleDriveStorage) {
         Logger.info('Saving an image in gdrive...')
-        // imageURL = imageBuffer && (await this.googleDriveStorage.storeFile(imageBuffer))
+        imageURL = imageBuffer && (await this.googleDriveStorage.storeFile(imageBuffer))
       }
 
       if (googleAuthorization && this.messengersParams) {
         Logger.info('Send messages...')
-        console.log('pageAnalytics', pageAnalytics)
-        console.log('lighthouse', lighthouse)
-        // const messengersService = new MessengersService(this.messengersParams)
-        // await messengersService.sendMessages({
-        //   analytics,
-        //   lighthouse,
-        //   range: this.parsedRange,
-        //   imageURL,
-        // })
+        const messengersService = new MessengersService(this.messengersParams)
+        await messengersService.sendMessages({
+          analytics,
+          lighthouse,
+          range: this.parsedRange,
+          quoraAnalytics,
+          imageURL,
+        })
         Logger.success('Success!')
       }
 

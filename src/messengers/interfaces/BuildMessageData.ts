@@ -6,5 +6,6 @@ export interface BuildMessageData {
   analytics?: AnalyticsData
   range: ParsedRange
   lighthouse?: LighthouseData
+  quoraAnalytics?: { count: string }
   imageURL?: string
 }

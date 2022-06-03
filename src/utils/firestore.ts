@@ -14,6 +14,10 @@ export class Firestore {
     }
 
     public async setData(documentName: string, fields: object) {
-        return axios.post(`${this.url}/${documentName}`, fields)
+        try {
+            return await axios.post(`${this.url}/${documentName}`, fields)
+        } catch (error: any) {
+            throw new Error(error)
+        }
     }
 }

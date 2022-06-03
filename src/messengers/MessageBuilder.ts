@@ -23,6 +23,7 @@ export abstract class MessageBuilder {
     analytics,
     range,
     lighthouse,
+    quoraAnalytics,
     imageURL
   }: BuildMessageData): Array<string | SlackMessageBlock> {
     const { core, countries, blogs } = analytics || {}
@@ -98,6 +99,11 @@ export abstract class MessageBuilder {
     message.push(this.blocksService.image(imageURL))
     message.push(this.blocksService.divider())
 
+    if (quoraAnalytics) {
+      message.push(this.blocksService.section(this.quoraPosts(quoraAnalytics)))
+      message.push(this.blocksService.divider())
+    }
+
     return message
   }
 
@@ -151,6 +157,18 @@ export abstract class MessageBuilder {
         emojiType: monthlyUsers.value > 11000 ? 'white_check_mark' : 'x',
       }),
     ])
+  }
+
+  private quoraPosts({ count }: { count: string }): any {
+    return this.blocksService.list(
+      [
+        this.blocksService.totalListItem({ value: count }, {
+          title: 'Новых статей за последние 30 дней',
+          total: 5,
+          emojiType: Number(count) > 5 ? 'white_check_mark' : 'x'
+        })
+      ]
+    )
   }
 
   // private static devicesMessage() {

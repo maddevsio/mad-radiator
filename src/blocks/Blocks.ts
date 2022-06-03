@@ -30,7 +30,7 @@ export abstract class Blocks {
     return `${rateEmoji} ${emoji} ${title}: *${entity.value}${valueType}* (${entity[parensKey]}${parensType})`
   }
 
-  public totalListItem(entity: CoreItem, { title, total, emojiType }: ListItemParameters): string {
+  public totalListItem(entity: CoreItem, { title, total, emojiType }: ListItemParameters): any {
     const emoji = this.emojiService.getEmoji(emojiType)
     return `${emoji} ${title}: *${entity.value}* / Should be > *${total}*`
   }
