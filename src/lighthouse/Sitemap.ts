@@ -13,13 +13,13 @@ export class Sitemap {
   public async getAllUrls() {
     const url = this.buildSitemapUrl()
 
-    const parsedUrls: Array<string> = await this.parseSitemapUrls(url);    
+    const parsedUrls: Array<string> = await this.parseSitemapUrls(url);
 
     return this.filterByRegexp(parsedUrls);
   }
 
   private buildSitemapUrl() {
-    return `${this.config.websiteUrl?.replace(/\/?$/gm, '')}/${this.config?.sitemapUrl}`
+    return `${this.config.websiteUrl?.replace(/\/?$/gm, '')}/sitemap.xml`
   }
 
   private parseSitemapUrls(link: string) {
