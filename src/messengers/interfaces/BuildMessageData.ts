@@ -7,4 +7,5 @@ export interface BuildMessageData {
   range: ParsedRange
   lighthouse?: LighthouseData
   imageURL?: string
+  redditCountPosts?: number
 }
