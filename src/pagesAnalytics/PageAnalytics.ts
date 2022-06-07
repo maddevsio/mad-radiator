@@ -1,15 +1,19 @@
-// import { Sitemap } from 'lighthouse/Sitemap'
 import { Logger } from 'logger'
-import moment from "moment";
+import moment from "moment"
 import { Sitemap } from 'sitemap/Sitemap'
+import { SitemapOptions } from 'sitemap/interfaces'
+import { Firestore } from 'utils/firestore'
 
-import { SitemapOptions } from '../sitemap/interfaces'
-import { Firestore } from '../utils/firestore'
+import { PageAnalyticsData } from "./interfaces"
 
 export class PageAnalytics {
   private readonly config: SitemapOptions
 
   private readonly sitemap: Sitemap
+
+  private readonly firstDayOfCurrentMonth: string
+
+  private readonly firstDayOfCurrentWeek: string
 
   private firestore: Firestore
 
@@ -20,13 +24,24 @@ export class PageAnalytics {
     this.sitemap = new Sitemap(this.config)
     this.firestore = new Firestore()
     this.currentCount = 0
+    this.firstDayOfCurrentMonth = moment().startOf('month').toISOString()
+    this.firstDayOfCurrentWeek = moment().startOf('week').toISOString()
   }
 
-  public async getPageAnalyticsMetrics(): Promise<Object | null> {
+  public async getPageAnalyticsMetrics(): Promise<PageAnalyticsData | null> {
     const { data } = await this.setCountOfBlogPages()
     if (data) {
       Logger.success('Count saved!')
-      return this.getCountOfBlogs()
+      try {
+        const blogPagesCount = {
+          perMonth: await this.getCountOfBlogs(this.firstDayOfCurrentMonth),
+          perWeek: await this.getCountOfBlogs(this.firstDayOfCurrentWeek)
+        }
+        return blogPagesCount
+      } catch (error) {
+        Logger.error(`Error getting count of blog pages: ${error}`)
+        return null
+      }
     }
     Logger.error('Failed saving on firestore')
     return null
@@ -52,19 +67,15 @@ export class PageAnalytics {
     return null
   }
 
-  public async getCountOfBlogs(): Promise<object> {
+  public async getCountOfBlogs(date: string): Promise<number | null> {
     Logger.info(`Start getting data from firestore`)
+    const { data } = await this.firestore.getDataAfterDate(date, 1)
+    if (data) {
+      const oldCount = data[0].document?.fields?.count?.integerValue
 
-    const firstDayOfCurrentMonth = moment().startOf('month').toISOString()
-    const { data } = await this.firestore.getDataAfterDate(firstDayOfCurrentMonth, 1)
-
-    console.dir(data, { depth: null, maxArrayLength: null });
-
-    const oldCount = data[0].document?.fields?.count?.stringValue
-
-    Logger.info(`Новых статей за месяц: ${this.currentCount - oldCount}`)
-    return {
-      blogPageCount: this.currentCount - oldCount
+      Logger.info(`New posts after date ${date}: ${this.currentCount - oldCount}`)
+      return this.currentCount - oldCount
     }
+    return null
   }
 }

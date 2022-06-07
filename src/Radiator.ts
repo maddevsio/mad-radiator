@@ -2,7 +2,7 @@ import * as Sentry from '@sentry/node'
 import { AnalyticsService } from 'analytics'
 import { AnalyticsParams } from 'analytics/interfaces'
 import { GoogleAuthorization } from 'authorization'
-import { ChartBuilder } from 'chartBuilder'
+// import { ChartBuilder } from 'chartBuilder'
 import { AnalyticsError } from 'errors/types/AnalyticsError'
 import { AuthorizationError } from 'errors/types/AuthorizationError'
 import { MessengersParams, ParsedRange, RadiatorConfig, ScheduleConfig, SentryParams } from 'interfaces'
@@ -13,11 +13,11 @@ import { MessengersService } from 'messengers'
 import { RunCounter } from 'runCounter'
 import { Scheduler } from 'scheduler'
 import { SitemapOptions } from 'sitemap/interfaces/SitemapOptions'
-import { GoogleDriveStorage } from 'storage'
+// import { GoogleDriveStorage } from 'storage'
 import { parseRange } from 'utils/parseRange'
 
-import { PageAnalytics } from "./pagesAnalytics";
-import { RedditCountPosts } from "./redditPosts";
+import { PageAnalytics } from "./pagesAnalytics"
+import { RedditCountPosts } from "./redditPosts"
 
 export class Radiator {
   private readonly config: RadiatorConfig
@@ -34,9 +34,9 @@ export class Radiator {
 
   private lighthouse: Lighthouse | undefined
 
-  private chartBuilder: ChartBuilder | undefined
+  // private chartBuilder: ChartBuilder | undefined
 
-  private googleDriveStorage: GoogleDriveStorage | undefined
+  // private googleDriveStorage: GoogleDriveStorage | undefined
 
   private scheduler: Scheduler | undefined
 
@@ -83,8 +83,8 @@ export class Radiator {
       websiteUrl: this.config.websiteUrl,
     }, this.parsedRange)
 
-    this.useChartBuilder(analyticsParams)
-    this.useGoogleDriveStorage()
+    // this.useChartBuilder(analyticsParams)
+    // this.useGoogleDriveStorage()
   }
 
   public useLighthouse(lighthouseParams: LighthouseParams) {
@@ -108,13 +108,13 @@ export class Radiator {
     this.redditCountPosts = new RedditCountPosts()
   }
 
-  private useChartBuilder(analyticsParams: AnalyticsParams) {
-    this.chartBuilder = new ChartBuilder(analyticsParams)
-  }
+  // private useChartBuilder(analyticsParams: AnalyticsParams) {
+  //   this.chartBuilder = new ChartBuilder(analyticsParams)
+  // }
 
-  private useGoogleDriveStorage() {
-    this.googleDriveStorage = new GoogleDriveStorage()
-  }
+  // private useGoogleDriveStorage() {
+  //   this.googleDriveStorage = new GoogleDriveStorage()
+  // }
 
   public useTelegram(telegramParams: MessengersParams) {
     this.messengersParams = {
@@ -146,9 +146,9 @@ export class Radiator {
     try {
       let analytics
       let lighthouse
-      let imageURL
+      // let imageURL
       let pageAnalytics
-      let imageBuffer
+      // let imageBuffer
       let redditCountPosts
 
       this.runCounter.incrementRunCounter()
@@ -183,26 +183,26 @@ export class Radiator {
       }
 
 
-      if (analytics && this.chartBuilder) {
-        Logger.info('Building an image...')
-        imageBuffer = analytics.chart && (await this.chartBuilder.renderChart(analytics.chart))
-      }
+      // if (analytics && this.chartBuilder) {
+      //   Logger.info('Building an image...')
+      //   imageBuffer = analytics.chart && (await this.chartBuilder.renderChart(analytics.chart))
+      // }
 
-      if (imageBuffer && this.googleDriveStorage) {
-        Logger.info('Saving an image in gdrive...')
-        imageURL = imageBuffer && (await this.googleDriveStorage.storeFile(imageBuffer))
-      }
+      // if (imageBuffer && this.googleDriveStorage) {
+      //   Logger.info('Saving an image in gdrive...')
+      //   imageURL = imageBuffer && (await this.googleDriveStorage.storeFile(imageBuffer))
+      // }
 
       if (googleAuthorization && this.messengersParams) {
         Logger.info('Send messages...')
-        console.log('pageAnalytics', pageAnalytics)
         const messengersService = new MessengersService(this.messengersParams)
         await messengersService.sendMessages({
           analytics,
           lighthouse,
           range: this.parsedRange,
-          imageURL,
+          // imageURL,
           redditCountPosts,
+          pageAnalytics,
         })
         Logger.success('Success!')
       }

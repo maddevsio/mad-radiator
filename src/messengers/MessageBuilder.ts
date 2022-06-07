@@ -26,6 +26,7 @@ export abstract class MessageBuilder {
     lighthouse,
     imageURL,
     redditCountPosts,
+    pageAnalytics,
   }: BuildMessageData): Array<string | SlackMessageBlock> {
     const { core, countries, blogs, contactMe } = analytics || {}
 
@@ -72,6 +73,24 @@ export abstract class MessageBuilder {
       const isMatch = contactMe.value >= 5
       message.push(this.blocksService.section(MessageBuilder.contactMeMessageGoal(isMatch, contactMe.value)))
       message.push(this.blocksService.divider())
+    }
+
+    if (pageAnalytics) {
+      if (pageAnalytics.perMonth !== null || pageAnalytics.perWeek !== null) {
+        message.push(this.blocksService.section(MessageBuilder.blogPostsMonthlyTitle()))
+
+        if (pageAnalytics.perMonth !== null) {
+          const isMatch = pageAnalytics.perMonth >= 4
+          message.push(this.blocksService.section(MessageBuilder.blogPostsMonthlyGoalMessage(isMatch, pageAnalytics.perMonth)))
+        }
+
+        if (pageAnalytics.perWeek !== null) {
+          const isMatch = pageAnalytics.perWeek >= 1
+          message.push(this.blocksService.section(MessageBuilder.blogPostsWeeklyGoalMessage(isMatch, pageAnalytics.perWeek)))
+        }
+
+        message.push(this.blocksService.divider())
+      }
     }
 
     if (redditCountPosts !== undefined) {
@@ -218,6 +237,20 @@ export abstract class MessageBuilder {
     moment.locale('ru')
     const getCurrentMonth = moment().format('MMMM')
     return `${isMatch ? ':white_check_mark:' : ':x:'} Новых статей за ${capitalize(getCurrentMonth)}: ${redditCount} / Should be -> 2`
+  }
+
+  private static blogPostsMonthlyTitle() {
+    return '*Количество новых статей в блоге:*'
+  }
+
+  private static blogPostsMonthlyGoalMessage(isMatch: boolean, blogPostCount: number) {
+    moment.locale('ru')
+    const getCurrentMonth = moment().format('MMMM')
+    return `${isMatch ? ':white_check_mark:' : ':x:'} Новых статей за ${capitalize(getCurrentMonth)}: ${ blogPostCount } / Should be > 4`
+  }
+
+  private static blogPostsWeeklyGoalMessage(isMatch: boolean, blogPostCount: number) {
+    return `${isMatch ? ':white_check_mark:' : ':x:'} Новых статей за неделю: ${ blogPostCount } / Should be > 1`
   }
 
   // private static conversionMessage() {
