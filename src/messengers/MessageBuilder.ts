@@ -26,6 +26,7 @@ export abstract class MessageBuilder {
     lighthouse,
     imageURL,
     redditCountPosts,
+    quoraPosts,
   }: BuildMessageData): Array<string | SlackMessageBlock> {
     const { core, countries, blogs, contactMe } = analytics || {}
 
@@ -71,6 +72,13 @@ export abstract class MessageBuilder {
       message.push(this.blocksService.section(MessageBuilder.contactMeMessage()))
       const isMatch = contactMe.value >= 5
       message.push(this.blocksService.section(MessageBuilder.contactMeMessageGoal(isMatch, contactMe.value)))
+      message.push(this.blocksService.divider())
+    }
+
+    if (quoraPosts !== undefined) {
+      message.push(this.blocksService.section(MessageBuilder.quoraTitle()))
+      const isMatch = quoraPosts > 5
+      message.push(this.blocksService.section(MessageBuilder.quoraGoalMessage(isMatch, quoraPosts)))
       message.push(this.blocksService.divider())
     }
 
@@ -208,6 +216,16 @@ export abstract class MessageBuilder {
 
   private static contactMeMessageGoal(isMatch: boolean, contactMeValue: number) {
     return `${isMatch ? ':white_check_mark:' : ':x:'} Заполнения за последние 30 дней: ${contactMeValue} / Should be > 5`
+  }
+
+  private static quoraTitle() {
+    return '*Количество новых постов на Quora:*'
+  }
+
+  private static quoraGoalMessage(isMath: boolean, quoraCount: number) {
+    moment.locale('ru')
+    const getCurrentMonth = moment().format('MMMM')
+    return `${isMath ? ':white_check_mark:' : ':x:'} Новых статей за ${capitalize(getCurrentMonth)}: ${quoraCount} / Should be -> 5`
   }
 
   private static redditTitle() {

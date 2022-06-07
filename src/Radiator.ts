@@ -10,6 +10,7 @@ import { Lighthouse } from 'lighthouse'
 import { LighthouseParams } from 'lighthouse/interfaces'
 import { Logger } from 'logger'
 import { MessengersService } from 'messengers'
+import { QuoraService } from 'quora'
 import { RunCounter } from 'runCounter'
 import { Scheduler } from 'scheduler'
 import { SitemapOptions } from 'sitemap/interfaces/SitemapOptions'
@@ -45,6 +46,8 @@ export class Radiator {
   private pageAnalytics: PageAnalytics | undefined
 
   private redditCountPosts: RedditCountPosts | undefined
+
+  private quoraPosts: QuoraService | undefined
 
   constructor(config: RadiatorConfig) {
     this.config = config
@@ -108,6 +111,10 @@ export class Radiator {
     this.redditCountPosts = new RedditCountPosts()
   }
 
+  public useQuoraService() {
+    this.quoraPosts = new QuoraService()
+  }
+
   private useChartBuilder(analyticsParams: AnalyticsParams) {
     this.chartBuilder = new ChartBuilder(analyticsParams)
   }
@@ -150,6 +157,7 @@ export class Radiator {
       // let pageAnalytics
       let imageBuffer
       let redditCountPosts
+      let quoraPosts
 
       this.runCounter.incrementRunCounter()
 
@@ -177,6 +185,11 @@ export class Radiator {
         redditCountPosts = await this.redditCountPosts.getPostsCountInReddit()
       }
 
+      if (this.quoraPosts) {
+        Logger.info('Getting quora data...')
+        quoraPosts = await this.quoraPosts.setCountOfQuoraPosts()
+      }
+
       if (this.lighthouse) {
         Logger.info('Getting lighthouse data...')
         lighthouse = await this.lighthouse.getLighthouseMetrics()
@@ -202,6 +215,7 @@ export class Radiator {
           range: this.parsedRange,
           imageURL,
           redditCountPosts,
+          quoraPosts,
         })
         Logger.success('Success!')
       }
