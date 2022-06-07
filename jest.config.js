@@ -17,6 +17,8 @@ module.exports = {
     '<rootDir>/node_modules/',
     '<rootDir>/src/interfaces',
     '<rootDir>/src/__tests__',
+    '<rootDir>/src/pagesAnalytics',
+    '<rootDir>/src/storage'
   ],
   coverageReporters: ['lcov'],
   coverageThreshold: {

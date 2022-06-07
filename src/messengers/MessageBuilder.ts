@@ -5,7 +5,7 @@ import { ParsedRange, RadiatorConfig } from 'interfaces'
 import { LighthouseMetrics, LighthouseUrlResult } from 'lighthouse/interfaces'
 import { BuildMessageData, SlackMessageBlock } from 'messengers/interfaces'
 import moment from "moment";
-// import { capitalize } from 'utils/capitalize'
+import { capitalize } from 'utils/capitalize'
 
 export abstract class MessageBuilder {
   protected abstract readonly blocksService: Blocks
@@ -74,10 +74,11 @@ export abstract class MessageBuilder {
       message.push(this.blocksService.divider())
     }
 
-    if (redditCountPosts) {
+    if (redditCountPosts !== undefined) {
       message.push(this.blocksService.section(MessageBuilder.redditTitle()))
       const isMatch = redditCountPosts >= 2
       message.push(this.blocksService.section(MessageBuilder.redditGoalMessage(isMatch, redditCountPosts)))
+      message.push(this.blocksService.divider())
     }
 
     if (lighthouse) {
@@ -202,7 +203,7 @@ export abstract class MessageBuilder {
   }
 
   private static contactMeMessage() {
-    return '*Заполнения формы contact me*'
+    return '*Заполнения формы contact me:*'
   }
 
   private static contactMeMessageGoal(isMatch: boolean, contactMeValue: number) {
@@ -210,13 +211,13 @@ export abstract class MessageBuilder {
   }
 
   private static redditTitle() {
-    return '*Количество новых постов на Reddit*'
+    return '*Количество новых постов на Reddit:*'
   }
 
   private static redditGoalMessage(isMatch: boolean, redditCount: number) {
     moment.locale('ru')
     const getCurrentMonth = moment().format('MMMM')
-    return `${isMatch ? ':white_check_mark:' : ':x:'} Новых статей за ${getCurrentMonth.charAt(0).toUpperCase() + getCurrentMonth.slice(1)}: ${redditCount} / Should be -> 2`
+    return `${isMatch ? ':white_check_mark:' : ':x:'} Новых статей за ${capitalize(getCurrentMonth)}: ${redditCount} / Should be -> 2`
   }
 
   // private static conversionMessage() {

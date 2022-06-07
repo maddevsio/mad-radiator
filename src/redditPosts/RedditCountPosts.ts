@@ -10,9 +10,7 @@ import { Post, Posts } from "./interfaces"
 dotenv.config()
 
 export class RedditCountPosts {
-  // private readonly config: Blog
-
-  private redditConnect: Reddit;
+  private redditConnect: Reddit
 
   private redditClientId: string | undefined = process.env.REDDIT_CLIENT_ID
 
@@ -35,20 +33,20 @@ export class RedditCountPosts {
 
   public async getPostsCountInReddit(): Promise<number> {
     const redditPosts = await this.getPosts()
-    const filteredPostsByMonth = this.filteredPosts(redditPosts)
-    const formatPosts = this.formatToUniquePosts(filteredPostsByMonth)
+    const filteredPostsByMonth = this.getPostsInCurrentMonth(redditPosts)
+    const formatPosts = this.removeDuplicatePosts(filteredPostsByMonth)
     return formatPosts.length
   }
 
-  private formatToUniquePosts = (posts: Array<Posts>): Array<Post> => {
-    return [...new Set(posts.map(post => post?.data?.title ))]
+  private removeDuplicatePosts = (posts: Array<Posts>): Array<Post> => {
+    return [...new Set(posts.map(post => post.data.title ))]
   }
 
-  private filteredPosts = (posts: Array<Posts>): Array<Posts> => posts.filter(post => moment().startOf('month').unix() < post?.data?.created_utc)
+  private getPostsInCurrentMonth = (posts: Array<Posts>): Array<Posts> => posts.filter(post => moment().startOf('month').unix() < post.data.created_utc)
 
   private getPosts = async (nextPage: string | null = null): Promise<Array<Posts>> => {
     let posts: Array<Posts> = []
-    const response = await this.redditConnect.get('/user/darikanur/submitted', { limit: 100, after: nextPage });
+    const response = await this.redditConnect.get('/user/darikanur/submitted', { limit: 100, after: nextPage })
     posts = posts.concat(response.data.children)
     if (response.data.after) posts = posts.concat(await this.getPosts(response.data.after))
     return posts

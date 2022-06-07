@@ -45,21 +45,24 @@ export class CoreRepository extends Repository {
       sessions,
       bounceRate,
       duration,
-    ] = reports.rows[0]?.metricValues
+    ] = reports.rows[1]?.metricValues
       .map((n: { value: number }) => Number(Number(n.value).toFixed(2)))
 
     const [
       usersPrev,
+      usersForWeekPrev,
+      usersForMonthPrev,
       sessionsPrev,
       bounceRatePrev,
       durationPrev,
-    ] = reports.rows[1].metricValues
+    ] = reports.rows[0].metricValues
       .map((n: { value: number }) => Number(Number(n.value).toFixed(2)))
 
     const usersDifference = CoreRepository.getPercentage(users, usersPrev)
     const sessionsDifference = CoreRepository.getPercentage(sessions, sessionsPrev)
     const bounceRateDifference = CoreRepository.getPercentage(bounceRate, bounceRatePrev)
     const durationDifference = CoreRepository.getPercentage(duration, durationPrev)
+    CoreRepository.getPercentage(usersForMonthPrev, usersForWeekPrev) // refactor this, need delete
 
     return {
       users: {
@@ -101,6 +104,7 @@ export class CoreRepository extends Repository {
    * Get percentage between two numbers
    */
   private static getPercentage(first: number, second: number): number {
-    return Number(Number(((first - second) / ((first + second) / 2)) * 100).toFixed(2))
+    if (first > second) return Number(Number((first - second) / first * 100).toFixed(2))
+    return Number(Number((first - second) / second * 100).toFixed(2))
   }
 }

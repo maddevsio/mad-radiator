@@ -156,7 +156,11 @@ export class Radiator {
 
       if (this.analyticsService) {
         Logger.info('Getting analytics data...')
-        analytics = await this.analyticsService.getData()
+        try {
+          analytics = await this.analyticsService.getData()
+        } catch (error: any) {
+          Logger.info(error)
+        }
       }
 
       if (this.pageAnalytics) {

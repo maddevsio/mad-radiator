@@ -6,8 +6,3 @@ export interface Posts {
 }
 
 export declare type Post = string
-
-export interface FilterPost {
-  title: string,
-  created_utc: number,
-}
