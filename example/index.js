@@ -63,7 +63,7 @@ app.get('/authorized',
     const {
       authConfig,
       // sentryConfig,
-      analyticsConfig,
+      // analyticsConfig,
       slackConfig,
       // lighthouseConfig,
       pageAnalyticsConfig,
@@ -73,7 +73,7 @@ app.get('/authorized',
 
     const radiator = new Radiator(authConfig)
     // radiator.useSentry(sentryConfig)
-    radiator.useAnalytics(analyticsConfig)
+    // radiator.useAnalytics(analyticsConfig)
     radiator.useSlack(slackConfig)
     radiator.useQuoraService()
     // radiator.useRedditCountPosts()

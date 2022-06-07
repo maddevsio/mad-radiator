@@ -1,6 +1,5 @@
 import dotenv from 'dotenv';
 import got from 'got';
-import { Logger } from 'logger';
 import moment from 'moment';
 import { Firestore } from "utils/firestore"
 
@@ -39,25 +38,21 @@ export class QuoraService {
   }
 
   public async setCountOfQuoraPosts(): Promise<any> {
-    const posts = this.parseHTML()
+    const posts = await this.parseHTML()
     this.currentCount = Number(posts)
-    this.firestore.setData(this.fireStoreDir, {
+    await this.firestore.setData(this.fireStoreDir, {
       fields: {
         count: { integerValue: posts },
-        created: { timestampValue: new Date() }
+        created: { timestampValue: new Date().toISOString() }
       }
-    }).then(() => {
-      return this.getQuoraPostsMetrics()
-    }).catch(() => {
-      Logger.error('Failed saving on firestore')
     })
+    return this.getQuoraPostsMetrics()
   }
 
   private async getQuoraPostsMetrics(): Promise<number> {
     const firstDayOfCurrentMonth = moment().startOf('month').toISOString()
-    const { data } = await this.firestore.getDataAfterDate(firstDayOfCurrentMonth, this.fireStoreDir)
-    const oldCount = data[0].document?.fields?.count?.stringValue
-    Logger.info(`Новых статей за месяц: ${this.currentCount - oldCount}`)
+    const { data } = await this.firestore.getDataAfterDate(firstDayOfCurrentMonth, this.fireStoreDir, 1)
+    const oldCount = data[0].document?.fields?.count?.integerValue
     return this.currentCount - oldCount
   }
 }
