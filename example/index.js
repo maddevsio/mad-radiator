@@ -65,7 +65,7 @@ app.get('/authorized',
       // sentryConfig,
       analyticsConfig,
       slackConfig,
-      // lighthouseConfig,
+      lighthouseConfig,
       pageAnalyticsConfig,
     } = config
 
@@ -76,8 +76,8 @@ app.get('/authorized',
     radiator.useAnalytics(analyticsConfig)
     radiator.useSlack(slackConfig)
     radiator.useRedditCountPosts()
-    radiator.usePageAnalytics(pageAnalyticsConfig)
-    // radiator.useLighthouse(lighthouseConfig)
+    radiator.useNewPagesInSite(lighthouseConfig)
+    // radiator.usePageAnalytics(pageAnalyticsConfig)
     radiator.run()
 
     res.redirect('/');

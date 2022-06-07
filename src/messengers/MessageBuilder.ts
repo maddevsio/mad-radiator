@@ -4,8 +4,8 @@ import { Emoji } from 'emoji/Emoji'
 import { ParsedRange, RadiatorConfig } from 'interfaces'
 import { LighthouseMetrics, LighthouseUrlResult } from 'lighthouse/interfaces'
 import { BuildMessageData, SlackMessageBlock } from 'messengers/interfaces'
-import moment from "moment";
-import { capitalize } from 'utils/capitalize'
+
+import { getMonthName } from "../utils/getMonthName";
 
 export abstract class MessageBuilder {
   protected abstract readonly blocksService: Blocks
@@ -26,6 +26,7 @@ export abstract class MessageBuilder {
     lighthouse,
     imageURL,
     redditCountPosts,
+    newPagesInSite,
   }: BuildMessageData): Array<string | SlackMessageBlock> {
     const { core, countries, blogs, contactMe } = analytics || {}
 
@@ -78,6 +79,13 @@ export abstract class MessageBuilder {
       message.push(this.blocksService.section(MessageBuilder.redditTitle()))
       const isMatch = redditCountPosts >= 2
       message.push(this.blocksService.section(MessageBuilder.redditGoalMessage(isMatch, redditCountPosts)))
+      message.push(this.blocksService.divider())
+    }
+
+    if (newPagesInSite !== undefined) {
+      message.push(this.blocksService.section(MessageBuilder.newPagesTitle()))
+      const isMatch = newPagesInSite >= 2
+      message.push(this.blocksService.section(MessageBuilder.newPagesGoalMessage(isMatch, newPagesInSite)))
       message.push(this.blocksService.divider())
     }
 
@@ -215,9 +223,15 @@ export abstract class MessageBuilder {
   }
 
   private static redditGoalMessage(isMatch: boolean, redditCount: number) {
-    moment.locale('ru')
-    const getCurrentMonth = moment().format('MMMM')
-    return `${isMatch ? ':white_check_mark:' : ':x:'} Новых статей за ${capitalize(getCurrentMonth)}: ${redditCount} / Should be -> 2`
+    return `${isMatch ? ':white_check_mark:' : ':x:'} Новых статей за ${getMonthName()}: ${redditCount} / Should be -> 2`
+  }
+
+  private static newPagesTitle() {
+    return '*Количество новых страниц на сайте:*'
+  }
+
+  private static newPagesGoalMessage(isMatch: boolean, pagesCount: number) {
+    return `${isMatch ? ':white_check_mark:' : ':x:'} Новых страниц за ${getMonthName()}: ${pagesCount} / Should be -> 2`
   }
 
   // private static conversionMessage() {

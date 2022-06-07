@@ -19,14 +19,14 @@ export class Firestore {
         return axios.post(`${this.url}/${documentName}`, fields)
     }
 
-    public async getDataAfterDate(date: string, limit?: number) {
+    public async getDataAfterDate(date: string, limit?: number, collectionId: string = 'blog') {
         return axios.post(this.queryUrl,
             {
                 structuredQuery:
                     {
                         from: [
                             {
-                                collectionId: 'blog'
+                                collectionId
                             }
                         ],
                         where: {

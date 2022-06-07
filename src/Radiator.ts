@@ -16,8 +16,9 @@ import { SitemapOptions } from 'sitemap/interfaces/SitemapOptions'
 import { GoogleDriveStorage } from 'storage'
 import { parseRange } from 'utils/parseRange'
 
-import { PageAnalytics } from "./pagesAnalytics";
-import { RedditCountPosts } from "./redditPosts";
+import { NewPagesInSite, PageAnalytics } from "./pagesAnalytics"
+import { PagesParams } from "./pagesAnalytics/interfaces"
+import { RedditCountPosts } from "./redditPosts"
 
 export class Radiator {
   private readonly config: RadiatorConfig
@@ -45,6 +46,8 @@ export class Radiator {
   private pageAnalytics: PageAnalytics | undefined
 
   private redditCountPosts: RedditCountPosts | undefined
+
+  private newPagesInSite: NewPagesInSite | undefined
 
   constructor(config: RadiatorConfig) {
     this.config = config
@@ -130,6 +133,13 @@ export class Radiator {
     }
   }
 
+  public useNewPagesInSite(sitemap: PagesParams) {
+    this.newPagesInSite = new NewPagesInSite({
+      ...sitemap,
+      websiteUrl: this.config.websiteUrl,
+    })
+  }
+
   private handleRadiatorError(error: Error | AnalyticsError | AuthorizationError) {
     Sentry.captureException(error)
 
@@ -150,6 +160,7 @@ export class Radiator {
       // let pageAnalytics
       let imageBuffer
       let redditCountPosts
+      let newPagesInSite
 
       this.runCounter.incrementRunCounter()
 
@@ -177,6 +188,11 @@ export class Radiator {
         redditCountPosts = await this.redditCountPosts.getPostsCountInReddit()
       }
 
+      if (this.newPagesInSite) {
+        Logger.info('Getting new pages data...')
+        newPagesInSite = await this.newPagesInSite.setCountOfBlogPages()
+      }
+
       if (this.lighthouse) {
         Logger.info('Getting lighthouse data...')
         lighthouse = await this.lighthouse.getLighthouseMetrics()
@@ -202,6 +218,7 @@ export class Radiator {
           range: this.parsedRange,
           imageURL,
           redditCountPosts,
+          newPagesInSite,
         })
         Logger.success('Success!')
       }

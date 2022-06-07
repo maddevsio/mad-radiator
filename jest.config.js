@@ -18,7 +18,8 @@ module.exports = {
     '<rootDir>/src/interfaces',
     '<rootDir>/src/__tests__',
     '<rootDir>/src/pagesAnalytics',
-    '<rootDir>/src/storage'
+    '<rootDir>/src/storage',
+    '<rootDir>/src/sitemap',
   ],
   coverageReporters: ['lcov'],
   coverageThreshold: {
