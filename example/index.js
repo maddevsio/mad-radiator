@@ -65,7 +65,8 @@ app.get('/authorized',
       // sentryConfig,
       analyticsConfig,
       slackConfig,
-      lighthouseConfig,
+      // lighthouseConfig,
+      pageAnalyticsConfig,
     } = config
 
     Object.assign(authConfig, userInfo)
@@ -74,7 +75,7 @@ app.get('/authorized',
     // radiator.useSentry(sentryConfig)
     // radiator.useAnalytics(analyticsConfig)
     radiator.useSlack(slackConfig)
-    radiator.usePageAnalytics()
+    radiator.usePageAnalytics(pageAnalyticsConfig)
     // radiator.useLighthouse(lighthouseConfig)
     radiator.run()
 

@@ -12,6 +12,7 @@ import { Logger } from 'logger'
 // import { MessengersService } from 'messengers'
 import { RunCounter } from 'runCounter'
 import { Scheduler } from 'scheduler'
+import { SitemapOptions } from 'sitemap/interfaces/SitemapOptions'
 import { GoogleDriveStorage } from 'storage'
 import { parseRange } from 'utils/parseRange'
 
@@ -93,8 +94,11 @@ export class Radiator {
     )
   }
 
-  public usePageAnalytics() {
-    this.pageAnalytics = new PageAnalytics()
+  public usePageAnalytics(sitemapParams: SitemapOptions) {
+    this.pageAnalytics = new PageAnalytics({
+      ...sitemapParams,
+      websiteUrl: this.config.websiteUrl,
+    })
   }
 
   private useChartBuilder(analyticsParams: AnalyticsParams) {
@@ -153,7 +157,7 @@ export class Radiator {
 
       if (this.pageAnalytics) {
         Logger.info('Getting firebase data...')
-        pageAnalytics = await this.pageAnalytics.getPageAnalyticsMetrics()
+        pageAnalytics = await this.pageAnalytics.setCountOfBlogPages()
       }
 
       if (this.lighthouse) {
