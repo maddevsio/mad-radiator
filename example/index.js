@@ -66,6 +66,7 @@ app.get('/authorized',
       analyticsConfig,
       slackConfig,
       // lighthouseConfig,
+      pageAnalyticsConfig,
     } = config
 
     Object.assign(authConfig, userInfo)
@@ -75,6 +76,7 @@ app.get('/authorized',
     radiator.useAnalytics(analyticsConfig)
     radiator.useSlack(slackConfig)
     radiator.useRedditCountPosts()
+    radiator.usePageAnalytics(pageAnalyticsConfig)
     // radiator.useLighthouse(lighthouseConfig)
     radiator.run()
 
