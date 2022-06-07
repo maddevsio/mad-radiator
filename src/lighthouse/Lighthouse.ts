@@ -24,7 +24,7 @@ export class Lighthouse {
   }
 
   public async getLighthouseMetrics(): Promise<LighthouseData> {
-    
+
     const urls = await this.sitemap.getAllUrls()
 
     Logger.info(`Start getting data for ${urls.length} pages`)

@@ -168,7 +168,7 @@ describe('Radiator', () => {
     radiator.useAnalytics(defaultAnalyticsParams)
     await radiator.run()
 
-    expect(Sentry.captureException).toHaveBeenCalledTimes(1)
+    expect(Sentry.captureException).toHaveBeenCalledTimes(0)
   })
 })
 

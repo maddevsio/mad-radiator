@@ -6,14 +6,17 @@ import { ChartBuilder } from 'chartBuilder'
 import { AnalyticsError } from 'errors/types/AnalyticsError'
 import { AuthorizationError } from 'errors/types/AuthorizationError'
 import { MessengersParams, ParsedRange, RadiatorConfig, ScheduleConfig, SentryParams } from 'interfaces'
-// import { Lighthouse } from 'lighthouse'
-// import { LighthouseParams } from 'lighthouse/interfaces'
+import { Lighthouse } from 'lighthouse'
+import { LighthouseParams } from 'lighthouse/interfaces'
 import { Logger } from 'logger'
 import { MessengersService } from 'messengers'
 import { RunCounter } from 'runCounter'
 import { Scheduler } from 'scheduler'
 import { GoogleDriveStorage } from 'storage'
 import { parseRange } from 'utils/parseRange'
+
+import { PageAnalytics } from "./pagesAnalytics";
+import { RedditCountPosts } from "./redditPosts";
 
 export class Radiator {
   private readonly config: RadiatorConfig
@@ -28,7 +31,7 @@ export class Radiator {
 
   private analyticsService: AnalyticsService | undefined
 
-  // private lighthouse: Lighthouse | undefined
+  private lighthouse: Lighthouse | undefined
 
   private chartBuilder: ChartBuilder | undefined
 
@@ -37,6 +40,10 @@ export class Radiator {
   private scheduler: Scheduler | undefined
 
   private runCounter: RunCounter
+
+  private pageAnalytics: PageAnalytics | undefined
+
+  private redditCountPosts: RedditCountPosts | undefined
 
   constructor(config: RadiatorConfig) {
     this.config = config
@@ -79,15 +86,23 @@ export class Radiator {
     this.useGoogleDriveStorage()
   }
 
-  // public useLighthouse(lighthouseParams: LighthouseParams) {
-  //   this.lighthouse = new Lighthouse(
-  //     {
-  //       ...lighthouseParams,
-  //       websiteUrl: this.config.websiteUrl,
-  //       googleapisKey: this.config.googleapisKey,
-  //     },
-  //   )
-  // }
+  public useLighthouse(lighthouseParams: LighthouseParams) {
+    this.lighthouse = new Lighthouse(
+      {
+        ...lighthouseParams,
+        websiteUrl: this.config.websiteUrl,
+        googleapisKey: this.config.googleapisKey,
+      },
+    )
+  }
+
+  public usePageAnalytics() {
+    this.pageAnalytics = new PageAnalytics()
+  }
+
+  public useRedditCountPosts() {
+    this.redditCountPosts = new RedditCountPosts()
+  }
 
   private useChartBuilder(analyticsParams: AnalyticsParams) {
     this.chartBuilder = new ChartBuilder(analyticsParams)
@@ -128,7 +143,9 @@ export class Radiator {
       let analytics
       let lighthouse
       let imageURL
+      // let pageAnalytics
       let imageBuffer
+      let redditCountPosts
 
       this.runCounter.incrementRunCounter()
 
@@ -139,13 +156,28 @@ export class Radiator {
 
       if (this.analyticsService) {
         Logger.info('Getting analytics data...')
-        analytics = await this.analyticsService.getData()
+        try {
+          analytics = await this.analyticsService.getData()
+        } catch (error: any) {
+          Logger.info(error)
+        }
       }
 
-      // if (this.lighthouse) {
-      //   Logger.info('Getting lighthouse data...')
-      //   lighthouse = await this.lighthouse.getLighthouseMetrics()
-      // }
+      if (this.pageAnalytics) {
+        Logger.info('Getting firebase data...')
+        // pageAnalytics = await this.pageAnalytics.getPageAnalyticsMetrics()
+      }
+
+      if(this.redditCountPosts) {
+        Logger.info('Getting reddit data...')
+        redditCountPosts = await this.redditCountPosts.getPostsCountInReddit()
+      }
+
+      if (this.lighthouse) {
+        Logger.info('Getting lighthouse data...')
+        lighthouse = await this.lighthouse.getLighthouseMetrics()
+      }
+
 
       if (analytics && this.chartBuilder) {
         Logger.info('Building an image...')
@@ -165,6 +197,7 @@ export class Radiator {
           lighthouse,
           range: this.parsedRange,
           imageURL,
+          redditCountPosts,
         })
         Logger.success('Success!')
       }

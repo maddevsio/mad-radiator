@@ -7,3 +7,4 @@ package-lock.json
 tsconfig.tsbuildinfo
 example/example.config.json
 .env
+.DS_Store
