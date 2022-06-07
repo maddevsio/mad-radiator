@@ -25,6 +25,7 @@ describe('SlackMessageBuilder', () => {
       lighthouse: lighthouseData,
       range: parsedRange,
       imageURL: '123',
+      redditCountPosts: 0,
     })
 
     expect(message).toEqual([
@@ -60,7 +61,7 @@ describe('SlackMessageBuilder', () => {
       },
       {
         text: {
-          text: 'Топ-3 страны, в которых находятся пользователи, посетившие сайт:\n\n',
+          text: '*Топ-3 страны, в которых находятся пользователи, посетившие сайт:*\n\n',
           type: 'mrkdwn',
         },
         type: 'section',
@@ -75,6 +76,40 @@ describe('SlackMessageBuilder', () => {
       {
         text: {
           text: ':x: Should be -> United States, United Kingdom, Germany, France, Indonesia, Vietnam\n\n',
+          type: 'mrkdwn',
+        },
+        type: 'section',
+      },
+      {
+        type: 'divider',
+      },
+      {
+        text: {
+          text: '*Заполнения формы contact me:*\n\n',
+          type: 'mrkdwn',
+        },
+        type: 'section',
+      },
+      {
+        text: {
+          text: ':x: Заполнения за последние 30 дней: 4 / Should be > 5\n\n',
+          type: 'mrkdwn',
+        },
+        type: 'section',
+      },
+      {
+        type: 'divider',
+      },
+      {
+        text: {
+          text: '*Количество новых постов на Reddit:*\n\n',
+          type: 'mrkdwn',
+        },
+        type: 'section',
+      },
+      {
+        text: {
+          text: ':x: Новых статей за Июнь: 0 / Should be -> 2\n\n',
           type: 'mrkdwn',
         },
         type: 'section',
@@ -103,7 +138,7 @@ describe('SlackMessageBuilder', () => {
       },
       {
         text: {
-          text: 'Топ-3 популярных статей в блоге:\n\n',
+          text: '*Топ-3 популярных статей в блоге:*\n\n',
           type: 'mrkdwn',
         },
         type: 'section',

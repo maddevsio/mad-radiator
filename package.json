@@ -118,6 +118,7 @@
     "passport": "^0.6.0",
     "passport-google-oauth": "^2.0.0",
     "quickchart-js": "^2.0.3",
+    "reddit": "^1.2.1",
     "sitemap-stream-parser": "^1.7.0",
     "vega": "^5.20.2",
     "yargs": "^17.0.1",

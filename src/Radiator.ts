@@ -9,7 +9,7 @@ import { MessengersParams, ParsedRange, RadiatorConfig, ScheduleConfig, SentryPa
 import { Lighthouse } from 'lighthouse'
 import { LighthouseParams } from 'lighthouse/interfaces'
 import { Logger } from 'logger'
-// import { MessengersService } from 'messengers'
+import { MessengersService } from 'messengers'
 import { RunCounter } from 'runCounter'
 import { Scheduler } from 'scheduler'
 import { SitemapOptions } from 'sitemap/interfaces/SitemapOptions'
@@ -17,6 +17,7 @@ import { GoogleDriveStorage } from 'storage'
 import { parseRange } from 'utils/parseRange'
 
 import { PageAnalytics } from "./pagesAnalytics";
+import { RedditCountPosts } from "./redditPosts";
 
 export class Radiator {
   private readonly config: RadiatorConfig
@@ -42,6 +43,8 @@ export class Radiator {
   private runCounter: RunCounter
 
   private pageAnalytics: PageAnalytics | undefined
+
+  private redditCountPosts: RedditCountPosts | undefined
 
   constructor(config: RadiatorConfig) {
     this.config = config
@@ -101,6 +104,10 @@ export class Radiator {
     })
   }
 
+  public useRedditCountPosts() {
+    this.redditCountPosts = new RedditCountPosts()
+  }
+
   private useChartBuilder(analyticsParams: AnalyticsParams) {
     this.chartBuilder = new ChartBuilder(analyticsParams)
   }
@@ -139,9 +146,10 @@ export class Radiator {
     try {
       let analytics
       let lighthouse
-      // let imageURL
+      let imageURL
       let pageAnalytics
       let imageBuffer
+      let redditCountPosts
 
       this.runCounter.incrementRunCounter()
 
@@ -152,12 +160,21 @@ export class Radiator {
 
       if (this.analyticsService) {
         Logger.info('Getting analytics data...')
-        analytics = await this.analyticsService.getData()
+        try {
+          analytics = await this.analyticsService.getData()
+        } catch (error: any) {
+          Logger.info(error)
+        }
       }
 
       if (this.pageAnalytics) {
         Logger.info('Getting page analytics data...')
         pageAnalytics = await this.pageAnalytics.getPageAnalyticsMetrics()
+      }
+
+      if(this.redditCountPosts) {
+        Logger.info('Getting reddit data...')
+        redditCountPosts = await this.redditCountPosts.getPostsCountInReddit()
       }
 
       if (this.lighthouse) {
@@ -173,20 +190,20 @@ export class Radiator {
 
       if (imageBuffer && this.googleDriveStorage) {
         Logger.info('Saving an image in gdrive...')
-        // imageURL = imageBuffer && (await this.googleDriveStorage.storeFile(imageBuffer))
+        imageURL = imageBuffer && (await this.googleDriveStorage.storeFile(imageBuffer))
       }
 
       if (googleAuthorization && this.messengersParams) {
         Logger.info('Send messages...')
         console.log('pageAnalytics', pageAnalytics)
-        console.log('lighthouse', lighthouse)
-        // const messengersService = new MessengersService(this.messengersParams)
-        // await messengersService.sendMessages({
-        //   analytics,
-        //   lighthouse,
-        //   range: this.parsedRange,
-        //   imageURL,
-        // })
+        const messengersService = new MessengersService(this.messengersParams)
+        await messengersService.sendMessages({
+          analytics,
+          lighthouse,
+          range: this.parsedRange,
+          imageURL,
+          redditCountPosts,
+        })
         Logger.success('Success!')
       }
 

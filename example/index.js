@@ -66,6 +66,7 @@ app.get('/authorized',
       analyticsConfig,
       slackConfig,
       // lighthouseConfig,
+      // lighthouseConfig,
       pageAnalyticsConfig,
     } = config
 
@@ -73,8 +74,9 @@ app.get('/authorized',
 
     const radiator = new Radiator(authConfig)
     // radiator.useSentry(sentryConfig)
-    // radiator.useAnalytics(analyticsConfig)
+    radiator.useAnalytics(analyticsConfig)
     radiator.useSlack(slackConfig)
+    radiator.useRedditCountPosts()
     radiator.usePageAnalytics(pageAnalyticsConfig)
     // radiator.useLighthouse(lighthouseConfig)
     radiator.run()

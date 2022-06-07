@@ -4,7 +4,8 @@ import { Emoji } from 'emoji/Emoji'
 import { ParsedRange, RadiatorConfig } from 'interfaces'
 import { LighthouseMetrics, LighthouseUrlResult } from 'lighthouse/interfaces'
 import { BuildMessageData, SlackMessageBlock } from 'messengers/interfaces'
-// import { capitalize } from 'utils/capitalize'
+import moment from "moment";
+import { capitalize } from 'utils/capitalize'
 
 export abstract class MessageBuilder {
   protected abstract readonly blocksService: Blocks
@@ -23,9 +24,10 @@ export abstract class MessageBuilder {
     analytics,
     range,
     lighthouse,
-    imageURL
+    imageURL,
+    redditCountPosts,
   }: BuildMessageData): Array<string | SlackMessageBlock> {
-    const { core, countries, blogs } = analytics || {}
+    const { core, countries, blogs, contactMe } = analytics || {}
 
     const message = []
 
@@ -63,6 +65,21 @@ export abstract class MessageBuilder {
     //   message.push(this.blocksService.section(this.conversionList(goals)))
     //   message.push(this.blocksService.divider())
     // }
+
+    if (contactMe) {
+      // submit contact me form
+      message.push(this.blocksService.section(MessageBuilder.contactMeMessage()))
+      const isMatch = contactMe.value >= 5
+      message.push(this.blocksService.section(MessageBuilder.contactMeMessageGoal(isMatch, contactMe.value)))
+      message.push(this.blocksService.divider())
+    }
+
+    if (redditCountPosts !== undefined) {
+      message.push(this.blocksService.section(MessageBuilder.redditTitle()))
+      const isMatch = redditCountPosts >= 2
+      message.push(this.blocksService.section(MessageBuilder.redditGoalMessage(isMatch, redditCountPosts)))
+      message.push(this.blocksService.divider())
+    }
 
     if (lighthouse) {
       // pagespeed average
@@ -172,7 +189,7 @@ export abstract class MessageBuilder {
   // }
 
   private static countriesMessage() {
-    return 'Топ-3 страны, в которых находятся пользователи, посетившие сайт:'
+    return '*Топ-3 страны, в которых находятся пользователи, посетившие сайт:*'
   }
 
   private countriesList(countries: Array<Country>) {
@@ -183,6 +200,24 @@ export abstract class MessageBuilder {
 
   private static matchGoalsCountries(isMatch: boolean, goalsCountries: Array<string>) {
     return `${isMatch ? ':white_check_mark:' : ':x:'} Should be -> ${goalsCountries.join(', ')}`
+  }
+
+  private static contactMeMessage() {
+    return '*Заполнения формы contact me:*'
+  }
+
+  private static contactMeMessageGoal(isMatch: boolean, contactMeValue: number) {
+    return `${isMatch ? ':white_check_mark:' : ':x:'} Заполнения за последние 30 дней: ${contactMeValue} / Should be > 5`
+  }
+
+  private static redditTitle() {
+    return '*Количество новых постов на Reddit:*'
+  }
+
+  private static redditGoalMessage(isMatch: boolean, redditCount: number) {
+    moment.locale('ru')
+    const getCurrentMonth = moment().format('MMMM')
+    return `${isMatch ? ':white_check_mark:' : ':x:'} Новых статей за ${capitalize(getCurrentMonth)}: ${redditCount} / Should be -> 2`
   }
 
   // private static conversionMessage() {
@@ -242,7 +277,7 @@ export abstract class MessageBuilder {
   }
 
   private static blogsMessage() {
-    return 'Топ-3 популярных статей в блоге:'
+    return '*Топ-3 популярных статей в блоге:*'
   }
 
   private blogsList(blogs: Array<Blog>) {

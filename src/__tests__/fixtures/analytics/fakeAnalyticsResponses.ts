@@ -201,3 +201,369 @@ export const blogFakeResponse = {
     ]
   }
 }
+
+export const fakeResponseForContactMe = {
+  data: {
+    "dimensionHeaders": [
+      {
+        "name": "eventName"
+      }
+    ],
+    "metricHeaders": [
+      {
+        "name": "eventCount",
+        "type": "TYPE_INTEGER"
+      }
+    ],
+    "rows": [
+      {
+        "dimensionValues": [
+          {
+            "value": "page_view"
+          }
+        ],
+        "metricValues": [
+          {
+            "value": "22350"
+          }
+        ]
+      },
+      {
+        "dimensionValues": [
+          {
+            "value": "session_start"
+          }
+        ],
+        "metricValues": [
+          {
+            "value": "13615"
+          }
+        ]
+      },
+      {
+        "dimensionValues": [
+          {
+            "value": "user_engagement"
+          }
+        ],
+        "metricValues": [
+          {
+            "value": "10298"
+          }
+        ]
+      },
+      {
+        "dimensionValues": [
+          {
+            "value": "first_visit"
+          }
+        ],
+        "metricValues": [
+          {
+            "value": "9718"
+          }
+        ]
+      },
+      {
+        "dimensionValues": [
+          {
+            "value": "scroll"
+          }
+        ],
+        "metricValues": [
+          {
+            "value": "3291"
+          }
+        ]
+      },
+      {
+        "dimensionValues": [
+          {
+            "value": "click"
+          }
+        ],
+        "metricValues": [
+          {
+            "value": "1524"
+          }
+        ]
+      },
+      {
+        "dimensionValues": [
+          {
+            "value": "category_click"
+          }
+        ],
+        "metricValues": [
+          {
+            "value": "171"
+          }
+        ]
+      },
+      {
+        "dimensionValues": [
+          {
+            "value": "blog_click"
+          }
+        ],
+        "metricValues": [
+          {
+            "value": "126"
+          }
+        ]
+      },
+      {
+        "dimensionValues": [
+          {
+            "value": "card_click"
+          }
+        ],
+        "metricValues": [
+          {
+            "value": "62"
+          }
+        ]
+      },
+      {
+        "dimensionValues": [
+          {
+            "value": "contact_me_click"
+          }
+        ],
+        "metricValues": [
+          {
+            "value": "41"
+          }
+        ]
+      },
+      {
+        "dimensionValues": [
+          {
+            "value": "phone_click"
+          }
+        ],
+        "metricValues": [
+          {
+            "value": "35"
+          }
+        ]
+      },
+      {
+        "dimensionValues": [
+          {
+            "value": "social_network_click"
+          }
+        ],
+        "metricValues": [
+          {
+            "value": "35"
+          }
+        ]
+      },
+      {
+        "dimensionValues": [
+          {
+            "value": "linkedin_user_click"
+          }
+        ],
+        "metricValues": [
+          {
+            "value": "29"
+          }
+        ]
+      },
+      {
+        "dimensionValues": [
+          {
+            "value": "contacts_click"
+          }
+        ],
+        "metricValues": [
+          {
+            "value": "24"
+          }
+        ]
+      },
+      {
+        "dimensionValues": [
+          {
+            "value": "hr_site_click"
+          }
+        ],
+        "metricValues": [
+          {
+            "value": "15"
+          }
+        ]
+      },
+      {
+        "dimensionValues": [
+          {
+            "value": "github_click"
+          }
+        ],
+        "metricValues": [
+          {
+            "value": "11"
+          }
+        ]
+      },
+      {
+        "dimensionValues": [
+          {
+            "value": "Contact me button click"
+          }
+        ],
+        "metricValues": [
+          {
+            "value": "10"
+          }
+        ]
+      },
+      {
+        "dimensionValues": [
+          {
+            "value": "submit_ebook_form"
+          }
+        ],
+        "metricValues": [
+          {
+            "value": "10"
+          }
+        ]
+      },
+      {
+        "dimensionValues": [
+          {
+            "value": "email_click"
+          }
+        ],
+        "metricValues": [
+          {
+            "value": "7"
+          }
+        ]
+      },
+      {
+        "dimensionValues": [
+          {
+            "value": "file_download"
+          }
+        ],
+        "metricValues": [
+          {
+            "value": "7"
+          }
+        ]
+      },
+      {
+        "dimensionValues": [
+          {
+            "value": "Download ebook button click"
+          }
+        ],
+        "metricValues": [
+          {
+            "value": "4"
+          }
+        ]
+      },
+      {
+        "dimensionValues": [
+          {
+            "value": "careers_click"
+          }
+        ],
+        "metricValues": [
+          {
+            "value": "4"
+          }
+        ]
+      },
+      {
+        "dimensionValues": [
+          {
+            "value": "submit_contact_me"
+          }
+        ],
+        "metricValues": [
+          {
+            "value": "4"
+          }
+        ]
+      },
+      {
+        "dimensionValues": [
+          {
+            "value": "press_click"
+          }
+        ],
+        "metricValues": [
+          {
+            "value": "3"
+          }
+        ]
+      },
+      {
+        "dimensionValues": [
+          {
+            "value": "write_us_click"
+          }
+        ],
+        "metricValues": [
+          {
+            "value": "2"
+          }
+        ]
+      }
+    ],
+    "totals": [
+      {
+        "dimensionValues": [
+          {
+            "value": "RESERVED_TOTAL"
+          }
+        ],
+        "metricValues": [
+          {
+            "value": "61396"
+          }
+        ]
+      }
+    ],
+    "maximums": [
+      {
+        "dimensionValues": [
+          {
+            "value": "RESERVED_MAX"
+          }
+        ],
+        "metricValues": [
+          {
+            "value": "22350"
+          }
+        ]
+      }
+    ],
+    "minimums": [
+      {
+        "dimensionValues": [
+          {
+            "value": "RESERVED_MIN"
+          }
+        ],
+        "metricValues": [
+          {
+            "value": "2"
+          }
+        ]
+      }
+    ],
+    "rowCount": 25,
+    "metadata": {
+      "currencyCode": "USD",
+      "timeZone": "Asia/Bishkek"
+    },
+    "kind": "analyticsData#runReport"
+  }
+}
