@@ -14,6 +14,14 @@ export abstract class MessageBuilder {
 
   protected readonly config: RadiatorConfig
 
+  private readonly fillingsContactMeGoal: number = 5
+
+  private readonly redditPostsInMonthGoal: number = 2
+
+  private readonly newPagesInMonthGoal: number = 2
+
+  private readonly goalsCountries: Array<string> = ['United States', 'United Kingdom', 'Germany', 'France', 'Indonesia', 'Vietnam']
+
   constructor(config: RadiatorConfig) {
     this.config = config
   }
@@ -52,11 +60,10 @@ export abstract class MessageBuilder {
 
     if (countries) {
       // countries
-      const goalsCountries = ['United States', 'United Kingdom', 'Germany', 'France', 'Indonesia', 'Vietnam']
       message.push(this.blocksService.section(MessageBuilder.countriesMessage()))
       message.push(this.blocksService.section(this.countriesList(countries)))
-      const isMatch = countries.every(item => goalsCountries.includes(item.title))
-      message.push(this.blocksService.section(MessageBuilder.matchGoalsCountries(isMatch, goalsCountries)))
+      const isGoalAchieved = countries.every(country => this.goalsCountries.includes(country.title))
+      message.push(this.blocksService.section(MessageBuilder.matchGoalsCountries(isGoalAchieved, this.goalsCountries)))
       message.push(this.blocksService.divider())
     }
 
@@ -70,22 +77,22 @@ export abstract class MessageBuilder {
     if (contactMe) {
       // submit contact me form
       message.push(this.blocksService.section(MessageBuilder.contactMeMessage()))
-      const isMatch = contactMe.value >= 5
-      message.push(this.blocksService.section(MessageBuilder.contactMeMessageGoal(isMatch, contactMe.value)))
+      const isGoalAchieved = contactMe.value >= this.fillingsContactMeGoal
+      message.push(this.blocksService.section(MessageBuilder.contactMeMessageGoal(isGoalAchieved, contactMe.value)))
       message.push(this.blocksService.divider())
     }
 
     if (redditCountPosts !== undefined) {
       message.push(this.blocksService.section(MessageBuilder.redditTitle()))
-      const isMatch = redditCountPosts >= 2
-      message.push(this.blocksService.section(MessageBuilder.redditGoalMessage(isMatch, redditCountPosts)))
+      const isGoalAchieved = redditCountPosts >= this.redditPostsInMonthGoal
+      message.push(this.blocksService.section(MessageBuilder.redditGoalMessage(isGoalAchieved, redditCountPosts)))
       message.push(this.blocksService.divider())
     }
 
     if (newPagesInSite !== undefined) {
       message.push(this.blocksService.section(MessageBuilder.newPagesTitle()))
-      const isMatch = newPagesInSite >= 2
-      message.push(this.blocksService.section(MessageBuilder.newPagesGoalMessage(isMatch, newPagesInSite)))
+      const isGoalAchieved = newPagesInSite >= this.newPagesInMonthGoal
+      message.push(this.blocksService.section(MessageBuilder.newPagesGoalMessage(isGoalAchieved, newPagesInSite)))
       message.push(this.blocksService.divider())
     }
 
@@ -206,32 +213,32 @@ export abstract class MessageBuilder {
     )
   }
 
-  private static matchGoalsCountries(isMatch: boolean, goalsCountries: Array<string>) {
-    return `${isMatch ? ':white_check_mark:' : ':x:'} Should be -> ${goalsCountries.join(', ')}`
+  private static matchGoalsCountries(isGoalAchieved: boolean, goalsCountries: Array<string>) {
+    return `${isGoalAchieved ? ':white_check_mark:' : ':x:'} Should be -> ${goalsCountries.join(', ')}`
   }
 
   private static contactMeMessage() {
     return '*Заполнения формы contact me:*'
   }
 
-  private static contactMeMessageGoal(isMatch: boolean, contactMeValue: number) {
-    return `${isMatch ? ':white_check_mark:' : ':x:'} Заполнения за последние 30 дней: ${contactMeValue} / Should be > 5`
+  private static contactMeMessageGoal(isGoalAchieved: boolean, contactMeValue: number) {
+    return `${isGoalAchieved ? ':white_check_mark:' : ':x:'} Заполнения за последние 30 дней: ${contactMeValue} / Should be > 5`
   }
 
   private static redditTitle() {
     return '*Количество новых постов на Reddit:*'
   }
 
-  private static redditGoalMessage(isMatch: boolean, redditCount: number) {
-    return `${isMatch ? ':white_check_mark:' : ':x:'} Новых статей за ${getMonthName()}: ${redditCount} / Should be -> 2`
+  private static redditGoalMessage(isGoalAchieved: boolean, redditCount: number) {
+    return `${isGoalAchieved ? ':white_check_mark:' : ':x:'} Новых статей за ${getMonthName()}: ${redditCount} / Should be -> 2`
   }
 
   private static newPagesTitle() {
     return '*Количество новых страниц на сайте:*'
   }
 
-  private static newPagesGoalMessage(isMatch: boolean, pagesCount: number) {
-    return `${isMatch ? ':white_check_mark:' : ':x:'} Новых страниц за ${getMonthName()}: ${pagesCount} / Should be -> 2`
+  private static newPagesGoalMessage(isGoalAchieved: boolean, pagesCount: number) {
+    return `${isGoalAchieved ? ':white_check_mark:' : ':x:'} Новых страниц за ${getMonthName()}: ${pagesCount} / Should be -> 2`
   }
 
   // private static conversionMessage() {

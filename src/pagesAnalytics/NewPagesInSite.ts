@@ -1,8 +1,8 @@
 import { Logger } from 'logger'
-import moment from 'moment'
 import { Sitemap } from 'sitemap/Sitemap'
 
 import { Firestore } from '../utils/firestore'
+import { getFirstDayOfCurrentMonth } from '../utils/getFirstDayOfCurrentMonth'
 import { getMonthName } from '../utils/getMonthName'
 
 import { PagesParams } from './interfaces'
@@ -26,10 +26,12 @@ export class NewPagesInSite {
         this.currentCount = 0
     }
 
-    public async setCountOfBlogPages(): Promise<any> {
+    public async setCountOfNewPages(): Promise<any> {
         Logger.info('Start getting pages links from sitemap')
         const urls = await this.sitemap.getAllUrls()
-        if (urls.length === 0) Logger.error('Something went wrong')
+        if (urls.length === 0) {
+            throw new Error('Sitemap is empty! Metric not collected!')
+        }
         this.currentCount = urls.length
         Logger.success(`Count of links from sitemap: ${urls.length}`)
         Logger.info(`Saving count of links on firestore...`)
@@ -45,9 +47,9 @@ export class NewPagesInSite {
 
     public async getNewPagesAnalyticsMetrics(): Promise<number> {
         Logger.info(`Start getting pages data from firestore`)
-        const firstDayOfCurrentMonth = moment().startOf('month').toISOString()
-        const { data } = await this.firestore.getDataAfterDate(firstDayOfCurrentMonth, 1, this.firestoreCollectionId)
-        const oldCount = data[0].document?.fields?.count?.integerValue
+        const { data } = await this.firestore.getDataAfterDate(getFirstDayOfCurrentMonth(), 1, this.firestoreCollectionId)
+        const [firstPageInCurrentMonth] = data
+        const oldCount = firstPageInCurrentMonth.document.fields.count.integerValue
         Logger.info(`Новых страниц за ${getMonthName()}: ${this.currentCount - oldCount}`)
         return this.currentCount - oldCount
     }

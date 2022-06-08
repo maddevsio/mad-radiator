@@ -190,7 +190,11 @@ export class Radiator {
 
       if (this.newPagesInSite) {
         Logger.info('Getting new pages data...')
-        newPagesInSite = await this.newPagesInSite.setCountOfBlogPages()
+        try {
+          newPagesInSite = await this.newPagesInSite.setCountOfNewPages()
+        } catch (error: any) {
+          Logger.error(error.message)
+        }
       }
 
       if (this.lighthouse) {
