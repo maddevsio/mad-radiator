@@ -210,7 +210,7 @@ export class Radiator {
 
       if (imageBuffer && this.googleDriveStorage) {
         Logger.info('Saving an image in gdrive...')
-        // imageURL = imageBuffer && (await this.googleDriveStorage.storeFile(imageBuffer))
+        imageURL = imageBuffer && (await this.googleDriveStorage.storeFile(imageBuffer))
       }
 
       if (googleAuthorization && this.messengersParams) {
