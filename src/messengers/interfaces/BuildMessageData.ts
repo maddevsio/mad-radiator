@@ -10,4 +10,5 @@ export interface BuildMessageData {
   imageURL?: string
   pageAnalytics?: PageAnalyticsData | null
   redditCountPosts?: number
+  newPagesInSite?: number
 }
