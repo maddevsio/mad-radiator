@@ -8,4 +8,5 @@ export interface BuildMessageData {
   lighthouse?: LighthouseData
   imageURL?: string
   redditCountPosts?: number
+  newPagesInSite?: number
 }
