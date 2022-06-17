@@ -20,6 +20,8 @@ export abstract class MessageBuilder {
 
   private readonly newPagesInMonthGoal: number = 2
 
+  private readonly newQuoraPostsInMonthGoal: number = 5
+
   private readonly goalsCountries: Array<string> = ['United States', 'United Kingdom', 'Germany', 'France', 'Indonesia', 'Vietnam']
 
   constructor(config: RadiatorConfig) {
@@ -79,28 +81,28 @@ export abstract class MessageBuilder {
       // submit contact me form
       message.push(this.blocksService.section(MessageBuilder.contactMeMessage()))
       const isGoalAchieved = contactMe.value >= this.fillingsContactMeGoal
-      message.push(this.blocksService.section(MessageBuilder.contactMeMessageGoal(isGoalAchieved, contactMe.value)))
+      message.push(this.blocksService.section(MessageBuilder.contactMeMessageGoal(isGoalAchieved, contactMe.value, this.fillingsContactMeGoal)))
       message.push(this.blocksService.divider())
     }
 
     if (quoraPosts !== undefined) {
       message.push(this.blocksService.section(MessageBuilder.quoraTitle()))
-      const isMatch = quoraPosts > 5
-      message.push(this.blocksService.section(MessageBuilder.quoraGoalMessage(isMatch, quoraPosts)))
+      const isMatch = quoraPosts > this.newQuoraPostsInMonthGoal
+      message.push(this.blocksService.section(MessageBuilder.quoraGoalMessage(isMatch, quoraPosts, this.newQuoraPostsInMonthGoal)))
       message.push(this.blocksService.divider())
     }
 
     if (redditCountPosts !== undefined) {
       message.push(this.blocksService.section(MessageBuilder.redditTitle()))
       const isGoalAchieved = redditCountPosts >= this.redditPostsInMonthGoal
-      message.push(this.blocksService.section(MessageBuilder.redditGoalMessage(isGoalAchieved, redditCountPosts)))
+      message.push(this.blocksService.section(MessageBuilder.redditGoalMessage(isGoalAchieved, redditCountPosts, this.redditPostsInMonthGoal)))
       message.push(this.blocksService.divider())
     }
 
     if (newPagesInSite !== undefined) {
       message.push(this.blocksService.section(MessageBuilder.newPagesTitle()))
       const isGoalAchieved = newPagesInSite >= this.newPagesInMonthGoal
-      message.push(this.blocksService.section(MessageBuilder.newPagesGoalMessage(isGoalAchieved, newPagesInSite)))
+      message.push(this.blocksService.section(MessageBuilder.newPagesGoalMessage(isGoalAchieved, newPagesInSite, this.newPagesInMonthGoal)))
       message.push(this.blocksService.divider())
     }
 
@@ -229,32 +231,32 @@ export abstract class MessageBuilder {
     return '*Заполнения формы contact me:*'
   }
 
-  private static contactMeMessageGoal(isGoalAchieved: boolean, contactMeValue: number) {
-    return `${isGoalAchieved ? ':white_check_mark:' : ':x:'} Заполнения за последние 30 дней: ${contactMeValue} / Should be > 5`
+  private static contactMeMessageGoal(isGoalAchieved: boolean, contactMeValue: number, goal: number) {
+    return `${isGoalAchieved ? ':white_check_mark:' : ':x:'} Заполнения за последние 30 дней: ${contactMeValue} / Should be > ${goal}`
   }
 
   private static quoraTitle() {
     return '*Количество новых постов на Quora:*'
   }
 
-  private static quoraGoalMessage(isMath: boolean, quoraCount: number) {
-    return `${isMath ? ':white_check_mark:' : ':x:'} Новых статей за ${getMonthName()}: ${quoraCount} / Should be -> 5`
+  private static quoraGoalMessage(isMath: boolean, quoraCount: number, goal: number) {
+    return `${isMath ? ':white_check_mark:' : ':x:'} Новых статей за ${getMonthName()}: ${quoraCount} / Should be -> ${goal}`
   }
 
   private static redditTitle() {
     return '*Количество новых постов на Reddit:*'
   }
 
-  private static redditGoalMessage(isGoalAchieved: boolean, redditCount: number) {
-    return `${isGoalAchieved ? ':white_check_mark:' : ':x:'} Новых статей за ${getMonthName()}: ${redditCount} / Should be -> 2`
+  private static redditGoalMessage(isGoalAchieved: boolean, redditCount: number, goal: number) {
+    return `${isGoalAchieved ? ':white_check_mark:' : ':x:'} Новых статей за ${getMonthName()}: ${redditCount} / Should be -> ${goal}`
   }
 
   private static newPagesTitle() {
     return '*Количество новых страниц на сайте:*'
   }
 
-  private static newPagesGoalMessage(isGoalAchieved: boolean, pagesCount: number) {
-    return `${isGoalAchieved ? ':white_check_mark:' : ':x:'} Новых страниц за ${getMonthName()}: ${pagesCount} / Should be -> 2`
+  private static newPagesGoalMessage(isGoalAchieved: boolean, pagesCount: number, goal: number) {
+    return `${isGoalAchieved ? ':white_check_mark:' : ':x:'} Новых страниц за ${getMonthName()}: ${pagesCount} / Should be -> ${goal}`
   }
 
   // private static conversionMessage() {

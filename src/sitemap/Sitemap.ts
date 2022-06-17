@@ -12,7 +12,6 @@ export class Sitemap {
 
     public async getAllUrls() {
         const url = this.buildSitemapUrl()
-
         const parsedUrls: Array<string> = await this.parseSitemapUrls(url);
 
         return this.filterByRegexp(parsedUrls);
