@@ -10,6 +10,7 @@ import { Lighthouse } from 'lighthouse'
 import { LighthouseParams } from 'lighthouse/interfaces'
 import { Logger } from 'logger'
 import { MessengersService } from 'messengers'
+import { QuoraService } from 'quora'
 import { RunCounter } from 'runCounter'
 import { Scheduler } from 'scheduler'
 import { SitemapOptions } from 'sitemap/interfaces/SitemapOptions'
@@ -46,6 +47,8 @@ export class Radiator {
   private pageAnalytics: PageAnalytics | undefined
 
   private redditCountPosts: RedditCountPosts | undefined
+
+  private quoraPosts: QuoraService | undefined
 
   private newPagesInSite: NewPagesInSite | undefined
 
@@ -111,6 +114,10 @@ export class Radiator {
     this.redditCountPosts = new RedditCountPosts()
   }
 
+  public useQuoraService() {
+    this.quoraPosts = new QuoraService()
+  }
+
   private useChartBuilder(analyticsParams: AnalyticsParams) {
     this.chartBuilder = new ChartBuilder(analyticsParams)
   }
@@ -160,6 +167,7 @@ export class Radiator {
       // let pageAnalytics
       let imageBuffer
       let redditCountPosts
+      let quoraPosts
       let newPagesInSite
 
       this.runCounter.incrementRunCounter()
@@ -183,11 +191,15 @@ export class Radiator {
         // pageAnalytics = await this.pageAnalytics.setCountOfBlogPages()
       }
 
-      if(this.redditCountPosts) {
+      if (this.redditCountPosts) {
         Logger.info('Getting reddit data...')
         redditCountPosts = await this.redditCountPosts.getPostsCountInReddit()
       }
 
+      if (this.quoraPosts) {
+        Logger.info('Getting quora data...')
+        quoraPosts = await this.quoraPosts.setCountOfQuoraPosts()
+      }
       if (this.newPagesInSite) {
         Logger.info('Getting new pages data...')
         try {
@@ -222,6 +234,7 @@ export class Radiator {
           range: this.parsedRange,
           imageURL,
           redditCountPosts,
+          quoraPosts,
           newPagesInSite,
         })
         Logger.success('Success!')

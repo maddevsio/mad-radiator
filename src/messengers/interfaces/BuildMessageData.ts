@@ -8,5 +8,6 @@ export interface BuildMessageData {
   lighthouse?: LighthouseData
   imageURL?: string
   redditCountPosts?: number
+  quoraPosts?: number
   newPagesInSite?: number
 }

@@ -73,6 +73,7 @@ app.get('/authorized',
     radiator.useAnalytics(analyticsConfig)
     radiator.useSlack(slackConfig)
     radiator.useRedditCountPosts()
+    radiator.useQuoraService()
     radiator.useNewPagesInSite(lighthouseConfig)
     radiator.run()
 

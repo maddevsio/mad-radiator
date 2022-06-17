@@ -47,9 +47,9 @@ export class NewPagesInSite {
 
     public async getNewPagesAnalyticsMetrics(): Promise<number> {
         Logger.info(`Start getting pages data from firestore`)
-        const { data } = await this.firestore.getDataAfterDate(getFirstDayOfCurrentMonth(), 1, this.firestoreCollectionId)
+        const { data } = await this.firestore.getDataAfterDate(getFirstDayOfCurrentMonth(), this.firestoreCollectionId, 1)
         const [firstPageInCurrentMonth] = data
-        const oldCount = firstPageInCurrentMonth.document.fields.count.integerValue
+        const oldCount = (firstPageInCurrentMonth.document?.fields?.count?.integerValue || 0)
         Logger.info(`Новых страниц за ${getMonthName()}: ${this.currentCount - oldCount}`)
         return this.currentCount - oldCount
     }

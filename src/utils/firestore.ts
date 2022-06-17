@@ -19,29 +19,29 @@ export class Firestore {
         return axios.post(`${this.url}/${documentName}`, fields)
     }
 
-    public async getDataAfterDate(date: string, limit?: number, collectionId: string = 'blog') {
+    public async getDataAfterDate(date: string, dir: string, limit?: number) {
         return axios.post(this.queryUrl,
             {
                 structuredQuery:
-                    {
-                        from: [
-                            {
-                                collectionId
+                {
+                    from: [
+                        {
+                            collectionId: dir
+                        }
+                    ],
+                    where: {
+                        fieldFilter: {
+                            field: {
+                                fieldPath: 'created'
+                            },
+                            op: 'GREATER_THAN_OR_EQUAL',
+                            value: {
+                                timestampValue: date
                             }
-                        ],
-                        where: {
-                            fieldFilter: {
-                                field: {
-                                    fieldPath: 'created'
-                                },
-                                op: 'GREATER_THAN_OR_EQUAL',
-                                value: {
-                                    timestampValue: date
-                                }
-                            }
-                        },
-                        limit,
-                    }
+                        }
+                    },
+                    limit,
+                }
             })
     }
 }

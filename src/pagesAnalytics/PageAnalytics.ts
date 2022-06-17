@@ -53,7 +53,7 @@ export class PageAnalytics {
   public async getPageAnalyticsMetrics(): Promise<number> {
     Logger.info(`Start getting data from firestore`)
     const firstDayOfCurrentMonth = moment().startOf('month').toISOString()
-    const { data } = await this.firestore.getDataAfterDate(firstDayOfCurrentMonth, 1)
+    const { data } = await this.firestore.getDataAfterDate(firstDayOfCurrentMonth, 'blog', 1)
     console.dir(data, { depth: null, maxArrayLength: null });
     const oldCount = data[0].document?.fields?.count?.stringValue
     Logger.info(`Новых статей за месяц: ${this.currentCount - oldCount}`)

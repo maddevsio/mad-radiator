@@ -20,6 +20,7 @@ module.exports = {
     '<rootDir>/src/pagesAnalytics',
     '<rootDir>/src/storage',
     '<rootDir>/src/sitemap',
+    '<rootDir>/src/lighthouse/Sitemap'
   ],
   coverageReporters: ['lcov'],
   coverageThreshold: {
