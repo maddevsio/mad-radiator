@@ -17,8 +17,9 @@ import { SitemapOptions } from 'sitemap/interfaces/SitemapOptions'
 import { GoogleDriveStorage } from 'storage'
 import { parseRange } from 'utils/parseRange'
 
-import { PageAnalytics } from "./pagesAnalytics";
-import { RedditCountPosts } from "./redditPosts";
+import { NewPagesInSite, PageAnalytics } from "./pagesAnalytics"
+import { PagesParams } from "./pagesAnalytics/interfaces"
+import { RedditCountPosts } from "./redditPosts"
 
 export class Radiator {
   private readonly config: RadiatorConfig
@@ -48,6 +49,8 @@ export class Radiator {
   private redditCountPosts: RedditCountPosts | undefined
 
   private quoraPosts: QuoraService | undefined
+
+  private newPagesInSite: NewPagesInSite | undefined
 
   constructor(config: RadiatorConfig) {
     this.config = config
@@ -137,6 +140,13 @@ export class Radiator {
     }
   }
 
+  public useNewPagesInSite(sitemap: PagesParams) {
+    this.newPagesInSite = new NewPagesInSite({
+      ...sitemap,
+      websiteUrl: this.config.websiteUrl,
+    })
+  }
+
   private handleRadiatorError(error: Error | AnalyticsError | AuthorizationError) {
     Sentry.captureException(error)
 
@@ -158,6 +168,7 @@ export class Radiator {
       let imageBuffer
       let redditCountPosts
       let quoraPosts
+      let newPagesInSite
 
       this.runCounter.incrementRunCounter()
 
@@ -189,6 +200,14 @@ export class Radiator {
         Logger.info('Getting quora data...')
         quoraPosts = await this.quoraPosts.setCountOfQuoraPosts()
       }
+      if (this.newPagesInSite) {
+        Logger.info('Getting new pages data...')
+        try {
+          newPagesInSite = await this.newPagesInSite.setCountOfNewPages()
+        } catch (error: any) {
+          Logger.error(error.message)
+        }
+      }
 
       if (this.lighthouse) {
         Logger.info('Getting lighthouse data...')
@@ -216,6 +235,7 @@ export class Radiator {
           imageURL,
           redditCountPosts,
           quoraPosts,
+          newPagesInSite,
         })
         Logger.success('Success!')
       }

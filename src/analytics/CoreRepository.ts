@@ -1,5 +1,5 @@
 import { Repository } from 'analytics/Repository'
-import { AnalyticsPayload, CoreItems } from 'analytics/interfaces'
+import { AnalyticDataRows, AnalyticsPayload, CoreItems } from 'analytics/interfaces'
 import { Rate } from 'interfaces'
 import { formatTime } from 'utils/formatTime'
 
@@ -38,6 +38,16 @@ export class CoreRepository extends Repository {
    * Format raw GA data
    */
   private static format(reports: AnalyticsPayload): CoreItems {
+    const currentReport = {
+      rows: reports.rows
+        .filter((row: AnalyticDataRows) => row.dimensionValues[0].value === 'date_range_0'),
+    }
+
+    const previousReport = {
+      rows: reports.rows
+          .filter((row: AnalyticDataRows) => row.dimensionValues[0].value === 'date_range_1'),
+    }
+
     const [
       users,
       usersForWeek,
@@ -45,7 +55,7 @@ export class CoreRepository extends Repository {
       sessions,
       bounceRate,
       duration,
-    ] = reports.rows[1]?.metricValues
+    ] = currentReport.rows[0].metricValues
       .map((n: { value: number }) => Number(Number(n.value).toFixed(2)))
 
     const [
@@ -55,7 +65,7 @@ export class CoreRepository extends Repository {
       sessionsPrev,
       bounceRatePrev,
       durationPrev,
-    ] = reports.rows[0].metricValues
+    ] = previousReport.rows[0].metricValues
       .map((n: { value: number }) => Number(Number(n.value).toFixed(2)))
 
     const usersDifference = CoreRepository.getPercentage(users, usersPrev)

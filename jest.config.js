@@ -18,7 +18,9 @@ module.exports = {
     '<rootDir>/src/interfaces',
     '<rootDir>/src/__tests__',
     '<rootDir>/src/pagesAnalytics',
-    '<rootDir>/src/storage'
+    '<rootDir>/src/storage',
+    '<rootDir>/src/sitemap',
+    '<rootDir>/src/lighthouse/Sitemap'
   ],
   coverageReporters: ['lcov'],
   coverageThreshold: {
@@ -26,7 +28,7 @@ module.exports = {
       branches: 61,
       statements: 80,
       functions: 79,
-      lines: 82,
+      lines: 81.92,
     },
   },
   moduleNameMapper: pathsToModuleNameMapper(tsconfig.compilerOptions.paths, '<rootDir>/src'),

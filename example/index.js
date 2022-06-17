@@ -62,23 +62,19 @@ app.get('/authorized',
   (req, res) => {
     const {
       authConfig,
-      // sentryConfig,
-      // analyticsConfig,
+      analyticsConfig,
       slackConfig,
-      // lighthouseConfig,
-      pageAnalyticsConfig,
+      lighthouseConfig,
     } = config
 
     Object.assign(authConfig, userInfo)
 
     const radiator = new Radiator(authConfig)
-    // radiator.useSentry(sentryConfig)
-    // radiator.useAnalytics(analyticsConfig)
+    radiator.useAnalytics(analyticsConfig)
     radiator.useSlack(slackConfig)
-    radiator.useQuoraService()
     // radiator.useRedditCountPosts()
-    // radiator.usePageAnalytics(pageAnalyticsConfig)
-    // radiator.useLighthouse(lighthouseConfig)
+    radiator.useQuoraService()
+    radiator.useNewPagesInSite(lighthouseConfig)
     radiator.run()
 
     res.redirect('/');

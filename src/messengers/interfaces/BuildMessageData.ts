@@ -9,4 +9,5 @@ export interface BuildMessageData {
   imageURL?: string
   redditCountPosts?: number
   quoraPosts?: number
+  newPagesInSite?: number
 }

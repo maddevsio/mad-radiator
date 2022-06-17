@@ -37,7 +37,6 @@ export class Sitemap {
   private filterByRegexp(parsedUrls: Array<string>) {
     if (!this.config?.urlTestRegexp) return parsedUrls
     const regexp = new RegExp(this.config.urlTestRegexp)
-
     return parsedUrls.filter(urlToTest => !regexp.test(urlToTest))
   }
 }
