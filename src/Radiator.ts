@@ -11,6 +11,7 @@ import { LighthouseParams } from 'lighthouse/interfaces'
 import { Logger } from 'logger'
 import { MessengersService } from 'messengers'
 import { QuoraService } from 'quora'
+import { QuoraParams } from 'quora/interfaces'
 import { RunCounter } from 'runCounter'
 import { Scheduler } from 'scheduler'
 import { SitemapOptions } from 'sitemap/interfaces/SitemapOptions'
@@ -114,8 +115,8 @@ export class Radiator {
     this.redditCountPosts = new RedditCountPosts()
   }
 
-  public useQuoraService() {
-    this.quoraPosts = new QuoraService()
+  public useQuoraService(quoraConfig: QuoraParams) {
+    this.quoraPosts = new QuoraService(quoraConfig)
   }
 
   private useChartBuilder(analyticsParams: AnalyticsParams) {
