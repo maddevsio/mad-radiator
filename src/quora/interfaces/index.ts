@@ -1,17 +1,2 @@
-export interface FirestoreData {
-  data: [
-    {
-      document: {
-        name: string
-        fields: {
-          count: {
-            integerValue: string
-          }
-        },
-        createTime: string
-        updateTime: string
-      },
-      readTime: string
-    }
-  ]
-}
+export * from 'quora/interfaces/FirestoreData';
+export * from 'quora/interfaces/QuoraParams';

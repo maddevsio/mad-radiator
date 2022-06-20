@@ -1,7 +1,9 @@
 import dotenv from 'dotenv';
 import got from 'got';
 import moment from 'moment';
-import { Firestore } from "utils/firestore"
+import { Firestore } from 'utils/firestore'
+
+import { QuoraParams } from './interfaces';
 
 
 // eslint-disable-next-line jest/require-hook
@@ -17,11 +19,12 @@ export class QuoraService {
   private currentCount: number
 
   // TODO: fix undefined type
-  private quoraUserID?: string = process.env.QUORA_USER_ID
+  private quoraUserID?: string
 
-  constructor() {
+  constructor(quoraParams: QuoraParams) {
     this.firestore = new Firestore()
     this.currentCount = 0
+    this.quoraUserID = quoraParams.quoraUserID
   }
 
   private async getHTML(): Promise<string> {

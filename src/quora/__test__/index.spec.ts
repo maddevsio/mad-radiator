@@ -49,7 +49,7 @@ describe('Quora service', () => {
     MockedGot.mockImplementation(() => Promise.resolve(responseParsedHtml))
   })
   it('should correctly return a count of quora posts', async () => {
-    const posts = new QuoraService()
+    const posts = new QuoraService({ quoraUserID: 'Oleg-Puzanov-5' })
     const getHtmlMock = jest.spyOn(QuoraService.prototype as any, 'getHTML');
     getHtmlMock.mockImplementation(() => new Promise(resolve => resolve(responseParsedHtml)));
     const countOfPosts = await posts.setCountOfQuoraPosts()
