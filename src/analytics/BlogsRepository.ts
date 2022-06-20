@@ -24,6 +24,8 @@ export class BlogsRepository extends Repository {
   public async getData(): Promise<Array<Blog>> {
     const { websiteUrl, pagesPathForViewsAnalytics } = this.config
     const reports = await this.getAnalytics(this.metrics, this.dimensions)
+    reports.rows = reports.rows
+      .filter((row: AnalyticDataRows) => row.dimensionValues[1]?.value === 'date_range_0')
 
     return BlogsRepository.format(reports, websiteUrl, pagesPathForViewsAnalytics)
   }
