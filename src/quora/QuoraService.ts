@@ -24,7 +24,7 @@ export class QuoraService {
   constructor(quoraParams: QuoraParams) {
     this.firestore = new Firestore()
     this.currentCount = 0
-    this.quoraUserID = quoraParams.quoraUserID
+    this.quoraUserID = quoraParams.quoraUserID && ''
   }
 
   private async getHTML(): Promise<string> {
@@ -41,15 +41,20 @@ export class QuoraService {
   }
 
   public async setCountOfQuoraPosts(): Promise<any> {
-    const posts = await this.parseHTML()
-    this.currentCount = Number(posts)
-    await this.firestore.setData(this.fireStoreDir, {
-      fields: {
-        count: { integerValue: posts },
-        created: { timestampValue: new Date().toISOString() }
-      }
-    })
-    return this.getQuoraPostsMetrics()
+    try {
+      const posts = await this.parseHTML()
+      this.currentCount = Number(posts)
+      await this.firestore.setData(this.fireStoreDir, {
+        fields: {
+          count: { integerValue: posts },
+          created: { timestampValue: new Date().toISOString() }
+        }
+      })
+      return await this.getQuoraPostsMetrics()
+    } catch (error: any) {
+      console.log(error);
+      return new Error(error);
+    }
   }
 
   private async getQuoraPostsMetrics(): Promise<number> {

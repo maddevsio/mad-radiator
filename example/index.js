@@ -65,7 +65,7 @@ app.get('/authorized',
       analyticsConfig,
       slackConfig,
       lighthouseConfig,
-      quoraConfig,
+      quora,
     } = config
 
     Object.assign(authConfig, userInfo)
@@ -74,7 +74,7 @@ app.get('/authorized',
     radiator.useAnalytics(analyticsConfig)
     radiator.useSlack(slackConfig)
     radiator.useRedditCountPosts()
-    radiator.useQuoraService(quoraConfig)
+    radiator.useQuoraService(quora)
     radiator.useNewPagesInSite(lighthouseConfig)
     radiator.run()
 
