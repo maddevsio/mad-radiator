@@ -24,7 +24,7 @@ export class QuoraService {
   constructor(quoraParams: QuoraParams) {
     this.firestore = new Firestore()
     this.currentCount = 0
-    this.quoraUserID = quoraParams.quoraUserID && ''
+    this.quoraUserID = quoraParams.quoraUserID
   }
 
   private async getHTML(): Promise<string> {
