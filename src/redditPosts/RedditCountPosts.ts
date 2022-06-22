@@ -1,32 +1,24 @@
-import dotenv from "dotenv"
 import moment from "moment"
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import Reddit from 'reddit'
 
-import { Post, Posts } from "./interfaces"
-
-// eslint-disable-next-line jest/require-hook
-dotenv.config()
+import { IRedditParams, Post, Posts } from "./interfaces"
 
 export class RedditCountPosts {
   private redditConnect: Reddit
 
-  private redditClientId: string | undefined = process.env.REDDIT_CLIENT_ID
-
-  private redditClientSecret: string | undefined = process.env.REDDIT_CLIENT_SECRET
-
-  private redditUsername: string | undefined = process.env.REDDIT_USERNAME
-
-  private redditPassword: string | undefined = process.env.REDDIT_PASSWORD
-
-
-  constructor() {
+  constructor({
+    redditClientId,
+    redditClientSecret,
+    redditUsername,
+    redditPassword
+  }: IRedditParams) {
     this.redditConnect = new Reddit({
-      username: this.redditUsername,
-      password: this.redditPassword,
-      appId: this.redditClientId,
-      appSecret: this.redditClientSecret,
+      username: redditUsername,
+      password: redditPassword,
+      appId: redditClientId,
+      appSecret: redditClientSecret,
       userAgent: 'Whatever',
     })
   }
@@ -39,7 +31,7 @@ export class RedditCountPosts {
   }
 
   private removeDuplicatePosts = (posts: Array<Posts>): Array<Post> => {
-    return [...new Set(posts.map(post => post.data.title ))]
+    return [...new Set(posts.map(post => post.data.title))]
   }
 
   private getPostsInCurrentMonth = (posts: Array<Posts>): Array<Posts> => posts.filter(post => moment().startOf('month').unix() < post.data.created_utc)

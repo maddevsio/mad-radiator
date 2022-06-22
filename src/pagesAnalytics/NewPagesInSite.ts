@@ -19,10 +19,10 @@ export class NewPagesInSite {
 
     private readonly firestoreCollectionId: string = 'pages'
 
-    constructor(config: PagesParams) {
+    constructor(config: PagesParams, firestoreId: string) {
         this.config = config
         this.sitemap = new Sitemap(this.config)
-        this.firestore = new Firestore()
+        this.firestore = new Firestore(firestoreId)
         this.currentCount = 0
     }
 

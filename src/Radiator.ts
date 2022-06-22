@@ -12,6 +12,7 @@ import { Logger } from 'logger'
 import { MessengersService } from 'messengers'
 import { QuoraService } from 'quora'
 import { QuoraParams } from 'quora/interfaces'
+import { IRedditParams } from 'redditPosts/interfaces'
 import { RunCounter } from 'runCounter'
 import { Scheduler } from 'scheduler'
 import { SitemapOptions } from 'sitemap/interfaces/SitemapOptions'
@@ -104,19 +105,19 @@ export class Radiator {
     )
   }
 
-  public usePageAnalytics(sitemapParams: SitemapOptions) {
+  public usePageAnalytics(sitemapParams: SitemapOptions, firestoreId: string) {
     this.pageAnalytics = new PageAnalytics({
       ...sitemapParams,
       websiteUrl: this.config.websiteUrl,
-    })
+    }, firestoreId)
   }
 
-  public useRedditCountPosts() {
-    this.redditCountPosts = new RedditCountPosts()
+  public useRedditCountPosts(redditConfig: IRedditParams) {
+    this.redditCountPosts = new RedditCountPosts(redditConfig)
   }
 
-  public useQuoraService(quoraConfig: QuoraParams) {
-    this.quoraPosts = new QuoraService(quoraConfig)
+  public useQuoraService(quoraConfig: QuoraParams, firestoreId: string) {
+    this.quoraPosts = new QuoraService(quoraConfig, firestoreId)
   }
 
   private useChartBuilder(analyticsParams: AnalyticsParams) {
@@ -141,11 +142,11 @@ export class Radiator {
     }
   }
 
-  public useNewPagesInSite(sitemap: PagesParams) {
+  public useNewPagesInSite(sitemap: PagesParams, firestoreId: string) {
     this.newPagesInSite = new NewPagesInSite({
       ...sitemap,
       websiteUrl: this.config.websiteUrl,
-    })
+    }, firestoreId)
   }
 
   private handleRadiatorError(error: Error | AnalyticsError | AuthorizationError) {
