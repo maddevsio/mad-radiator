@@ -5,11 +5,14 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 export class Firestore {
-    private firestoreId: string | undefined = process.env.FIRESTORE_ID
+    private url: string
 
-    private url: string = `https://firestore.googleapis.com/v1/projects/${this.firestoreId}/databases/(default)/documents`
+    private queryUrl: string
 
-    private queryUrl: string = `https://firestore.googleapis.com/v1/projects/${this.firestoreId}/databases/(default)/documents:runQuery`
+    constructor(firestoreId: string) {
+        this.url = `https://firestore.googleapis.com/v1/projects/${firestoreId}/databases/(default)/documents`
+        this.queryUrl = `https://firestore.googleapis.com/v1/projects/${firestoreId}/databases/(default)/documents:runQuery`
+    }
 
     public async getData(documentName: string) {
         return axios.get(`${this.url}/${documentName}`)

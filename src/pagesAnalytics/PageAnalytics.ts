@@ -18,10 +18,10 @@ export class PageAnalytics {
 
   private currentCount: number
 
-  constructor(config: SitemapOptions) {
+  constructor(config: SitemapOptions, firestoreId: string) {
     this.config = config
     this.sitemap = new Sitemap(this.config)
-    this.firestore = new Firestore()
+    this.firestore = new Firestore(firestoreId)
     this.currentCount = 0
   }
 

@@ -1,13 +1,8 @@
-import dotenv from 'dotenv';
 import got from 'got';
 import moment from 'moment';
 import { Firestore } from 'utils/firestore'
 
 import { QuoraParams } from './interfaces';
-
-
-// eslint-disable-next-line jest/require-hook
-dotenv.config();
 
 export class QuoraService {
   private firestore: Firestore
@@ -21,16 +16,14 @@ export class QuoraService {
   // TODO: fix undefined type
   private quoraUserID?: string
 
-  constructor(quoraParams: QuoraParams) {
-    this.firestore = new Firestore()
+  constructor(quoraParams: QuoraParams, firestoreId: string) {
+    this.firestore = new Firestore(firestoreId)
     this.currentCount = 0
     this.quoraUserID = quoraParams.quoraUserID
   }
 
   private async getHTML(): Promise<string> {
-    console.log('Start test body');
     const { body } = await got(`${this.url}${this.quoraUserID}`)
-    console.log('End test body...');
     return body
   }
 
@@ -45,7 +38,6 @@ export class QuoraService {
   public async setCountOfQuoraPosts(): Promise<any> {
     try {
       const posts = await this.parseHTML()
-      console.log('Count of posts, ', posts);
       this.currentCount = Number(posts)
       await this.firestore.setData(this.fireStoreDir, {
         fields: {
@@ -55,7 +47,6 @@ export class QuoraService {
       })
       return await this.getQuoraPostsMetrics()
     } catch (error: any) {
-      console.log(error);
       return new Error(error);
     }
   }
@@ -63,9 +54,7 @@ export class QuoraService {
   private async getQuoraPostsMetrics(): Promise<number> {
     const firstDayOfCurrentMonth = moment().startOf('month').toISOString()
     const { data } = await this.firestore.getDataAfterDate(firstDayOfCurrentMonth, this.fireStoreDir, 1)
-    console.log(data);
     const oldCount = (data[0].document?.fields?.count?.integerValue || 0)
-    console.log(oldCount);
 
     return this.currentCount - oldCount
   }

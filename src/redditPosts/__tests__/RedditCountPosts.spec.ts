@@ -5,6 +5,13 @@ import { RedditCountPosts } from 'redditPosts/RedditCountPosts'
 
 jest.mock('reddit')
 
+const mockConfig = {
+    "redditClientId": "test",
+    "redditClientSecret": "test",
+    "redditUsername": "test",
+    "redditPassword": "test"
+}
+
 const MockedReddit = Reddit as jest.Mock<Reddit>
 
 describe('RedditCountPosts service', () => {
@@ -48,7 +55,7 @@ describe('RedditCountPosts service', () => {
         jest.resetAllMocks()
     })
     it('should correctly return reddit posts count', async () => {
-        const reddit = new RedditCountPosts()
+        const reddit = new RedditCountPosts(mockConfig)
         const redditCount = await reddit.getPostsCountInReddit()
         expect(redditCount).toBe(1)
     })
