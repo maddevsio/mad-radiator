@@ -28,7 +28,9 @@ export class QuoraService {
   }
 
   private async getHTML(): Promise<string> {
+    console.log('Start test body');
     const { body } = await got(`${this.url}${this.quoraUserID}`)
+    console.log('End test body...');
     return body
   }
 
@@ -43,6 +45,7 @@ export class QuoraService {
   public async setCountOfQuoraPosts(): Promise<any> {
     try {
       const posts = await this.parseHTML()
+      console.log('Count of posts, ', posts);
       this.currentCount = Number(posts)
       await this.firestore.setData(this.fireStoreDir, {
         fields: {
@@ -60,7 +63,9 @@ export class QuoraService {
   private async getQuoraPostsMetrics(): Promise<number> {
     const firstDayOfCurrentMonth = moment().startOf('month').toISOString()
     const { data } = await this.firestore.getDataAfterDate(firstDayOfCurrentMonth, this.fireStoreDir, 1)
+    console.log(data);
     const oldCount = (data[0].document?.fields?.count?.integerValue || 0)
+    console.log(oldCount);
 
     return this.currentCount - oldCount
   }
