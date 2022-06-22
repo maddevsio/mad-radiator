@@ -24,10 +24,14 @@ export class RedditCountPosts {
   }
 
   public async getPostsCountInReddit(): Promise<number> {
-    const redditPosts = await this.getPosts()
-    const filteredPostsByMonth = this.getPostsInCurrentMonth(redditPosts)
-    const formatPosts = this.removeDuplicatePosts(filteredPostsByMonth)
-    return formatPosts.length
+    try {
+      const redditPosts = await this.getPosts()
+      const filteredPostsByMonth = this.getPostsInCurrentMonth(redditPosts)
+      const formatPosts = this.removeDuplicatePosts(filteredPostsByMonth)
+      return formatPosts.length
+    } catch (error: any) {
+      throw new Error(error)
+    }
   }
 
   private removeDuplicatePosts = (posts: Array<Posts>): Array<Post> => {
@@ -38,9 +42,13 @@ export class RedditCountPosts {
 
   private getPosts = async (nextPage: string | null = null): Promise<Array<Posts>> => {
     let posts: Array<Posts> = []
-    const response = await this.redditConnect.get('/user/darikanur/submitted', { limit: 100, after: nextPage })
-    posts = posts.concat(response.data.children)
-    if (response.data.after) posts = posts.concat(await this.getPosts(response.data.after))
+    try {
+      const response = await this.redditConnect.get('/user/darikanur/submitted', { limit: 100, after: nextPage })
+      posts = posts.concat(response.data.children)
+      if (response.data.after) posts = posts.concat(await this.getPosts(response.data.after))
+    } catch (error: any) {
+      throw new Error(error)
+    }
     return posts
   }
 }
