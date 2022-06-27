@@ -68,6 +68,7 @@ app.get('/authorized',
       quora,
       firestoreId,
       redditConfig,
+      pageAnalyticsConfig,
     } = config
 
     Object.assign(authConfig, userInfo)
@@ -78,6 +79,8 @@ app.get('/authorized',
     radiator.useRedditCountPosts(redditConfig)
     radiator.useQuoraService(quora, firestoreId)
     radiator.useNewPagesInSite(lighthouseConfig, firestoreId)
+    // radiator.useRedditCountPosts()
+    radiator.usePageAnalytics(pageAnalyticsConfig, firestoreId)
     radiator.run()
 
     res.redirect('/');

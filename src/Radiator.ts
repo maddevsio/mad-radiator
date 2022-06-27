@@ -189,8 +189,8 @@ export class Radiator {
       }
 
       if (this.pageAnalytics) {
-        Logger.info('Getting firebase data...')
-        pageAnalytics = await this.pageAnalytics.setCountOfBlogPages()
+        Logger.info('Getting page analytics data...')
+        pageAnalytics = await this.pageAnalytics.getPageAnalyticsMetrics()
       }
 
       if (this.redditCountPosts) {
