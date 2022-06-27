@@ -1,6 +1,6 @@
 import got from 'got';
-import moment from 'moment';
 import { Firestore } from 'utils/firestore'
+import { getFirstDayOfCurrentMonth } from 'utils/getFirstDayOfCurrentMonth'
 
 import { QuoraParams } from './interfaces';
 
@@ -52,8 +52,7 @@ export class QuoraService {
   }
 
   private async getQuoraPostsMetrics(): Promise<number> {
-    const firstDayOfCurrentMonth = moment().startOf('month').toISOString()
-    const { data } = await this.firestore.getDataAfterDate(firstDayOfCurrentMonth, this.fireStoreDir, 1)
+    const { data } = await this.firestore.getDataAfterDate(getFirstDayOfCurrentMonth(), this.fireStoreDir, 1)
     const oldCount = (data[0].document?.fields?.count?.integerValue || 0)
 
     return this.currentCount - oldCount

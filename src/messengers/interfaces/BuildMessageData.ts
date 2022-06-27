@@ -10,4 +10,5 @@ export interface BuildMessageData {
   redditCountPosts?: number
   quoraPosts?: number
   newPagesInSite?: number
+  pageAnalytics?: number
 }

@@ -166,7 +166,7 @@ export class Radiator {
       let analytics
       let lighthouse
       let imageURL
-      // let pageAnalytics
+      let pageAnalytics
       let imageBuffer
       let redditCountPosts
       let quoraPosts
@@ -190,7 +190,7 @@ export class Radiator {
 
       if (this.pageAnalytics) {
         Logger.info('Getting firebase data...')
-        // pageAnalytics = await this.pageAnalytics.setCountOfBlogPages()
+        pageAnalytics = await this.pageAnalytics.setCountOfBlogPages()
       }
 
       if (this.redditCountPosts) {
@@ -238,6 +238,7 @@ export class Radiator {
           redditCountPosts,
           quoraPosts,
           newPagesInSite,
+          pageAnalytics,
         })
         Logger.success('Success!')
       }
