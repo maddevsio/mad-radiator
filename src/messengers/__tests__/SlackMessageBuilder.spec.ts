@@ -109,7 +109,7 @@ describe('SlackMessageBuilder', () => {
       },
       {
         text: {
-          text: ':x: Новых статей за Июнь: 0 / Should be -> 2\n\n',
+          text: ':x: Новых статей за Июль: 0 / Should be -> 2\n\n',
           type: 'mrkdwn',
         },
         type: 'section',

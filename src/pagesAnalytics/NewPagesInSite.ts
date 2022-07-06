@@ -3,10 +3,8 @@ import { Sitemap } from 'sitemap/Sitemap'
 
 import { Firestore } from '../utils/firestore'
 import { getFirstDayOfCurrentMonth } from '../utils/getFirstDayOfCurrentMonth'
-import { getMonthName } from '../utils/getMonthName'
 
 import { PagesParams } from './interfaces'
-
 
 export class NewPagesInSite {
     private readonly config: PagesParams
@@ -26,7 +24,7 @@ export class NewPagesInSite {
         this.currentCount = 0
     }
 
-    public async setCountOfNewPages(): Promise<any> {
+    public async setCountOfNewPages(): Promise<number> {
         Logger.info('Start getting pages links from sitemap')
         const urls = await this.sitemap.getAllUrls()
         if (urls.length === 0) {
@@ -34,14 +32,12 @@ export class NewPagesInSite {
         }
         this.currentCount = urls.length
         Logger.success(`Count of links from sitemap: ${urls.length}`)
-        Logger.info(`Saving count of links on firestore...`)
         await this.firestore.setData(this.firestoreCollectionId, {
             fields: {
                 count: { integerValue: urls.length },
                 created: { timestampValue: new Date().toISOString() }
             }
         })
-        Logger.success('Count saved!')
         return this.getNewPagesAnalyticsMetrics()
     }
 
@@ -50,7 +46,6 @@ export class NewPagesInSite {
         const { data } = await this.firestore.getDataAfterDate(getFirstDayOfCurrentMonth(), this.firestoreCollectionId, 1)
         const [firstPageInCurrentMonth] = data
         const oldCount = (firstPageInCurrentMonth.document?.fields?.count?.integerValue || 0)
-        Logger.info(`Новых страниц за ${getMonthName()}: ${this.currentCount - oldCount}`)
         return this.currentCount - oldCount
     }
 }

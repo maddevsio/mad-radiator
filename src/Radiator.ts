@@ -166,7 +166,7 @@ export class Radiator {
       let analytics
       let lighthouse
       let imageURL
-      // let pageAnalytics
+      let pageAnalytics
       let imageBuffer
       let redditCountPosts
       let quoraPosts
@@ -189,8 +189,8 @@ export class Radiator {
       }
 
       if (this.pageAnalytics) {
-        Logger.info('Getting firebase data...')
-        // pageAnalytics = await this.pageAnalytics.setCountOfBlogPages()
+        Logger.info('Getting page analytics data...')
+        pageAnalytics = await this.pageAnalytics.getPageAnalyticsMetrics()
       }
 
       if (this.redditCountPosts) {
@@ -202,6 +202,7 @@ export class Radiator {
         Logger.info('Getting quora data...')
         quoraPosts = await this.quoraPosts.setCountOfQuoraPosts()
       }
+
       if (this.newPagesInSite) {
         Logger.info('Getting new pages data...')
         try {
@@ -215,7 +216,6 @@ export class Radiator {
         Logger.info('Getting lighthouse data...')
         lighthouse = await this.lighthouse.getLighthouseMetrics()
       }
-
 
       if (analytics && this.chartBuilder) {
         Logger.info('Building an image...')
@@ -238,6 +238,7 @@ export class Radiator {
           redditCountPosts,
           quoraPosts,
           newPagesInSite,
+          pageAnalytics,
         })
         Logger.success('Success!')
       }
