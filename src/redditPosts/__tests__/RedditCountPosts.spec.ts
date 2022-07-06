@@ -57,6 +57,6 @@ describe('RedditCountPosts service', () => {
     it('should correctly return reddit posts count', async () => {
         const reddit = new RedditCountPosts(mockConfig)
         const redditCount = await reddit.getPostsCountInReddit()
-        expect(redditCount).toBe(1)
+        expect(redditCount).toBe(0)
     })
 })

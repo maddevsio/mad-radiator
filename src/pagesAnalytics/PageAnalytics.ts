@@ -28,28 +28,7 @@ export class PageAnalytics {
     this.firstDayOfCurrentWeek = moment().startOf('week').toISOString()
   }
 
-  public async getPageAnalyticsMetrics(): Promise<PageAnalyticsData | null> {
-    const { data } = await this.setCountOfBlogPages()
-    if (data) {
-      Logger.success('Count saved!')
-      try {
-        const blogPagesCount = {
-          perMonth: await this.getCountOfBlogs(this.firstDayOfCurrentMonth),
-          perWeek: await this.getCountOfBlogs(this.firstDayOfCurrentWeek)
-        }
-        console.log(blogPagesCount);
-
-        return blogPagesCount
-      } catch (error) {
-        Logger.error(`Error getting count of blog pages: ${error}`)
-        return null
-      }
-    }
-    Logger.error('Failed saving on firestore')
-    return null
-  }
-
-  public async setCountOfBlogPages(): Promise<any> {
+  private async setCountOfBlogPages(): Promise<any> {
     Logger.info('️Start getting blog links from sitemap')
 
     const urls = await this.sitemap.getAllUrls()
@@ -70,7 +49,7 @@ export class PageAnalytics {
     return null
   }
 
-  public async getCountOfBlogs(date: string): Promise<number | null> {
+  private async getCountOfBlogs(date: string): Promise<number | null> {
     Logger.info(`Start getting data from firestore`)
     const { data } = await this.firestore.getDataAfterDate(date, 'blog', 1)
     if (data) {
@@ -79,6 +58,26 @@ export class PageAnalytics {
       Logger.info(`New posts after date ${date}: ${this.currentCount - oldCount}`)
       return this.currentCount - oldCount
     }
+    return null
+  }
+
+  public async getPageAnalyticsMetrics(): Promise<PageAnalyticsData | null> {
+    const { data } = await this.setCountOfBlogPages()
+    if (data) {
+      Logger.success('Count saved!')
+      try {
+        const blogPagesCount = {
+          perMonth: await this.getCountOfBlogs(this.firstDayOfCurrentMonth),
+          perWeek: await this.getCountOfBlogs(this.firstDayOfCurrentWeek)
+        }
+
+        return blogPagesCount
+      } catch (error) {
+        Logger.error(`Error getting count of blog pages: ${error}`)
+        return null
+      }
+    }
+    Logger.error('Failed saving on firestore')
     return null
   }
 }

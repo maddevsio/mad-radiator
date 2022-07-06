@@ -202,6 +202,7 @@ export class Radiator {
         Logger.info('Getting quora data...')
         quoraPosts = await this.quoraPosts.setCountOfQuoraPosts()
       }
+
       if (this.newPagesInSite) {
         Logger.info('Getting new pages data...')
         try {
@@ -215,7 +216,6 @@ export class Radiator {
         Logger.info('Getting lighthouse data...')
         lighthouse = await this.lighthouse.getLighthouseMetrics()
       }
-
 
       if (analytics && this.chartBuilder) {
         Logger.info('Building an image...')
