@@ -57,4 +57,7 @@ export const analyticsData: AnalyticsData = {
   contactMe: {
       value: 4
   },
+  subscribers: {
+    value: 1,
+  },
 }

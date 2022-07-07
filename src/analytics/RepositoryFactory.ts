@@ -5,6 +5,7 @@ import { CoreRepository } from 'analytics/CoreRepository'
 import { CountriesRepository } from 'analytics/CountriesRepository'
 // import { DevicesRepository } from 'analytics/DevicesRepository'
 // import { GoalsRepository } from 'analytics/GoalsRepository'
+import { SubscribersRepository } from 'analytics/SubscribersRepository'
 import { ParsedRange } from 'interfaces'
 
 import { AnalyticsParams } from './interfaces'
@@ -17,7 +18,8 @@ export enum RepositoryTypes {
   // devices = 'devices',
   chart = 'chart',
   blogs = 'blogs',
-  contactMe = 'contactMe'
+  contactMe = 'contactMe',
+  subscribers = 'subscribers',
 }
 
 export type RepositoryType =
@@ -28,6 +30,7 @@ export type RepositoryType =
   | CoreRepository
   | BlogsRepository
   | ContactMeRepository
+  | SubscribersRepository
 
 /**
  * Factory for Analytics repositories
@@ -54,6 +57,8 @@ export class RepositoryFactory {
         return new BlogsRepository(config, range)
       case RepositoryTypes.contactMe:
         return new ContactMeRepository(config, range)
+      case RepositoryTypes.subscribers:
+        return new SubscribersRepository(config, range)
       default:
         return new CoreRepository(config, range)
     }

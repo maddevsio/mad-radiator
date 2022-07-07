@@ -6,6 +6,8 @@ import { parsedRange } from '__tests__/fixtures/parsedRange'
 import { LighthouseUrlResult } from 'lighthouse/interfaces'
 import { TelegramMessageBuilder } from 'messengers/TelegramMessageBuilder'
 
+import { getMonthName } from '../../utils/getMonthName'
+
 describe('TelegramMessageBuilder', () => {
   beforeEach(() => {
     // @ts-ignore
@@ -73,7 +75,7 @@ describe('TelegramMessageBuilder', () => {
 ———
 *Количество новых постов на Reddit:*
 
-:x: Новых статей за Июнь: 0 / Should be -> 2
+:x: Новых статей за ${getMonthName()}: 0 / Should be -> 2
 
 ———
 Средняя производительность сайта от Google PageSpeed(Проанализировано 100 страниц):
@@ -98,6 +100,9 @@ describe('TelegramMessageBuilder', () => {
 *Топ-3 популярных статей в блоге:*
 
 😋 https://maddevs.io/insights/blog/how-to-start-developing-for-raspberry-pi-with-qt/ - *19* посещений
+
+———
+:newspaper: *Подписки на рассылку за последние 28 дней:* 1
 
 ———
 [Activity graph](123)

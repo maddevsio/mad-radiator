@@ -5,6 +5,8 @@ import { lighthouseData } from '__tests__/fixtures/lighthouseData'
 import { parsedRange } from '__tests__/fixtures/parsedRange'
 import { SlackMessageBuilder } from 'messengers/SlackMessageBuilder'
 
+import { getMonthName } from '../../utils/getMonthName'
+
 describe('SlackMessageBuilder', () => {
   beforeEach(() => {
     // @ts-ignore
@@ -109,7 +111,7 @@ describe('SlackMessageBuilder', () => {
       },
       {
         text: {
-          text: ':x: Новых статей за Июнь: 0 / Should be -> 2\n\n',
+          text: `:x: Новых статей за ${getMonthName()}: 0 / Should be -> 2\n\n`,
           type: 'mrkdwn',
         },
         type: 'section',
@@ -146,6 +148,16 @@ describe('SlackMessageBuilder', () => {
       {
         text: {
           text: ':yum: https://maddevs.io/insights/blog/how-to-start-developing-for-raspberry-pi-with-qt/ - *19* посещений\n\n',
+          type: 'mrkdwn',
+        },
+        type: 'section',
+      },
+      {
+        type: 'divider',
+      },
+      {
+        text: {
+          text: `:newspaper: *Подписки на рассылку за последние 28 дней:* 1\n\n`,
           type: 'mrkdwn',
         },
         type: 'section',
