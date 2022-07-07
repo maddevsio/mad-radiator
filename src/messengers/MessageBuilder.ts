@@ -37,6 +37,7 @@ export abstract class MessageBuilder {
     imageURL,
     redditCountPosts,
     quoraPosts,
+    pageAnalytics,
     newPagesInSite,
   }: BuildMessageData): Array<string | SlackMessageBlock> {
     const { core, countries, blogs, contactMe, subscribers } = analytics || {}
@@ -92,6 +93,24 @@ export abstract class MessageBuilder {
       message.push(this.blocksService.divider())
     }
 
+    if (pageAnalytics) {
+      if (pageAnalytics.perMonth !== null || pageAnalytics.perWeek !== null) {
+        message.push(this.blocksService.section(MessageBuilder.blogPostsMonthlyTitle()))
+
+        if (pageAnalytics.perMonth !== null) {
+          const isMatch = pageAnalytics.perMonth >= 4
+          message.push(this.blocksService.section(MessageBuilder.blogPostsMonthlyGoalMessage(isMatch, pageAnalytics.perMonth)))
+        }
+
+        if (pageAnalytics.perWeek !== null) {
+          const isMatch = pageAnalytics.perWeek >= 1
+          message.push(this.blocksService.section(MessageBuilder.blogPostsWeeklyGoalMessage(isMatch, pageAnalytics.perWeek)))
+        }
+
+        message.push(this.blocksService.divider())
+      }
+    }
+
     if (redditCountPosts !== undefined) {
       message.push(this.blocksService.section(MessageBuilder.redditTitle()))
       const isGoalAchieved = redditCountPosts >= this.redditPostsInMonthGoal
@@ -105,6 +124,7 @@ export abstract class MessageBuilder {
       message.push(this.blocksService.section(MessageBuilder.newPagesGoalMessage(isGoalAchieved, newPagesInSite, this.newPagesInMonthGoal)))
       message.push(this.blocksService.divider())
     }
+
 
     if (lighthouse) {
       // pagespeed average
@@ -262,6 +282,18 @@ export abstract class MessageBuilder {
 
   private static newPagesGoalMessage(isGoalAchieved: boolean, pagesCount: number, goal: number) {
     return `${isGoalAchieved ? ':white_check_mark:' : ':x:'} Новых страниц за ${getMonthName()}: ${pagesCount} / Should be -> ${goal}`
+  }
+
+  private static blogPostsMonthlyTitle() {
+    return '*Количество новых статей в блоге:*'
+  }
+
+  private static blogPostsMonthlyGoalMessage(isMatch: boolean, blogPostCount: number) {
+    return `${isMatch ? ':white_check_mark:' : ':x:'} Новых статей за ${getMonthName()}: ${blogPostCount} / Should be > 4`
+  }
+
+  private static blogPostsWeeklyGoalMessage(isMatch: boolean, blogPostCount: number) {
+    return `${isMatch ? ':white_check_mark:' : ':x:'} Новых статей за неделю: ${blogPostCount} / Should be > 1`
   }
 
   // private static conversionMessage() {

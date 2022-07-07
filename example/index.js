@@ -68,16 +68,19 @@ app.get('/authorized',
       quora,
       firestoreId,
       redditConfig,
+      pageAnalyticsConfig,
     } = config
 
     Object.assign(authConfig, userInfo)
 
     const radiator = new Radiator(authConfig)
-    radiator.useAnalytics(analyticsConfig)
+    // radiator.useAnalytics(analyticsConfig)
     radiator.useSlack(slackConfig)
-    radiator.useRedditCountPosts(redditConfig)
-    radiator.useQuoraService(quora, firestoreId)
-    radiator.useNewPagesInSite(lighthouseConfig, firestoreId)
+    // radiator.useRedditCountPosts(redditConfig)
+    // radiator.useQuoraService(quora, firestoreId)
+    // radiator.useNewPagesInSite(lighthouseConfig, firestoreId)
+    // radiator.useRedditCountPosts()
+    radiator.usePageAnalytics(pageAnalyticsConfig, firestoreId)
     radiator.run()
 
     res.redirect('/');
