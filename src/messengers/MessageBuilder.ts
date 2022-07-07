@@ -40,7 +40,7 @@ export abstract class MessageBuilder {
     pageAnalytics,
     newPagesInSite,
   }: BuildMessageData): Array<string | SlackMessageBlock> {
-    const { core, countries, blogs, contactMe } = analytics || {}
+    const { core, countries, blogs, contactMe, subscribers } = analytics || {}
 
     const message = []
 
@@ -153,6 +153,11 @@ export abstract class MessageBuilder {
     if (blogs?.length) {
       message.push(this.blocksService.section(MessageBuilder.blogsMessage()))
       message.push(this.blocksService.section(this.blogsList(blogs)))
+      message.push(this.blocksService.divider())
+    }
+
+    if (subscribers) {
+      message.push(this.blocksService.section(MessageBuilder.SubscribersMessage(subscribers.value)))
       message.push(this.blocksService.divider())
     }
 
@@ -355,5 +360,9 @@ export abstract class MessageBuilder {
     return this.blocksService.list(
       blogs.map(blog => this.blocksService.blogListItem(blog)),
     )
+  }
+
+  private static SubscribersMessage(subscribeCount: number) {
+    return `:newspaper: *Подписки на рассылку за последние 28 дней:* ${subscribeCount}`
   }
 }

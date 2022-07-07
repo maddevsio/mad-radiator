@@ -1,6 +1,8 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import Reddit from 'reddit'
+// eslint-disable-next-line
+import moment from 'moment'
 import { RedditCountPosts } from 'redditPosts/RedditCountPosts'
 
 jest.mock('reddit')
@@ -35,13 +37,13 @@ describe('RedditCountPosts service', () => {
                         {
                             data: {
                                 title: 'Test 1',
-                                created_utc: 1654064430
+                                created_utc: moment().startOf('month').unix() + 20
                             },
                         },
                         {
                             data: {
                                 title: 'Test 1',
-                                created_utc: 1654064430
+                                created_utc: moment().startOf('month').unix()  + 30
                             },
                         },
                     ],
@@ -57,6 +59,6 @@ describe('RedditCountPosts service', () => {
     it('should correctly return reddit posts count', async () => {
         const reddit = new RedditCountPosts(mockConfig)
         const redditCount = await reddit.getPostsCountInReddit()
-        expect(redditCount).toBe(0)
+        expect(redditCount).toBe(1)
     })
 })
