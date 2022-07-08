@@ -76,6 +76,7 @@ describe('Radiator', () => {
   jest.spyOn(console, 'log').mockImplementation(() => { })
 
   let scheduleJob = jest.fn()
+  let unlink = jest.fn()
   let getData = jest.fn()
   let renderChart = jest.fn()
   let storeFile = jest.fn()
@@ -96,6 +97,8 @@ describe('Radiator', () => {
     scheduleJob = jest.fn((callback: (...args: any[]) => void) => {
       callback()
     })
+
+    unlink = jest.fn()
 
     getData = jest.fn(async () => analyticsData)
     setCountOfQuoraPosts = jest.fn(async () => 1)
@@ -134,6 +137,15 @@ describe('Radiator', () => {
     MockedPageAnalytics.mockImplementation(() => ({
       getPageAnalyticsMetrics,
     }))
+
+    // @ts-ignore
+    MockedGoogleAuth.mockImplementation(() => ({
+      authorize() {
+        return {
+          unlink,
+        }
+      },
+    }))
   })
 
   it('should correctly create an instance', () => {
@@ -170,6 +182,7 @@ describe('Radiator', () => {
     expect(setCountOfQuoraPosts).toHaveBeenCalledTimes(2)
     expect(getPageAnalyticsMetrics).toHaveBeenCalledTimes(2)
     expect(storeFile).toHaveBeenCalledTimes(2)
+    expect(unlink).toHaveBeenCalledTimes(2)
   })
 
   it('should correctly called run without charts', async () => {

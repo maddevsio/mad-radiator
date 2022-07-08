@@ -26,6 +26,7 @@ export class SearchConsole {
     try {
       response = await this.webmasters.searchanalytics.query(params)
     } catch (error: any) {
+      console.log(error)
       throw new Error(error)
     }
 

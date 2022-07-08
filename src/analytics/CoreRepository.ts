@@ -29,7 +29,13 @@ export class CoreRepository extends Repository {
    * Get data from GA
    */
   public async getData(): Promise<CoreItems> {
-    const reports: AnalyticsPayload = await this.getAnalytics(this.metrics)
+    let reports
+
+    try {
+      reports = await this.getAnalytics(this.metrics)
+    } catch (error: any) {
+      throw new Error(error)
+    }
 
     return CoreRepository.format(reports)
   }
@@ -45,7 +51,7 @@ export class CoreRepository extends Repository {
 
     const previousReport = {
       rows: reports.rows
-          .filter((row: AnalyticDataRows) => row.dimensionValues[0].value === 'date_range_1'),
+        .filter((row: AnalyticDataRows) => row.dimensionValues[0].value === 'date_range_1'),
     }
 
     const [
