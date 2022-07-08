@@ -240,6 +240,8 @@ export class Radiator {
           newPagesInSite,
           pageAnalytics,
         })
+
+        await googleAuthorization.unlink()
         Logger.success('Success!')
       }
 
