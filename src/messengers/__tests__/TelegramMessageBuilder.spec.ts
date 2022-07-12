@@ -105,9 +105,6 @@ describe('TelegramMessageBuilder', () => {
 :newspaper: *Подписки на рассылку за последние 28 дней:* 1
 
 ———
-[Activity graph](123)
-
-———
 `)
   })
 })
