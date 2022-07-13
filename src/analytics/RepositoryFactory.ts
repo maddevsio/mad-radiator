@@ -16,7 +16,6 @@ export enum RepositoryTypes {
   countries = 'countries',
   // goals = 'goals',
   // devices = 'devices',
-  chart = 'chart',
   blogs = 'blogs',
   contactMe = 'contactMe',
   subscribers = 'subscribers',
@@ -51,8 +50,6 @@ export class RepositoryFactory {
       //   return new GoalsRepository(config, range)
       // case RepositoryTypes.devices:
       //   return new DevicesRepository(config, range)
-      case RepositoryTypes.chart:
-        return new ChartRepository(config, range)
       case RepositoryTypes.blogs:
         return new BlogsRepository(config, range)
       case RepositoryTypes.contactMe:

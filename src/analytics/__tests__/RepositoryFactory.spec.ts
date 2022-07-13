@@ -1,6 +1,5 @@
 import { parsedRange } from '__tests__/fixtures/parsedRange'
 import { BlogsRepository } from 'analytics/BlogsRepository'
-import { ChartRepository } from 'analytics/ChartRepository'
 import { ContactMeRepository } from 'analytics/ContactMeRepository'
 import { CoreRepository } from 'analytics/CoreRepository'
 import { CountriesRepository } from 'analytics/CountriesRepository'
@@ -16,7 +15,6 @@ describe('RepositoryFactroy', () => {
 
   const createRepositoryCases = [
     [RepositoryTypes.countries, CountriesRepository],
-    [RepositoryTypes.chart, ChartRepository],
     [RepositoryTypes.core, CoreRepository],
     [RepositoryTypes.contactMe, ContactMeRepository],
     [RepositoryTypes.blogs, BlogsRepository],

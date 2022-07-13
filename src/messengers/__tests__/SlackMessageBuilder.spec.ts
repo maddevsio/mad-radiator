@@ -165,14 +165,6 @@ describe('SlackMessageBuilder', () => {
       {
         type: 'divider',
       },
-      {
-        alt_text: 'Graph',
-        image_url: '123',
-        type: 'image',
-      },
-      {
-        type: 'divider',
-      },
     ])
   })
 })

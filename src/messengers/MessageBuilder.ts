@@ -34,7 +34,6 @@ export abstract class MessageBuilder {
     analytics,
     range,
     lighthouse,
-    imageURL,
     redditCountPosts,
     quoraPosts,
     pageAnalytics,
@@ -160,10 +159,6 @@ export abstract class MessageBuilder {
       message.push(this.blocksService.section(MessageBuilder.SubscribersMessage(subscribers.value)))
       message.push(this.blocksService.divider())
     }
-
-    // image
-    message.push(this.blocksService.image(imageURL))
-    message.push(this.blocksService.divider())
 
     return message
   }

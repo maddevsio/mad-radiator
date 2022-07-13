@@ -178,10 +178,8 @@ describe('Radiator', () => {
     expect(Sentry.init).toHaveBeenCalledTimes(2)
     expect(getData).toHaveBeenCalledTimes(2)
     expect(lighthouseInstance.getLighthouseMetrics).toHaveBeenCalledTimes(2)
-    expect(renderChart).toHaveBeenCalledTimes(2)
     expect(setCountOfQuoraPosts).toHaveBeenCalledTimes(2)
     expect(getPageAnalyticsMetrics).toHaveBeenCalledTimes(2)
-    expect(storeFile).toHaveBeenCalledTimes(2)
     expect(unlink).toHaveBeenCalledTimes(2)
   })
 
