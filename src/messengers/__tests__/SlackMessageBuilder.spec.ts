@@ -104,6 +104,23 @@ describe('SlackMessageBuilder', () => {
       },
       {
         text: {
+          text: '*Количество скачиваний Ebook\'ов за последние 30 дней:*\n\n',
+          type: 'mrkdwn',
+        },
+        type: 'section',
+      },
+      {
+        text: {
+          text: 'Aproach DP: 4 \n\n',
+          type: 'mrkdwn',
+        },
+        type: 'section',
+      },
+      {
+        type: 'divider',
+      },
+      {
+        text: {
           text: '*Количество новых постов на Reddit:*\n\n',
           type: 'mrkdwn',
         },

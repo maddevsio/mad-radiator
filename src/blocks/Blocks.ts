@@ -1,4 +1,4 @@
-import { Blog, CoreItem, Country, Device, Goal } from 'analytics/interfaces'
+import { Blog, CoreItem, Country, Device, EbookDownloads, Goal } from 'analytics/interfaces'
 import { ListItemParameters } from 'blocks/interfaces'
 import { Emoji } from 'emoji/Emoji'
 import { EmojiType } from 'emoji/interfaces'
@@ -45,6 +45,10 @@ export abstract class Blocks {
   public countryListItem({ title, percentage }: Country): string {
     const flag = this.getFlag(title)
     return `${flag} ${title}: *${percentage}%* от всех посетителей сайта`
+  }
+
+  public ebookDownloadsListItem({ name, value }: EbookDownloads): string {
+    return `${name}: ${value} `
   }
 
   public pagespeedRatingListItem({ url, average }: LighthouseUrlResult): string {

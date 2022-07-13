@@ -1,5 +1,5 @@
 import { RepositoryFactory, RepositoryType, RepositoryTypes } from 'analytics/RepositoryFactory'
-import { AnalyticsData, AnalyticsParams, Blog, ContactMe, CoreItems, Country, ISubscribers } from 'analytics/interfaces'
+import { AnalyticsData, AnalyticsParams, Blog, ContactMe, CoreItems, Country, EbookDownloads, ISubscribers } from 'analytics/interfaces'
 import { AnalyticsError } from 'errors/types/AnalyticsError'
 import { ParsedRange } from 'interfaces'
 
@@ -48,7 +48,7 @@ export class AnalyticsService {
       const blogs = (await this.repositories.blogs.getData()) as Array<Blog>
       const contactMe = (await this.repositories.contactMe.getData()) as ContactMe
       const subscribers = (await this.repositories.subscribers.getData()) as ISubscribers
-
+      const ebookDownloads = (await this.repositories.ebookDownloads.getData()) as Array<EbookDownloads>
       return {
         core,
         countries,
@@ -56,6 +56,7 @@ export class AnalyticsService {
         blogs,
         contactMe,
         subscribers,
+        ebookDownloads,
       }
     } catch (error: any) {
       throw new AnalyticsError(error)
@@ -74,6 +75,7 @@ export class AnalyticsService {
       blogs: this.factory.createRepository(RepositoryTypes.blogs, this.config, this.range),
       contactMe: this.factory.createRepository(RepositoryTypes.contactMe, this.config, this.range),
       subscribers: this.factory.createRepository(RepositoryTypes.subscribers, this.config, this.range),
+      ebookDownloads: this.factory.createRepository(RepositoryTypes.ebookDownloads, this.config, this.range),
     }
   }
 }
