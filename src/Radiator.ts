@@ -2,7 +2,6 @@ import * as Sentry from '@sentry/node'
 import { AnalyticsService } from 'analytics'
 import { AnalyticsParams } from 'analytics/interfaces'
 import { GoogleAuthorization } from 'authorization'
-import { ChartBuilder } from 'chartBuilder'
 import { AnalyticsError } from 'errors/types/AnalyticsError'
 import { AuthorizationError } from 'errors/types/AuthorizationError'
 import { MessengersParams, ParsedRange, RadiatorConfig, ScheduleConfig, SentryParams } from 'interfaces'
@@ -16,7 +15,6 @@ import { IRedditParams } from 'redditPosts/interfaces'
 import { RunCounter } from 'runCounter'
 import { Scheduler } from 'scheduler'
 import { SitemapOptions } from 'sitemap/interfaces/SitemapOptions'
-import { GoogleDriveStorage } from 'storage'
 import { parseRange } from 'utils/parseRange'
 
 import { NewPagesInSite, PageAnalytics } from "./pagesAnalytics"
@@ -37,10 +35,6 @@ export class Radiator {
   private analyticsService: AnalyticsService | undefined
 
   private lighthouse: Lighthouse | undefined
-
-  private chartBuilder: ChartBuilder | undefined
-
-  private googleDriveStorage: GoogleDriveStorage | undefined
 
   private scheduler: Scheduler | undefined
 
@@ -90,9 +84,6 @@ export class Radiator {
       ...analyticsParams,
       websiteUrl: this.config.websiteUrl,
     }, this.parsedRange)
-
-    this.useChartBuilder(analyticsParams)
-    this.useGoogleDriveStorage()
   }
 
   public useLighthouse(lighthouseParams: LighthouseParams) {
@@ -118,14 +109,6 @@ export class Radiator {
 
   public useQuoraService(quoraConfig: QuoraParams, firestoreId: string) {
     this.quoraPosts = new QuoraService(quoraConfig, firestoreId)
-  }
-
-  private useChartBuilder(analyticsParams: AnalyticsParams) {
-    this.chartBuilder = new ChartBuilder(analyticsParams)
-  }
-
-  private useGoogleDriveStorage() {
-    this.googleDriveStorage = new GoogleDriveStorage()
   }
 
   public useTelegram(telegramParams: MessengersParams) {
@@ -166,8 +149,7 @@ export class Radiator {
       let analytics
       let lighthouse
       let imageURL
-      // let pageAnalytics
-      let imageBuffer
+      let pageAnalytics
       let redditCountPosts
       let quoraPosts
       let newPagesInSite
@@ -189,8 +171,8 @@ export class Radiator {
       }
 
       if (this.pageAnalytics) {
-        Logger.info('Getting firebase data...')
-        // pageAnalytics = await this.pageAnalytics.setCountOfBlogPages()
+        Logger.info('Getting page analytics data...')
+        pageAnalytics = await this.pageAnalytics.getPageAnalyticsMetrics()
       }
 
       if (this.redditCountPosts) {
@@ -202,6 +184,7 @@ export class Radiator {
         Logger.info('Getting quora data...')
         quoraPosts = await this.quoraPosts.setCountOfQuoraPosts()
       }
+
       if (this.newPagesInSite) {
         Logger.info('Getting new pages data...')
         try {
@@ -216,17 +199,6 @@ export class Radiator {
         lighthouse = await this.lighthouse.getLighthouseMetrics()
       }
 
-
-      if (analytics && this.chartBuilder) {
-        Logger.info('Building an image...')
-        imageBuffer = analytics.chart && (await this.chartBuilder.renderChart(analytics.chart))
-      }
-
-      if (imageBuffer && this.googleDriveStorage) {
-        Logger.info('Saving an image in gdrive...')
-        imageURL = imageBuffer && (await this.googleDriveStorage.storeFile(imageBuffer))
-      }
-
       if (googleAuthorization && this.messengersParams) {
         Logger.info('Send messages...')
         const messengersService = new MessengersService(this.messengersParams)
@@ -238,7 +210,10 @@ export class Radiator {
           redditCountPosts,
           quoraPosts,
           newPagesInSite,
+          pageAnalytics,
         })
+
+        await googleAuthorization.unlink()
         Logger.success('Success!')
       }
 

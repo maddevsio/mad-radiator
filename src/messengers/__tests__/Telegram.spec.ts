@@ -24,6 +24,8 @@ describe('Telegram messenger', () => {
       imageURL: '123',
     }
     const slack = new Telegram(defaultConfig)
+    const getApiUrlMock = jest.spyOn(Telegram.prototype as any, 'getApiUrl');
+    getApiUrlMock.mockImplementation(() => 'https://api.telegram.org/bottoken/send`');
 
     await slack.sendMessage(buildMessageData)
 

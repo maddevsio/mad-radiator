@@ -202,7 +202,7 @@ export const blogFakeResponse = {
   }
 }
 
-export const fakeResponseForContactMe = {
+export const fakeResponseForEvents = {
   data: {
     "dimensionHeaders": [
       {
@@ -484,6 +484,18 @@ export const fakeResponseForContactMe = {
         "dimensionValues": [
           {
             "value": "submit_contact_me"
+          }
+        ],
+        "metricValues": [
+          {
+            "value": "4"
+          }
+        ]
+      },
+      {
+        "dimensionValues": [
+          {
+            "value": "submit_newsletter_subscription"
           }
         ],
         "metricValues": [

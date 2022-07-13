@@ -1,2 +1,2 @@
-export * from 'pagesAnalytics/interfaces/Blog'
 export * from 'pagesAnalytics/interfaces/Pages'
+export * from 'pagesAnalytics/interfaces/PageAnalyticsData'

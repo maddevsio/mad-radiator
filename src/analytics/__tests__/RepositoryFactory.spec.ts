@@ -1,8 +1,8 @@
 import { parsedRange } from '__tests__/fixtures/parsedRange'
-import { ChartRepository } from 'analytics/ChartRepository'
+import { BlogsRepository } from 'analytics/BlogsRepository'
+import { ContactMeRepository } from 'analytics/ContactMeRepository'
 import { CoreRepository } from 'analytics/CoreRepository'
 import { CountriesRepository } from 'analytics/CountriesRepository'
-// import { GoalsRepository } from 'analytics/GoalsRepository'
 import { RepositoryFactory, RepositoryType, RepositoryTypes } from 'analytics/RepositoryFactory'
 
 import { defaultAnalyticsParams } from '../../__tests__/fixtures/defaultAnalyticsParams'
@@ -15,9 +15,9 @@ describe('RepositoryFactroy', () => {
 
   const createRepositoryCases = [
     [RepositoryTypes.countries, CountriesRepository],
-    // [RepositoryTypes.goals, GoalsRepository],
-    [RepositoryTypes.chart, ChartRepository],
     [RepositoryTypes.core, CoreRepository],
+    [RepositoryTypes.contactMe, ContactMeRepository],
+    [RepositoryTypes.blogs, BlogsRepository],
   ]
 
   it.each(createRepositoryCases)(
@@ -33,4 +33,14 @@ describe('RepositoryFactroy', () => {
       expect(repository).toBeInstanceOf(Repository)
     },
   )
+
+  it('should return correct instance for core', () => {
+    const factory = new RepositoryFactory()
+    const repository = factory.createRepository(
+      RepositoryTypes.core,
+      defaultAnalyticsParams,
+      parsedRange,
+    )
+    expect(repository).toBeInstanceOf(CoreRepository)
+  })
 })

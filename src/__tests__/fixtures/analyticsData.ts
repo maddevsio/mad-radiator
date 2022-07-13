@@ -63,4 +63,7 @@ export const analyticsData: AnalyticsData = {
       name: 'Aproach DP'
     },
   ],
+  subscribers: {
+    value: 1,
+  },
 }

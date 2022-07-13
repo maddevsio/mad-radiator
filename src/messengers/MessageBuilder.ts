@@ -34,12 +34,12 @@ export abstract class MessageBuilder {
     analytics,
     range,
     lighthouse,
-    imageURL,
     redditCountPosts,
     quoraPosts,
+    pageAnalytics,
     newPagesInSite,
   }: BuildMessageData): Array<string | SlackMessageBlock> {
-    const { core, countries, blogs, contactMe, ebookDownloads } = analytics || {}
+    const { core, countries, blogs, contactMe, subscribers, ebookDownloads } = analytics || {}
 
     const message = []
 
@@ -98,6 +98,24 @@ export abstract class MessageBuilder {
       message.push(this.blocksService.divider())
     }
 
+    if (pageAnalytics) {
+      if (pageAnalytics.perMonth !== null || pageAnalytics.perWeek !== null) {
+        message.push(this.blocksService.section(MessageBuilder.blogPostsMonthlyTitle()))
+
+        if (pageAnalytics.perMonth !== null) {
+          const isMatch = pageAnalytics.perMonth >= 4
+          message.push(this.blocksService.section(MessageBuilder.blogPostsMonthlyGoalMessage(isMatch, pageAnalytics.perMonth)))
+        }
+
+        if (pageAnalytics.perWeek !== null) {
+          const isMatch = pageAnalytics.perWeek >= 1
+          message.push(this.blocksService.section(MessageBuilder.blogPostsWeeklyGoalMessage(isMatch, pageAnalytics.perWeek)))
+        }
+
+        message.push(this.blocksService.divider())
+      }
+    }
+
     if (redditCountPosts !== undefined) {
       message.push(this.blocksService.section(MessageBuilder.redditTitle()))
       const isGoalAchieved = redditCountPosts >= this.redditPostsInMonthGoal
@@ -142,9 +160,10 @@ export abstract class MessageBuilder {
       message.push(this.blocksService.divider())
     }
 
-    // image
-    message.push(this.blocksService.image(imageURL))
-    message.push(this.blocksService.divider())
+    if (subscribers) {
+      message.push(this.blocksService.section(MessageBuilder.SubscribersMessage(subscribers.value)))
+      message.push(this.blocksService.divider())
+    }
 
     return message
   }
@@ -275,6 +294,18 @@ export abstract class MessageBuilder {
     return `${isGoalAchieved ? ':white_check_mark:' : ':x:'} Новых страниц за ${getMonthName()}: ${pagesCount} / Should be -> ${goal}`
   }
 
+  private static blogPostsMonthlyTitle() {
+    return '*Количество новых статей в блоге:*'
+  }
+
+  private static blogPostsMonthlyGoalMessage(isMatch: boolean, blogPostCount: number) {
+    return `${isMatch ? ':white_check_mark:' : ':x:'} Новых статей за ${getMonthName()}: ${blogPostCount} / Should be > 4`
+  }
+
+  private static blogPostsWeeklyGoalMessage(isMatch: boolean, blogPostCount: number) {
+    return `${isMatch ? ':white_check_mark:' : ':x:'} Новых статей за неделю: ${blogPostCount} / Should be > 1`
+  }
+
   // private static conversionMessage() {
   //   return 'Клики и конверсии произведенные пользователями:'
   // }
@@ -339,5 +370,9 @@ export abstract class MessageBuilder {
     return this.blocksService.list(
       blogs.map(blog => this.blocksService.blogListItem(blog)),
     )
+  }
+
+  private static SubscribersMessage(subscribeCount: number) {
+    return `:newspaper: *Подписки на рассылку за последние 28 дней:* ${subscribeCount}`
   }
 }

@@ -28,7 +28,7 @@ module.exports = {
       branches: 61,
       statements: 80,
       functions: 79,
-      lines: 81.92,
+      lines: 81,
     },
   },
   moduleNameMapper: pathsToModuleNameMapper(tsconfig.compilerOptions.paths, '<rootDir>/src'),

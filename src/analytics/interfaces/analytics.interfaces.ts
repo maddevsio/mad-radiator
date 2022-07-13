@@ -5,8 +5,9 @@ import { Country } from 'analytics/interfaces/countries.interfaces'
 import { AnalyticsConversion } from 'analytics/interfaces/goals.interfaces'
 import { ChartConfig } from 'interfaces'
 
-import { ContactMe } from "./contactMe.interfaces";
-import { EbookDownloads } from "./ebookDownloads.interfaces";
+import { ContactMe } from "./contactMe.interfaces"
+import { EbookDownloads } from "./ebookDownloads.interfaces"
+import { ISubscribers } from './subscribers.interface'
 
 export interface AnalyticsMetric {
   name: string
@@ -55,4 +56,5 @@ export interface AnalyticsData {
   blogs: Array<Blog>
   contactMe: ContactMe
   ebookDownloads: Array<EbookDownloads>
+  subscribers: ISubscribers
 }
