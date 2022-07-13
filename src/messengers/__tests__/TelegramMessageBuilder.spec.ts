@@ -73,6 +73,11 @@ describe('TelegramMessageBuilder', () => {
 :x: Заполнения за последние 30 дней: 4 / Should be > 5
 
 ———
+*Количество скачиваний Ebook'ов за последние 30 дней:*
+
+Aproach DP: 4 
+
+———
 *Количество новых постов на Reddit:*
 
 :x: Новых статей за ${getMonthName()}: 0 / Should be -> 2

@@ -20,7 +20,8 @@ module.exports = {
     '<rootDir>/src/pagesAnalytics',
     '<rootDir>/src/storage',
     '<rootDir>/src/sitemap',
-    '<rootDir>/src/lighthouse/Sitemap'
+    '<rootDir>/src/lighthouse/Sitemap',
+    '<rootDir>/src/analytics/EbookDownloadsRepository',
   ],
   coverageReporters: ['lcov'],
   coverageThreshold: {
