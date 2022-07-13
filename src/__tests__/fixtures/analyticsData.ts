@@ -57,4 +57,10 @@ export const analyticsData: AnalyticsData = {
   contactMe: {
       value: 4
   },
+  ebookDownloads: [
+    {
+      value: 4,
+      name: 'Aproach DP'
+    },
+  ],
 }

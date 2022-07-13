@@ -3,6 +3,7 @@ import { ChartRepository } from 'analytics/ChartRepository'
 import { ContactMeRepository } from 'analytics/ContactMeRepository'
 import { CoreRepository } from 'analytics/CoreRepository'
 import { CountriesRepository } from 'analytics/CountriesRepository'
+import { EbookDownloadsRepository } from 'analytics/EbookDownloadsRepository'
 // import { DevicesRepository } from 'analytics/DevicesRepository'
 // import { GoalsRepository } from 'analytics/GoalsRepository'
 import { ParsedRange } from 'interfaces'
@@ -17,7 +18,8 @@ export enum RepositoryTypes {
   // devices = 'devices',
   chart = 'chart',
   blogs = 'blogs',
-  contactMe = 'contactMe'
+  contactMe = 'contactMe',
+  ebookDownloads = 'ebookDownloads'
 }
 
 export type RepositoryType =
@@ -28,6 +30,7 @@ export type RepositoryType =
   | CoreRepository
   | BlogsRepository
   | ContactMeRepository
+  | EbookDownloadsRepository
 
 /**
  * Factory for Analytics repositories
@@ -54,6 +57,8 @@ export class RepositoryFactory {
         return new BlogsRepository(config, range)
       case RepositoryTypes.contactMe:
         return new ContactMeRepository(config, range)
+      case RepositoryTypes.ebookDownloads:
+        return new EbookDownloadsRepository(config, range)
       default:
         return new CoreRepository(config, range)
     }

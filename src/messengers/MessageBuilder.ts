@@ -1,4 +1,4 @@
-import { Blog, CoreItems, Country } from 'analytics/interfaces'
+import { Blog, CoreItems, Country, EbookDownloads } from 'analytics/interfaces'
 import { Blocks } from 'blocks/Blocks'
 import { Emoji } from 'emoji/Emoji'
 import { ParsedRange, RadiatorConfig } from 'interfaces'
@@ -39,7 +39,7 @@ export abstract class MessageBuilder {
     quoraPosts,
     newPagesInSite,
   }: BuildMessageData): Array<string | SlackMessageBlock> {
-    const { core, countries, blogs, contactMe } = analytics || {}
+    const { core, countries, blogs, contactMe, ebookDownloads } = analytics || {}
 
     const message = []
 
@@ -82,6 +82,12 @@ export abstract class MessageBuilder {
       message.push(this.blocksService.section(MessageBuilder.contactMeMessage()))
       const isGoalAchieved = contactMe.value >= this.fillingsContactMeGoal
       message.push(this.blocksService.section(MessageBuilder.contactMeMessageGoal(isGoalAchieved, contactMe.value, this.fillingsContactMeGoal)))
+      message.push(this.blocksService.divider())
+    }
+
+    if (ebookDownloads) {
+      message.push(this.blocksService.section(MessageBuilder.ebookDownloadsTitle()))
+      message.push(this.blocksService.section(this.ebookDownloadsList(ebookDownloads)))
       message.push(this.blocksService.divider())
     }
 
@@ -229,6 +235,16 @@ export abstract class MessageBuilder {
 
   private static contactMeMessage() {
     return '*Заполнения формы contact me:*'
+  }
+
+  private static ebookDownloadsTitle() {
+    return `*Количество скачиваний Ebook'ов за последние 30 дней:*`
+  }
+
+  private ebookDownloadsList(ebookDownloads: Array<EbookDownloads>) {
+    return this.blocksService.list(
+      ebookDownloads.map(ebookDownload => this.blocksService.ebookDownloadsListItem(ebookDownload)),
+    )
   }
 
   private static contactMeMessageGoal(isGoalAchieved: boolean, contactMeValue: number, goal: number) {
