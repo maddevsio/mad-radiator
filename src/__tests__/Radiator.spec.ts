@@ -2,7 +2,7 @@
 import * as Sentry from '@sentry/node'
 import { Radiator } from 'Radiator'
 import { analyticsData } from '__tests__/fixtures/analyticsData'
-import { defaultConfig } from '__tests__/fixtures/defaultRadiatorConfigs'
+import { defaultConfig, defaultFirestoreConfig } from '__tests__/fixtures/defaultRadiatorConfigs'
 import { AnalyticsService } from 'analytics'
 import { GoogleAuthorization } from 'authorization'
 import { ChartBuilder } from 'chartBuilder'
@@ -13,6 +13,9 @@ import { PageAnalytics } from 'pagesAnalytics'
 import { QuoraService } from 'quora'
 import { Scheduler } from 'scheduler'
 import { GoogleDriveStorage } from 'storage'
+import { Firestore } from 'utils/firestore'
+
+import { FirestoreData } from '../quora/interfaces'
 
 import { defaultAnalyticsParams } from './fixtures/defaultAnalyticsParams'
 import { defaultLighthouseParams } from './fixtures/defaultLighthouseParams'
@@ -28,6 +31,7 @@ jest.mock('storage/GoogleDriveStorage')
 jest.mock('@sentry/node')
 jest.mock('quora/QuoraService')
 jest.mock('pagesAnalytics/PageAnalytics')
+jest.mock('utils/firestore')
 jest.mock('@sentry/node', () => (
   {
     init: jest.fn(),
@@ -57,6 +61,27 @@ jest.mock('moment-timezone', () => () => ({
   }),
 }))
 
+const responseFireStoreData: FirestoreData = {
+  data: [{
+    document: {
+      name: 'projects/mad-radiator-e9549/databases/(default)/documents/quora/06FUTXctDClabsVXq5Ti',
+      fields: {
+        count: {
+          integerValue: '3',
+        },
+      },
+      createTime: '2022-06-07T14:05:49.532227Z',
+      updateTime: '2022-06-07T14:10:19.836976Z',
+    },
+    readTime: '2022-06-08T04:55:30.242905Z',
+  }],
+}
+
+const getDataAfterDate = jest
+  .fn()
+  .mockImplementation(() => new Promise(res => res(responseFireStoreData)))
+const setData = jest.fn().mockImplementation(() => new Promise<void>(res => res()))
+
 const MockedAnalytics = AnalyticsService as jest.Mock<AnalyticsService>
 // @ts-ignore
 const MockedLighthouse = Lighthouse as jest.Mock<Lighthouse>
@@ -71,6 +96,8 @@ const MockedStorage = GoogleDriveStorage as jest.Mock<GoogleDriveStorage>
 const MockedQuora = QuoraService as jest.Mock<QuoraService>
 // @ts-ignore
 const MockedPageAnalytics = PageAnalytics as jest.Mock<PageAnalytics>
+// @ts-ignore
+const MockedFirestore = Firestore as jest.Mock<Firestore>
 
 describe('Radiator', () => {
   jest.spyOn(console, 'log').mockImplementation(() => { })
@@ -146,6 +173,12 @@ describe('Radiator', () => {
         }
       },
     }))
+
+    // @ts-ignore
+    MockedFirestore.mockImplementation(() => ({
+      setData,
+      getDataAfterDate,
+    }))
   })
 
   it('should correctly create an instance', () => {
@@ -164,9 +197,11 @@ describe('Radiator', () => {
     radiator.useAnalytics(defaultAnalyticsParams)
     radiator.useLighthouse(defaultLighthouseParams)
     radiator.useSlack(defaultMessengersParams)
-    radiator.usePageAnalytics({ urlTestRegexp: '/blog/', websiteUrl: 'maddevs.io' }, 'test.xml')
+    // @ts-ignore
+    radiator.usePageAnalytics({ urlTestRegexp: '/blog/', websiteUrl: 'maddevs.io' }, defaultFirestoreConfig)
     radiator.useTelegram(defaultMessengersParams)
-    radiator.useQuoraService({ quoraUserID: 'test' }, 'test')
+    // @ts-ignore
+    radiator.useQuoraService({ quoraUserID: 'test' }, defaultFirestoreConfig)
     radiator.scheduleJob({
       period: 'day',
       time: 10,

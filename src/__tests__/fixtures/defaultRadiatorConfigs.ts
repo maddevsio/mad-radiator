@@ -1,4 +1,4 @@
-import { RadiatorConfig, RangeType } from 'interfaces'
+import { FirestoreConfig, RadiatorConfig, RangeType } from 'interfaces'
 
 export const defaultConfig: RadiatorConfig = {
   authType: '',
@@ -18,4 +18,17 @@ export const defaultConfig: RadiatorConfig = {
   idToken: '',
   range: RangeType.day,
   retryAttempts: 2
+}
+
+export const defaultFirestoreConfig: FirestoreConfig = {
+  authType: '',
+  firestoreProjectId: '',
+  firestorePrivateKeyId: '',
+  firestorePrivateKey: '',
+  firestoreClientEmail: '',
+  firestoreClientId: '',
+  firestoreAuthUri: '',
+  firestoreTokenUri: '',
+  firestoreAuthProviderCertUrl: '',
+  firestoreClientCertUrl: '',
 }

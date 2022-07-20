@@ -1,10 +1,12 @@
 import { ParsedRange, RangeType } from 'interfaces'
 import moment from 'moment'
+import 'moment-timezone'
 
 const DEFAULT_FORMAT = 'DD/MM/YYYY'
+const DEFAULT_TIME_ZONE = 'Asia/Bishkek'
 
 function getYesterday(): string {
-  return moment().subtract(1, 'day').format(DEFAULT_FORMAT)
+  return moment().tz(DEFAULT_TIME_ZONE).subtract(1, 'day').format(DEFAULT_FORMAT)
 }
 
 function getLastWeek(): string {

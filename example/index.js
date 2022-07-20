@@ -9,9 +9,9 @@ const {
   slackConfig,
   lighthouseConfig,
   quora,
-  firestoreId,
   redditConfig,
   pageAnalyticsConfig,
+  fireStoreAuthConfig,
 } = config
 
 const dailyConfig = {
@@ -20,12 +20,17 @@ const dailyConfig = {
   range: 'day',
 }
 
+const fireStore = {
+  ...fireStoreAuthConfig,
+  firestorePrivateKey: process.env.RADIATOR_FIRESTORE_PRIVATE_KEY
+}
+
 const radiator = new Radiator(dailyConfig)
 
 radiator.useAnalytics(analyticsConfig)
 radiator.useSlack(slackConfig)
 radiator.useRedditCountPosts(redditConfig)
-// radiator.useQuoraService(quora, firestoreId)
-// radiator.useNewPagesInSite(lighthouseConfig, firestoreId)
-// radiator.usePageAnalytics(pageAnalyticsConfig, firestoreId)
+radiator.useQuoraService(quora, fireStore)
+radiator.useNewPagesInSite(lighthouseConfig, fireStore)
+radiator.usePageAnalytics(pageAnalyticsConfig, fireStore)
 radiator.run()
