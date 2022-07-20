@@ -1,8 +1,11 @@
-import got from 'got';
+import admin from 'firebase-admin'
+import got from 'got'
+import { FirestoreConfig } from 'interfaces'
 import { Firestore } from 'utils/firestore'
 import { getFirstDayOfCurrentMonth } from 'utils/getFirstDayOfCurrentMonth'
 
-import { QuoraParams } from './interfaces';
+
+import { QuoraParams } from './interfaces'
 
 export class QuoraService {
   private firestore: Firestore
@@ -16,8 +19,8 @@ export class QuoraService {
   // TODO: fix undefined type
   private quoraUserID?: string
 
-  constructor(quoraParams: QuoraParams, firestoreId: string) {
-    this.firestore = new Firestore(firestoreId)
+  constructor(quoraParams: QuoraParams, firestoreConfig: FirestoreConfig) {
+    this.firestore = new Firestore(firestoreConfig)
     this.currentCount = 0
     this.quoraUserID = quoraParams.quoraUserID
   }
@@ -28,7 +31,7 @@ export class QuoraService {
   }
 
   private async parseHTML(): Promise<number> {
-    const re = /(?<=postsCount\\":)\d+/g;
+    const re = /(?<=postsCount\\":)\d+/g
     const body: string = await this.getHTML()
     const parsedString: Array<string> | null = body.match(re)
 
@@ -36,10 +39,9 @@ export class QuoraService {
   }
 
   private async getQuoraPostsMetrics(): Promise<number> {
-    const { data } = await this.firestore.getDataAfterDate(getFirstDayOfCurrentMonth(), this.fireStoreDir, 1)
-    const oldCount = (data[0].document?.fields?.count?.integerValue || 0)
-
-    return this.currentCount - oldCount
+    const oldCount = await this.firestore.getDataAfterDate(getFirstDayOfCurrentMonth(), this.fireStoreDir, 1)
+    const currentCount = this.currentCount - oldCount
+    return currentCount < 0 ? 0 : currentCount
   }
 
   public async setCountOfQuoraPosts(): Promise<any> {
@@ -47,14 +49,12 @@ export class QuoraService {
       const posts = await this.parseHTML()
       this.currentCount = Number(posts)
       await this.firestore.setData(this.fireStoreDir, {
-        fields: {
-          count: { integerValue: posts },
-          created: { timestampValue: new Date().toISOString() }
-        }
+        count: posts,
+        created: admin.firestore.Timestamp.fromDate(new Date()),
       })
       return await this.getQuoraPostsMetrics()
     } catch (error: any) {
-      return new Error(error);
+      return new Error(error)
     }
   }
 }

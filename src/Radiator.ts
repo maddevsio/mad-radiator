@@ -4,7 +4,7 @@ import { AnalyticsParams } from 'analytics/interfaces'
 import { GoogleAuthorization } from 'authorization'
 import { AnalyticsError } from 'errors/types/AnalyticsError'
 import { AuthorizationError } from 'errors/types/AuthorizationError'
-import { MessengersParams, ParsedRange, RadiatorConfig, ScheduleConfig, SentryParams } from 'interfaces'
+import { FirestoreConfig, MessengersParams, ParsedRange, RadiatorConfig, ScheduleConfig, SentryParams } from 'interfaces'
 import { Lighthouse } from 'lighthouse'
 import { LighthouseParams } from 'lighthouse/interfaces'
 import { Logger } from 'logger'
@@ -96,19 +96,19 @@ export class Radiator {
     )
   }
 
-  public usePageAnalytics(sitemapParams: SitemapOptions, firestoreId: string) {
+  public usePageAnalytics(sitemapParams: SitemapOptions, firestoreConfig: FirestoreConfig) {
     this.pageAnalytics = new PageAnalytics({
       ...sitemapParams,
       websiteUrl: this.config.websiteUrl,
-    }, firestoreId)
+    }, firestoreConfig)
   }
 
   public useRedditCountPosts(redditConfig: IRedditParams) {
     this.redditCountPosts = new RedditCountPosts(redditConfig)
   }
 
-  public useQuoraService(quoraConfig: QuoraParams, firestoreId: string) {
-    this.quoraPosts = new QuoraService(quoraConfig, firestoreId)
+  public useQuoraService(quoraConfig: QuoraParams, firestoreConfig: FirestoreConfig) {
+    this.quoraPosts = new QuoraService(quoraConfig, firestoreConfig)
   }
 
   public useTelegram(telegramParams: MessengersParams) {
@@ -125,11 +125,11 @@ export class Radiator {
     }
   }
 
-  public useNewPagesInSite(sitemap: PagesParams, firestoreId: string) {
+  public useNewPagesInSite(sitemap: PagesParams, firestoreConfig: FirestoreConfig) {
     this.newPagesInSite = new NewPagesInSite({
       ...sitemap,
       websiteUrl: this.config.websiteUrl,
-    }, firestoreId)
+    }, firestoreConfig)
   }
 
   private handleRadiatorError(error: Error | AnalyticsError | AuthorizationError) {
