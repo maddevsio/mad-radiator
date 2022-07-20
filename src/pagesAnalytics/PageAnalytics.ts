@@ -1,31 +1,33 @@
+import admin from 'firebase-admin'
+import { FirestoreConfig } from 'interfaces'
 import { Logger } from 'logger'
-import moment from "moment"
+import moment, { Moment } from 'moment'
 import { Sitemap } from 'sitemap/Sitemap'
 import { SitemapOptions } from 'sitemap/interfaces'
 import { Firestore } from 'utils/firestore'
 
-import { PageAnalyticsData } from "./interfaces"
+import { PageAnalyticsData } from './interfaces'
 
 export class PageAnalytics {
   private readonly config: SitemapOptions
 
   private readonly sitemap: Sitemap
 
-  private readonly firstDayOfCurrentMonth: string
+  private readonly firstDayOfCurrentMonth: Moment
 
-  private readonly firstDayOfCurrentWeek: string
+  private readonly firstDayOfCurrentWeek: Moment
 
   private firestore: Firestore
 
   private currentCount: number
 
-  constructor(config: SitemapOptions, firestoreId: string) {
+  constructor(config: SitemapOptions, firestoreConfig: FirestoreConfig) {
     this.config = config
     this.sitemap = new Sitemap(this.config)
-    this.firestore = new Firestore(firestoreId)
+    this.firestore = new Firestore(firestoreConfig)
     this.currentCount = 0
-    this.firstDayOfCurrentMonth = moment().startOf('month').toISOString()
-    this.firstDayOfCurrentWeek = moment().startOf('week').toISOString()
+    this.firstDayOfCurrentMonth = moment().startOf('month')
+    this.firstDayOfCurrentWeek = moment().startOf('week')
   }
 
   private async setCountOfBlogPages(): Promise<any> {
@@ -39,21 +41,19 @@ export class PageAnalytics {
       Logger.info(`Saving count of links on firestore...`)
 
       return this.firestore.setData('blog', {
-        fields: {
-          count: { integerValue: urls.length },
-          created: { timestampValue: new Date() }
-        }
+        count: urls.length,
+        created: admin.firestore.Timestamp.fromDate(new Date()),
       })
     }
     Logger.error('Something went wrong')
     return null
   }
 
-  private async getCountOfBlogs(date: string): Promise<number | null> {
+  private async getCountOfBlogs(date: Moment): Promise<number | null> {
     Logger.info(`Start getting data from firestore`)
-    const { data } = await this.firestore.getDataAfterDate(date, 'blog', 1)
-    if (data) {
-      const oldCount = data[0].document?.fields?.count?.integerValue
+    const count = await this.firestore.getDataAfterDate(date, 'blog', 1)
+    if (count) {
+      const oldCount = count
 
       Logger.info(`New posts after date ${date}: ${this.currentCount - oldCount}`)
       return this.currentCount - oldCount
@@ -62,16 +62,14 @@ export class PageAnalytics {
   }
 
   public async getPageAnalyticsMetrics(): Promise<PageAnalyticsData | null> {
-    const { data } = await this.setCountOfBlogPages()
+    const data = await this.setCountOfBlogPages()
     if (data) {
       Logger.success('Count saved!')
       try {
-        const blogPagesCount = {
+        return {
           perMonth: await this.getCountOfBlogs(this.firstDayOfCurrentMonth),
-          perWeek: await this.getCountOfBlogs(this.firstDayOfCurrentWeek)
+          perWeek: await this.getCountOfBlogs(this.firstDayOfCurrentWeek),
         }
-
-        return blogPagesCount
       } catch (error) {
         Logger.error(`Error getting count of blog pages: ${error}`)
         return null

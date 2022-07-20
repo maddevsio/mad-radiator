@@ -22,6 +22,7 @@ module.exports = {
     '<rootDir>/src/sitemap',
     '<rootDir>/src/lighthouse/Sitemap',
     '<rootDir>/src/analytics/EbookDownloadsRepository',
+    '<rootDir>/src/utils/firestore'
   ],
   coverageReporters: ['lcov'],
   coverageThreshold: {
@@ -32,7 +33,10 @@ module.exports = {
       lines: 81,
     },
   },
-  moduleNameMapper: pathsToModuleNameMapper(tsconfig.compilerOptions.paths, '<rootDir>/src'),
+  moduleNameMapper: pathsToModuleNameMapper({
+      ...tsconfig.compilerOptions.paths,
+      'firebase-admin/firestore': ['<rootDir>/node_modules/firebase-admin/lib/firestore/index.js'],
+    }, '<rootDir>'),
   testPathIgnorePatterns: [
     '<rootDir>/node_modules',
     '<rootDir>/lib',
