@@ -1,27 +1,26 @@
 import { ParsedRange, RangeType } from 'interfaces'
 import moment from 'moment'
-import 'moment-timezone'
 
 const DEFAULT_FORMAT = 'DD/MM/YYYY'
-const DEFAULT_TIME_ZONE = 'Asia/Bishkek'
 
-function getYesterday(): string {
-  return moment().tz(DEFAULT_TIME_ZONE).subtract(1, 'day').format(DEFAULT_FORMAT)
+function getYesterday(nodeEnv: string): string {
+  if (nodeEnv === 'production') return moment().format(DEFAULT_FORMAT)
+  return moment().subtract(1, 'day').format(DEFAULT_FORMAT)
 }
 
-function getLastWeek(): string {
-  const end = getYesterday()
+function getLastWeek(nodeEnv: string): string {
+  const end = getYesterday(nodeEnv)
   const start = moment().subtract(1, 'week').format(DEFAULT_FORMAT)
   return `${start} - ${end}`
 }
 
-function getLastMonth(): string {
-  const end = getYesterday()
+function getLastMonth(nodeEnv: string): string {
+  const end = getYesterday(nodeEnv)
   const start = moment().subtract(1, 'month').format(DEFAULT_FORMAT)
   return `${start} - ${end}`
 }
 
-export function parseRange(range: string | RangeType = RangeType.day): ParsedRange {
+export function parseRange(range: string | RangeType = RangeType.day, nodeEnv: string = ''): ParsedRange {
   if (range === RangeType.day) {
     return {
       range,
@@ -33,7 +32,7 @@ export function parseRange(range: string | RangeType = RangeType.day): ParsedRan
         startDate: '2daysAgo',
         endDate: '2daysAgo',
       },
-      text: getYesterday(),
+      text: getYesterday(nodeEnv),
     }
   }
 
@@ -48,7 +47,7 @@ export function parseRange(range: string | RangeType = RangeType.day): ParsedRan
         startDate: '14daysAgo',
         endDate: '7daysAgo',
       },
-      text: getLastWeek(),
+      text: getLastWeek(nodeEnv),
     }
   }
 
@@ -62,6 +61,6 @@ export function parseRange(range: string | RangeType = RangeType.day): ParsedRan
       startDate: '60daysAgo',
       endDate: '30daysAgo',
     },
-    text: getLastMonth(),
+    text: getLastMonth(nodeEnv),
   }
 }
