@@ -1,14 +1,16 @@
+import axios from 'axios';
+import { load } from 'cheerio';
 import admin from 'firebase-admin'
-import got from 'got'
 import { FirestoreConfig } from 'interfaces'
 import { Firestore } from 'utils/firestore'
 import { getFirstDayOfCurrentMonth } from 'utils/getFirstDayOfCurrentMonth'
-
 
 import { QuoraParams } from './interfaces'
 
 export class QuoraService {
   private firestore: Firestore
+
+  private readonly query = 'window.ansFrontendGlobals.data.inlineQueryResults.results';
 
   private readonly url: string = 'https://www.quora.com/profile/'
 
@@ -16,7 +18,6 @@ export class QuoraService {
 
   private currentCount: number
 
-  // TODO: fix undefined type
   private quoraUserID?: string
 
   constructor(quoraParams: QuoraParams, firestoreConfig: FirestoreConfig) {
@@ -25,17 +26,30 @@ export class QuoraService {
     this.quoraUserID = quoraParams.quoraUserID
   }
 
-  private async getHTML(): Promise<string> {
-    const { body } = await got(`${this.url}${this.quoraUserID}`)
-    return body
-  }
-
   private async parseHTML(): Promise<number> {
-    const re = /(?<=postsCount\\":)\d+/g
-    const body: string = await this.getHTML()
-    const parsedString: Array<string> | null = body.match(re)
+    const req = await axios(`${this.url}${this.quoraUserID}`);
+    const html = await req.data;
+    const $ = load(html);
+    const quoraUrl = this.query
+    // eslint-disable-next-line func-names
+    const scripts = $('script').filter(function () {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      return ($(this).html().indexOf(quoraUrl) > -1);
+    });
 
-    return parsedString !== null ? Number(parsedString[0]) : 0
+
+    const script = $(scripts[2]).html();
+    const window = script?.substring(script.indexOf(`${this.query}[`) + (this.query.length + 70));
+    const data = window?.substring(0, window.indexOf('}";') + 2);
+
+    let json;
+    if (data) {
+      json = JSON.parse(data?.trim());
+    }
+
+    const { data: { user } } = JSON.parse(json);
+    return user.postsCount;
   }
 
   private async getQuoraPostsMetrics(): Promise<number> {

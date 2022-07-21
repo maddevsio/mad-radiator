@@ -1,5 +1,4 @@
 import axios from 'axios'
-import got from 'got'
 import { QuoraService } from 'quora'
 import { Firestore } from "utils/firestore"
 
