@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { load } from 'cheerio';
+import { QuoraServiceError } from 'errors/QuoraServiceError';
 import admin from 'firebase-admin'
 import { FirestoreConfig } from 'interfaces'
 import { Firestore } from 'utils/firestore'
@@ -30,26 +31,27 @@ export class QuoraService {
     const req = await axios(`${this.url}${this.quoraUserID}`);
     const html = await req.data;
     const $ = load(html);
-    const quoraUrl = this.query
+    const quoraUrl = this.query;
     // eslint-disable-next-line func-names
     const scripts = $('script').filter(function () {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      return ($(this).html().indexOf(quoraUrl) > -1);
+      return (
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        $(this)?.html()?.indexOf(quoraUrl) > -1
+      );
     });
-
 
     const script = $(scripts[2]).html();
     const window = script?.substring(script.indexOf(`${this.query}[`) + (this.query.length + 70));
     const data = window?.substring(0, window.indexOf('}";') + 2);
 
-    let json;
-    if (data) {
-      json = JSON.parse(data?.trim());
+    if (!data) {
+      throw new QuoraServiceError('No data found');
     }
 
-    const { data: { user } } = JSON.parse(json);
-    return user.postsCount;
+    const { data: { user } } = JSON.parse(JSON.parse(data));
+
+    return Number(user.postsCount);
   }
 
   private async getQuoraPostsMetrics(): Promise<number> {
@@ -61,14 +63,14 @@ export class QuoraService {
   public async setCountOfQuoraPosts(): Promise<any> {
     try {
       const posts = await this.parseHTML()
-      this.currentCount = Number(posts)
+      this.currentCount = posts
       await this.firestore.setData(this.fireStoreDir, {
         count: posts,
         created: admin.firestore.Timestamp.fromDate(new Date()),
       })
       return await this.getQuoraPostsMetrics()
     } catch (error: any) {
-      return new Error(error)
+      return new QuoraServiceError(error.message)
     }
   }
 }
