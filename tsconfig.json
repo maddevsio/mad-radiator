@@ -3,11 +3,12 @@
     "skipLibCheck": true,
     "baseUrl": "src",
     "incremental": true,
-    "target": "es2017",
+    "target": "ES2018",
     "outDir": "lib",
     "rootDir": "src",
     "moduleResolution": "node",
     "module": "commonjs",
+    "declarationMap": true,
     "declaration": true,
     "inlineSourceMap": true,
     "esModuleInterop": true,
@@ -29,12 +30,15 @@
       "errors": ["errors"],
       "runCounter": ["runCounter"]
     },
-
     "strict": true,
 
     "noImplicitAny": true,
     "strictNullChecks": true,
     "strictFunctionTypes": true,
+    "strictBindCallApply": true,
+    "strictPropertyInitialization": true,
+    "noImplicitThis": true,
+    "alwaysStrict": true,
 
     "noUnusedLocals": true,
     "noUnusedParameters": true,
