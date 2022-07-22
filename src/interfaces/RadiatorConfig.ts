@@ -18,4 +18,5 @@ export interface RadiatorConfig {
   websiteUrl: string,
   range: RangeType | string,
   retryAttempts: number
+  nodeEnv?: string
 }
