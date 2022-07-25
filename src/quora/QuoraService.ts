@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { load } from 'cheerio';
-import { QuoraServiceError } from 'errors/QuoraServiceError';
+import { QuoraServiceError } from 'errors/types/QuoraServiceError';
 import admin from 'firebase-admin'
 import { FirestoreConfig } from 'interfaces'
 import { Firestore } from 'utils/firestore'
@@ -28,8 +28,8 @@ export class QuoraService {
   }
 
   private async parseHTML(): Promise<number> {
-    const req = await axios(`${this.url}${this.quoraUserID}`);
-    const html = await req.data;
+    const { data } = await axios.get(`${this.url}${this.quoraUserID}`);
+    const html = data;
     const $ = load(html);
     const quoraUrl = this.query;
     // eslint-disable-next-line func-names
@@ -43,13 +43,13 @@ export class QuoraService {
 
     const script = $(scripts[2]).html();
     const window = script?.substring(script.indexOf(`${this.query}[`) + (this.query.length + 70));
-    const data = window?.substring(0, window.indexOf('}";') + 2);
+    const dataString = window?.substring(0, window.indexOf('}";') + 2);
 
-    if (!data) {
+    if (!dataString) {
       throw new QuoraServiceError('No data found');
     }
 
-    const { data: { user } } = JSON.parse(JSON.parse(data));
+    const { data: { user } } = JSON.parse(JSON.parse(dataString));
 
     return Number(user.postsCount);
   }
