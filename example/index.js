@@ -18,6 +18,7 @@ const dailyConfig = {
   ...authConfig,
   analyticsPrivateKey: process.env.RADIATOR_PRIVATE_KEY,
   range: 'day',
+  nodeEnv: process.env.NODE_ENV,
 }
 
 const fireStore = {
