@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { load } from 'cheerio'
+import { GlassdoorError } from 'errors/types/GlassdoorError'
 import admin from 'firebase-admin'
 import { FirestoreConfig } from 'interfaces'
 import { Firestore } from 'utils/firestore'
@@ -50,7 +51,7 @@ export class GlassdoorService {
       })
       return await this.getGlassdoorReviewsMetrics()
     } catch (error: any) {
-      return new Error(error)
+      return new GlassdoorError(error)
     }
   }
 }
