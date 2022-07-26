@@ -1,6 +1,6 @@
 {
   "name": "@maddevs/mad-radiator",
-  "version": "2.2.2",
+  "version": "4.3.0",
   "description": "Script for collect data from analytics and send to slack(webhook) and telegram",
   "keywords": [
     "radiator",
@@ -103,6 +103,7 @@
     "@sentry/node": "^6.13.3",
     "axios": "^0.21.1",
     "chalk": "^4.1.1",
+    "cheerio": "^1.0.0-rc.12",
     "dotenv": "^16.0.1",
     "fast-xml-parser": "^3.19.0",
     "firebase-admin": "^11.0.0",

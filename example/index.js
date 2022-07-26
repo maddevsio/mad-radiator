@@ -9,6 +9,7 @@ const {
   slackConfig,
   lighthouseConfig,
   quora,
+  glassdoor,
   redditConfig,
   pageAnalyticsConfig,
   fireStoreAuthConfig,
@@ -29,9 +30,10 @@ const fireStore = {
 const radiator = new Radiator(dailyConfig)
 
 radiator.useAnalytics(analyticsConfig)
-radiator.useSlack(slackConfig)
 radiator.useRedditCountPosts(redditConfig)
 radiator.useQuoraService(quora, fireStore)
+radiator.useGlassdoorService(glassdoor, fireStore)
 radiator.useNewPagesInSite(lighthouseConfig, fireStore)
 radiator.usePageAnalytics(pageAnalyticsConfig, fireStore)
+radiator.useSlack(slackConfig)
 radiator.run()

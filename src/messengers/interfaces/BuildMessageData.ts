@@ -11,5 +11,6 @@ export interface BuildMessageData {
   pageAnalytics?: PageAnalyticsData | null
   redditCountPosts?: number
   quoraPosts?: number
+  glassdoorReviews?: number
   newPagesInSite?: number
 }

@@ -4,6 +4,8 @@ import { AnalyticsParams } from 'analytics/interfaces'
 import { GoogleAuthorization } from 'authorization'
 import { AnalyticsError } from 'errors/types/AnalyticsError'
 import { AuthorizationError } from 'errors/types/AuthorizationError'
+import { GlassdoorService } from 'glassdoor'
+import { GlassdoorParams } from 'glassdoor/interfaces/GlassdoorParams'
 import { FirestoreConfig, MessengersParams, ParsedRange, RadiatorConfig, ScheduleConfig, SentryParams } from 'interfaces'
 import { Lighthouse } from 'lighthouse'
 import { LighthouseParams } from 'lighthouse/interfaces'
@@ -45,6 +47,8 @@ export class Radiator {
   private redditCountPosts: RedditCountPosts | undefined
 
   private quoraPosts: QuoraService | undefined
+
+  private glassdoorReviews: GlassdoorService | undefined
 
   private newPagesInSite: NewPagesInSite | undefined
 
@@ -111,6 +115,10 @@ export class Radiator {
     this.quoraPosts = new QuoraService(quoraConfig, firestoreConfig)
   }
 
+  public useGlassdoorService(glassdoorConfig: GlassdoorParams, firestoreConfig: FirestoreConfig) {
+    this.glassdoorReviews = new GlassdoorService(glassdoorConfig, firestoreConfig)
+  }
+
   public useTelegram(telegramParams: MessengersParams) {
     this.messengersParams = {
       ...(this.messengersParams),
@@ -153,6 +161,7 @@ export class Radiator {
       let redditCountPosts
       let quoraPosts
       let newPagesInSite
+      let glassdoorReviews
 
       this.runCounter.incrementRunCounter()
 
@@ -185,6 +194,11 @@ export class Radiator {
         quoraPosts = await this.quoraPosts.setCountOfQuoraPosts()
       }
 
+      if (this.glassdoorReviews) {
+        Logger.info('Getting glassdoor data...')
+        glassdoorReviews = await this.glassdoorReviews.setCountOfGlassdoorReviews()
+      }
+
       if (this.newPagesInSite) {
         Logger.info('Getting new pages data...')
         try {
@@ -209,6 +223,7 @@ export class Radiator {
           imageURL,
           redditCountPosts,
           quoraPosts,
+          glassdoorReviews,
           newPagesInSite,
           pageAnalytics,
         })
