@@ -22,6 +22,8 @@ export abstract class MessageBuilder {
 
   private readonly newQuoraPostsInMonthGoal: number = 5
 
+  private readonly newGlassdoorReviewsGoal: number = 2
+
   private readonly goalsCountries: Array<string> = ['United States', 'United Kingdom', 'Germany', 'France', 'Indonesia', 'Vietnam']
 
   constructor(config: RadiatorConfig) {
@@ -36,6 +38,7 @@ export abstract class MessageBuilder {
     lighthouse,
     redditCountPosts,
     quoraPosts,
+    glassdoorReviews,
     pageAnalytics,
     newPagesInSite,
   }: BuildMessageData): Array<string | SlackMessageBlock> {
@@ -54,13 +57,6 @@ export abstract class MessageBuilder {
       message.push(this.blocksService.divider())
     }
 
-    // if (devices) {
-    //   // devices
-    //   message.push(this.blocksService.section(MessageBuilder.devicesMessage()))
-    //   message.push(this.blocksService.section(this.devicesList(devices)))
-    //   message.push(this.blocksService.divider())
-    // }
-
     if (countries) {
       // countries
       message.push(this.blocksService.section(MessageBuilder.countriesMessage()))
@@ -70,34 +66,14 @@ export abstract class MessageBuilder {
       message.push(this.blocksService.divider())
     }
 
-    // if (goals) {
-    //   // conversions
-    //   message.push(this.blocksService.section(MessageBuilder.conversionMessage()))
-    //   message.push(this.blocksService.section(this.conversionList(goals)))
-    //   message.push(this.blocksService.divider())
-    // }
-
-    if (contactMe) {
-      // submit contact me form
-      message.push(this.blocksService.section(MessageBuilder.contactMeMessage()))
-      const isGoalAchieved = contactMe.value >= this.fillingsContactMeGoal
-      message.push(this.blocksService.section(MessageBuilder.contactMeMessageGoal(isGoalAchieved, contactMe.value, this.fillingsContactMeGoal)))
+    // blog views statistics
+    if (blogs?.length) {
+      message.push(this.blocksService.section(MessageBuilder.blogsMessage()))
+      message.push(this.blocksService.section(this.blogsList(blogs)))
       message.push(this.blocksService.divider())
     }
 
-    if (ebookDownloads) {
-      message.push(this.blocksService.section(MessageBuilder.ebookDownloadsTitle()))
-      message.push(this.blocksService.section(this.ebookDownloadsList(ebookDownloads)))
-      message.push(this.blocksService.divider())
-    }
-
-    if (quoraPosts !== undefined) {
-      message.push(this.blocksService.section(MessageBuilder.quoraTitle()))
-      const isMatch = quoraPosts > this.newQuoraPostsInMonthGoal
-      message.push(this.blocksService.section(MessageBuilder.quoraGoalMessage(isMatch, quoraPosts, this.newQuoraPostsInMonthGoal)))
-      message.push(this.blocksService.divider())
-    }
-
+    // a count of new articles in the blog
     if (pageAnalytics) {
       if (pageAnalytics.perMonth !== null || pageAnalytics.perWeek !== null) {
         message.push(this.blocksService.section(MessageBuilder.blogPostsMonthlyTitle()))
@@ -116,6 +92,29 @@ export abstract class MessageBuilder {
       }
     }
 
+    // a count of new pages in the site
+    if (newPagesInSite !== undefined) {
+      message.push(this.blocksService.section(MessageBuilder.newPagesTitle()))
+      const isGoalAchieved = newPagesInSite >= this.newPagesInMonthGoal
+      message.push(this.blocksService.section(MessageBuilder.newPagesGoalMessage(isGoalAchieved, newPagesInSite, this.newPagesInMonthGoal)))
+      message.push(this.blocksService.divider())
+    }
+
+    if (contactMe) {
+      // submit contact me form
+      message.push(this.blocksService.section(MessageBuilder.contactMeMessage()))
+      const isGoalAchieved = contactMe.value >= this.fillingsContactMeGoal
+      message.push(this.blocksService.section(MessageBuilder.contactMeMessageGoal(isGoalAchieved, contactMe.value, this.fillingsContactMeGoal)))
+      message.push(this.blocksService.divider())
+    }
+
+    if (quoraPosts !== undefined) {
+      message.push(this.blocksService.section(MessageBuilder.quoraTitle()))
+      const isMatch = quoraPosts > this.newQuoraPostsInMonthGoal
+      message.push(this.blocksService.section(MessageBuilder.quoraGoalMessage(isMatch, quoraPosts, this.newQuoraPostsInMonthGoal)))
+      message.push(this.blocksService.divider())
+    }
+
     if (redditCountPosts !== undefined) {
       message.push(this.blocksService.section(MessageBuilder.redditTitle()))
       const isGoalAchieved = redditCountPosts >= this.redditPostsInMonthGoal
@@ -123,10 +122,16 @@ export abstract class MessageBuilder {
       message.push(this.blocksService.divider())
     }
 
-    if (newPagesInSite !== undefined) {
-      message.push(this.blocksService.section(MessageBuilder.newPagesTitle()))
-      const isGoalAchieved = newPagesInSite >= this.newPagesInMonthGoal
-      message.push(this.blocksService.section(MessageBuilder.newPagesGoalMessage(isGoalAchieved, newPagesInSite, this.newPagesInMonthGoal)))
+    if (glassdoorReviews !== undefined) {
+      message.push(this.blocksService.section(MessageBuilder.glassdoorTitle()))
+      const isMatch = glassdoorReviews > this.newGlassdoorReviewsGoal
+      message.push(this.blocksService.section(MessageBuilder.glassdoorGoalMessage(isMatch, glassdoorReviews, this.newGlassdoorReviewsGoal)))
+      message.push(this.blocksService.divider())
+    }
+
+    if (ebookDownloads) {
+      message.push(this.blocksService.section(MessageBuilder.ebookDownloadsTitle()))
+      message.push(this.blocksService.section(this.ebookDownloadsList(ebookDownloads)))
       message.push(this.blocksService.divider())
     }
 
@@ -151,13 +156,6 @@ export abstract class MessageBuilder {
         message.push(this.blocksService.section(this.pagespeedRating(lighthouse.worst)))
         message.push(this.blocksService.divider())
       }
-    }
-
-    // blog views statistics
-    if (blogs?.length) {
-      message.push(this.blocksService.section(MessageBuilder.blogsMessage()))
-      message.push(this.blocksService.section(this.blogsList(blogs)))
-      message.push(this.blocksService.divider())
     }
 
     if (subscribers) {
@@ -220,24 +218,6 @@ export abstract class MessageBuilder {
     ])
   }
 
-  // private static devicesMessage() {
-  //   return 'Сайт просматривают на разных устройствах. Соотношение:'
-  // }
-
-  // private devicesList(devices: Array<Device>) {
-  //   return this.blocksService.list(
-  //     devices.map(device =>
-  //       this.blocksService.listItem(device, {
-  //         title: capitalize(device.title),
-  //         emojiType: this.emojiService.getEmojiTypeForDevice(device.title),
-  //         parensKey: 'previous',
-  //         valueType: '%',
-  //         parensType: '%',
-  //       }),
-  //     ),
-  //   )
-  // }
-
   private static countriesMessage() {
     return '*Топ-3 страны, в которых находятся пользователи, посетившие сайт:*'
   }
@@ -274,8 +254,16 @@ export abstract class MessageBuilder {
     return '*Количество новых постов на Quora:*'
   }
 
+  private static glassdoorTitle() {
+    return '*Количество новых отзывов на Glassdoor:*'
+  }
+
   private static quoraGoalMessage(isMath: boolean, quoraCount: number, goal: number) {
     return `${isMath ? ':white_check_mark:' : ':x:'} Новых статей за ${getMonthName()}: ${quoraCount} / Should be -> ${goal}`
+  }
+
+  private static glassdoorGoalMessage(isMath: boolean, glassdoorCount: number, goal: number) {
+    return `${isMath ? ':white_check_mark:' : ':x:'} Новых отзывов за ${getMonthName()}: ${glassdoorCount} / Should be -> ${goal}`
   }
 
   private static redditTitle() {
@@ -305,22 +293,6 @@ export abstract class MessageBuilder {
   private static blogPostsWeeklyGoalMessage(isMatch: boolean, blogPostCount: number) {
     return `${isMatch ? ':white_check_mark:' : ':x:'} Новых статей за неделю: ${blogPostCount} / Should be > 1`
   }
-
-  // private static conversionMessage() {
-  //   return 'Клики и конверсии произведенные пользователями:'
-  // }
-
-  // private conversionList(goals: Goals) {
-  //   return this.blocksService.list(
-  //     goals.map(goal =>
-  //       this.blocksService.listItem(goal, {
-  //         title: goal.name,
-  //         emojiType: goal.emoji,
-  //         parensKey: 'previous',
-  //       }),
-  //     ),
-  //   )
-  // }
 
   private static pagespeedAverageMessage(count: number) {
     return `Средняя производительность сайта от Google PageSpeed(Проанализировано ${count} страниц):`

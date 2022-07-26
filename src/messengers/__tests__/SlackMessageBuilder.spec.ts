@@ -87,14 +87,14 @@ describe('SlackMessageBuilder', () => {
       },
       {
         text: {
-          text: '*Заполнения формы contact me:*\n\n',
+          text: '*Топ-3 популярных статей в блоге:*\n\n',
           type: 'mrkdwn',
         },
         type: 'section',
       },
       {
         text: {
-          text: ':x: Заполнения за последние 30 дней: 4 / Should be > 5\n\n',
+          text: ':yum: https://maddevs.io/insights/blog/how-to-start-developing-for-raspberry-pi-with-qt/ - *19* посещений\n\n',
           type: 'mrkdwn',
         },
         type: 'section',
@@ -104,14 +104,14 @@ describe('SlackMessageBuilder', () => {
       },
       {
         text: {
-          text: '*Количество скачиваний Ebook\'ов за последние 30 дней:*\n\n',
+          text: '*Заполнения формы contact me:*\n\n',
           type: 'mrkdwn',
         },
         type: 'section',
       },
       {
         text: {
-          text: 'Aproach DP: 4 \n\n',
+          text: ':x: Заполнения за последние 30 дней: 4 / Should be > 5\n\n',
           type: 'mrkdwn',
         },
         type: 'section',
@@ -139,7 +139,7 @@ describe('SlackMessageBuilder', () => {
       {
         text: {
           text:
-            'Средняя производительность сайта от Google PageSpeed(Проанализировано 100 страниц):\n\n',
+            '*Количество скачиваний Ebook\'ов за последние 30 дней:*\n\n',
           type: 'mrkdwn',
         },
         type: 'section',
@@ -147,7 +147,7 @@ describe('SlackMessageBuilder', () => {
       {
         text: {
           text:
-            ':yum: :chart_with_upwards_trend: Performance: *100%*\n\n:yum: :wheelchair: Accessibility: *100%*\n\n:yum: :sign_of_the_horns: Best Practices: *100%*\n\n:yum: :sports_medal: SEO: *100%*\n\n:yum: :iphone: PWA: *100%*\n\n',
+            'Aproach DP: 4 \n\n',
           type: 'mrkdwn',
         },
         type: 'section',
@@ -157,14 +157,14 @@ describe('SlackMessageBuilder', () => {
       },
       {
         text: {
-          text: '*Топ-3 популярных статей в блоге:*\n\n',
+          text: 'Средняя производительность сайта от Google PageSpeed(Проанализировано 100 страниц):\n\n',
           type: 'mrkdwn',
         },
         type: 'section',
       },
       {
         text: {
-          text: ':yum: https://maddevs.io/insights/blog/how-to-start-developing-for-raspberry-pi-with-qt/ - *19* посещений\n\n',
+          text: ":yum: :chart_with_upwards_trend: Performance: *100%*\n\n:yum: :wheelchair: Accessibility: *100%*\n\n:yum: :sign_of_the_horns: Best Practices: *100%*\n\n:yum: :sports_medal: SEO: *100%*\n\n:yum: :iphone: PWA: *100%*\n\n",
           type: 'mrkdwn',
         },
         type: 'section',
