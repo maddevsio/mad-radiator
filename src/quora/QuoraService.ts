@@ -1,14 +1,17 @@
+import axios from 'axios';
+import { load } from 'cheerio';
+import { QuoraServiceError } from 'errors/types/QuoraServiceError';
 import admin from 'firebase-admin'
-import got from 'got'
 import { FirestoreConfig } from 'interfaces'
 import { Firestore } from 'utils/firestore'
 import { getFirstDayOfCurrentMonth } from 'utils/getFirstDayOfCurrentMonth'
-
 
 import { QuoraParams } from './interfaces'
 
 export class QuoraService {
   private firestore: Firestore
+
+  private readonly query = 'window.ansFrontendGlobals.data.inlineQueryResults.results';
 
   private readonly url: string = 'https://www.quora.com/profile/'
 
@@ -16,7 +19,6 @@ export class QuoraService {
 
   private currentCount: number
 
-  // TODO: fix undefined type
   private quoraUserID?: string
 
   constructor(quoraParams: QuoraParams, firestoreConfig: FirestoreConfig) {
@@ -25,17 +27,31 @@ export class QuoraService {
     this.quoraUserID = quoraParams.quoraUserID
   }
 
-  private async getHTML(): Promise<string> {
-    const { body } = await got(`${this.url}${this.quoraUserID}`)
-    return body
-  }
-
   private async parseHTML(): Promise<number> {
-    const re = /(?<=postsCount\\":)\d+/g
-    const body: string = await this.getHTML()
-    const parsedString: Array<string> | null = body.match(re)
+    const { data } = await axios.get(`${this.url}${this.quoraUserID}`);
+    const html = data;
+    const $ = load(html);
+    const quoraUrl = this.query;
+    // eslint-disable-next-line func-names
+    const scripts = $('script').filter(function () {
+      return (
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        $(this)?.html()?.indexOf(quoraUrl) > -1
+      );
+    });
 
-    return parsedString !== null ? Number(parsedString[0]) : 0
+    const script = $(scripts[2]).html();
+    const window = script?.substring(script.indexOf(`${this.query}[`) + (this.query.length + 70));
+    const dataString = window?.substring(0, window.indexOf('}";') + 2);
+
+    if (!dataString) {
+      throw new QuoraServiceError('No data found');
+    }
+
+    const { data: { user } } = JSON.parse(JSON.parse(dataString));
+
+    return Number(user.postsCount);
   }
 
   private async getQuoraPostsMetrics(): Promise<number> {
@@ -47,14 +63,14 @@ export class QuoraService {
   public async setCountOfQuoraPosts(): Promise<any> {
     try {
       const posts = await this.parseHTML()
-      this.currentCount = Number(posts)
+      this.currentCount = posts
       await this.firestore.setData(this.fireStoreDir, {
         count: posts,
         created: admin.firestore.Timestamp.fromDate(new Date()),
       })
       return await this.getQuoraPostsMetrics()
     } catch (error: any) {
-      return new Error(error)
+      return new QuoraServiceError(error.message)
     }
   }
 }

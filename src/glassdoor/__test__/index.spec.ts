@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { GlassdoorError } from 'errors/types/GlassdoorError'
 import { GlassdoorService } from 'glassdoor/GlassdoorService'
 import { Firestore } from 'utils/firestore'
 
@@ -42,4 +43,11 @@ describe('Quora service', () => {
 
     expect(countOfPosts).toBe(expectedValue)
   });
+
+  it('should correctly throw GlassdoorError', async () => {
+    const error = () => {
+      throw new GlassdoorError('authorization error')
+    }
+    expect(error).toThrow(GlassdoorError)
+  })
 })

@@ -5,13 +5,12 @@ import { Slack } from 'messengers/Slack'
 import { Telegram } from 'messengers/Telegram'
 import { BuildMessageData } from 'messengers/interfaces'
 
-
 export class MessengersService {
-  private readonly config: MessengersParams
+  readonly config: MessengersParams
 
-  private readonly slack: Slack
+  readonly slack: Slack
 
-  private readonly telegram: Telegram
+  readonly telegram: Telegram
 
   constructor(config: MessengersParams) {
     this.config = config

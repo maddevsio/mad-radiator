@@ -11,6 +11,7 @@ import { Lighthouse } from 'lighthouse'
 import { MessengersService } from 'messengers'
 import { PageAnalytics } from 'pagesAnalytics'
 import { QuoraService } from 'quora'
+import { RedditCountPosts } from 'redditPosts'
 import { Scheduler } from 'scheduler'
 import { GoogleDriveStorage } from 'storage'
 import { Firestore } from 'utils/firestore'
@@ -31,6 +32,7 @@ jest.mock('storage/GoogleDriveStorage')
 jest.mock('@sentry/node')
 jest.mock('quora/QuoraService')
 jest.mock('pagesAnalytics/PageAnalytics')
+jest.mock('redditPosts/RedditCountPosts')
 jest.mock('utils/firestore')
 jest.mock('@sentry/node', () => (
   {
@@ -98,6 +100,8 @@ const MockedQuora = QuoraService as jest.Mock<QuoraService>
 const MockedPageAnalytics = PageAnalytics as jest.Mock<PageAnalytics>
 // @ts-ignore
 const MockedFirestore = Firestore as jest.Mock<Firestore>
+// @ts-ignore
+const MockedReddit = RedditCountPosts as jest.Mock<RedditCountPosts>
 
 describe('Radiator', () => {
   jest.spyOn(console, 'log').mockImplementation(() => { })
@@ -109,6 +113,7 @@ describe('Radiator', () => {
   let storeFile = jest.fn()
   let setCountOfQuoraPosts = jest.fn()
   let getPageAnalyticsMetrics = jest.fn()
+  let getPostsCountInReddit = jest.fn()
 
   beforeEach(() => {
     MockedAnalytics.mockClear()
@@ -120,6 +125,7 @@ describe('Radiator', () => {
     MockedStorage.mockClear()
     MockedQuora.mockClear()
     MockedPageAnalytics.mockClear()
+    MockedReddit.mockClear()
 
     scheduleJob = jest.fn((callback: (...args: any[]) => void) => {
       callback()
@@ -129,6 +135,7 @@ describe('Radiator', () => {
 
     getData = jest.fn(async () => analyticsData)
     setCountOfQuoraPosts = jest.fn(async () => 1)
+    getPostsCountInReddit = jest.fn(async () => 1)
     getPageAnalyticsMetrics = jest.fn(async () => [])
 
     renderChart = jest.fn(async () => 'buffer')
@@ -153,6 +160,11 @@ describe('Radiator', () => {
     // @ts-ignore
     MockedQuora.mockImplementation(() => ({
       setCountOfQuoraPosts,
+    }))
+
+    // @ts-ignore
+    MockedReddit.mockImplementation(() => ({
+      getPostsCountInReddit,
     }))
 
     // @ts-ignore
