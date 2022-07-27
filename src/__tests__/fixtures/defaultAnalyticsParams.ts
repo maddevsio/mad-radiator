@@ -4,6 +4,9 @@ export const defaultAnalyticsParams = {
     "/blog/"
   ],
   "websiteUrl": 'https://maddevs.io',
+  "totalUsersToEnji": {
+    "url": "https://staging.enji.ai"
+  },
   "chart": {
     "chartView": "bar",
     "type": "totalUsers",

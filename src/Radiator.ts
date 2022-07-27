@@ -2,6 +2,7 @@ import * as Sentry from '@sentry/node'
 import { AnalyticsService } from 'analytics'
 import { AnalyticsParams } from 'analytics/interfaces'
 import { GoogleAuthorization } from 'authorization'
+import { EnjiService } from 'enji/EnjiService'
 import { AnalyticsError } from 'errors/types/AnalyticsError'
 import { AuthorizationError } from 'errors/types/AuthorizationError'
 import { GlassdoorService } from 'glassdoor'
@@ -52,6 +53,8 @@ export class Radiator {
 
   private newPagesInSite: NewPagesInSite | undefined
 
+  private enjiService: EnjiService | undefined
+
   constructor(config: RadiatorConfig) {
     this.config = config
     this.parsedRange = parseRange(this.config.range, this.config.nodeEnv)
@@ -88,6 +91,9 @@ export class Radiator {
       ...analyticsParams,
       websiteUrl: this.config.websiteUrl,
     }, this.parsedRange)
+    if (analyticsParams.totalUsersToEnji?.url) {
+      this.enjiService = new EnjiService(analyticsParams.totalUsersToEnji.url)
+    }
   }
 
   public useLighthouse(lighthouseParams: LighthouseParams) {
@@ -174,6 +180,9 @@ export class Radiator {
         Logger.info('Getting analytics data...')
         try {
           analytics = await this.analyticsService.getData()
+          if (this.enjiService) {
+            await this.enjiService.sendTotalUsersToEnji(Number(analytics.core.users.value))
+          }
         } catch (error: any) {
           Logger.info(error)
         }
