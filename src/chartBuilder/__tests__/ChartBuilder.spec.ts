@@ -5,6 +5,9 @@ describe('ChartBuilder', () => {
     const analyticsParams = {
       analyticsViewId: '1',
       websiteUrl: 'https://maddevs.io/',
+      totalUsersToEnji: {
+        url: "https://staging.enji.ai/"
+      },
       chart: {
         type: 'users',
         period: 90,

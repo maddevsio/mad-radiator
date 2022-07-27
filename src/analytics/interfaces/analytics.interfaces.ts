@@ -39,12 +39,17 @@ export interface AnalyticsPayload {
   totals: Array<AnalyticDataRows>
 }
 
+export type EndPointToEnji = {
+  url: string
+}
+
 export interface AnalyticsParams {
   analyticsViewId: string
   websiteUrl: string
   chart?: ChartConfig
   pagesPathForViewsAnalytics?: Array<string>
   analyticsConversions?: Array<AnalyticsConversion>
+  totalUsersToEnji: EndPointToEnji
 }
 
 export interface AnalyticsData {
