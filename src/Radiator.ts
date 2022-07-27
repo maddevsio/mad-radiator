@@ -181,10 +181,10 @@ export class Radiator {
         try {
           analytics = await this.analyticsService.getData()
           if (this.enjiService) {
-            await this.enjiService.sendTotalUsersToEnji(Number(analytics.core.users.value))
+            await this.enjiService.sendTotalUsersToEnji(Number(analytics.core.users.previous))
           }
         } catch (error: any) {
-          Logger.info(error)
+          Logger.error(`Cannot get analytics data: ${error.message}.`)
         }
       }
 
