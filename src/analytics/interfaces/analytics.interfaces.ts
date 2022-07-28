@@ -49,7 +49,7 @@ export interface AnalyticsParams {
   chart?: ChartConfig
   pagesPathForViewsAnalytics?: Array<string>
   analyticsConversions?: Array<AnalyticsConversion>
-  totalUsersToEnji: EndPointToEnji
+  totalUsersToEnji?: EndPointToEnji
 }
 
 export interface AnalyticsData {
