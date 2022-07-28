@@ -26,12 +26,16 @@ export class GlassdoorService {
   }
 
   private async getDataFromGlassdoor(url: string) {
-    const req = await axios.get(url);
-    const $ = load(req.data);
-    const selector = $('#EIProductHeaders');
-    const reviews = $(selector[0]).find("span.eiHeaderLink")[1];
+    try {
+      const req = await axios.get(url);
+      const $ = load(req.data);
+      const selector = $('#EIProductHeaders');
+      const reviews = $(selector[0]).find("span.eiHeaderLink")[1];
 
-    return Number($(reviews).text().trim());
+      return Number($(reviews).text().trim());
+    } catch (error: any) {
+      throw new GlassdoorError(`Cannot get Glassdoor reviews count: ${error.message}`)
+    }
   }
 
   private async getGlassdoorReviewsMetrics(): Promise<number> {
