@@ -9,7 +9,6 @@ const responseFireStoreData: number = 10
 const expectedValue = 12
 
 jest.mock('utils/firestore')
-jest.mock('cheerio')
 jest.spyOn(axios, 'get').mockImplementation(() => Promise.resolve(responseFireStoreData))
 jest.spyOn(axios, 'post').mockImplementation(
   () => new Promise<void>(res => res()),

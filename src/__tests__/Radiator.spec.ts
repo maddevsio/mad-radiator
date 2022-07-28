@@ -52,17 +52,6 @@ jest.mock('moment', () => () => ({
   }),
 }))
 
-jest.mock('moment-timezone', () => () => ({
-  tz: () => ({
-    subtract: () => ({
-      format: () => '25/4/2021',
-    }),
-  }),
-  subtract: () => ({
-    format: () => '25/4/2021',
-  }),
-}))
-
 const responseFireStoreData: FirestoreData = {
   data: [{
     document: {

@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { load } from 'cheerio';
 import { QuoraServiceError } from 'errors/types/QuoraServiceError';
 import admin from 'firebase-admin'
 import { FirestoreConfig } from 'interfaces'
@@ -11,7 +10,7 @@ import { QuoraParams } from './interfaces'
 export class QuoraService {
   private firestore: Firestore
 
-  private readonly query = 'window.ansFrontendGlobals.data.inlineQueryResults.results';
+  // private readonly query = 'window.ansFrontendGlobals.data.inlineQueryResults.results';
 
   private readonly url: string = 'https://www.quora.com/profile/'
 
@@ -28,30 +27,13 @@ export class QuoraService {
   }
 
   private async parseHTML(): Promise<number> {
-    const { data } = await axios.get(`${this.url}${this.quoraUserID}`);
-    const html = data;
-    const $ = load(html);
-    const quoraUrl = this.query;
-    // eslint-disable-next-line func-names
-    const scripts = $('script').filter(function () {
-      return (
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        $(this)?.html()?.indexOf(quoraUrl) > -1
-      );
-    });
-
-    const script = $(scripts[2]).html();
-    const window = script?.substring(script.indexOf(`${this.query}[`) + (this.query.length + 70));
-    const dataString = window?.substring(0, window.indexOf('}";') + 2);
-
-    if (!dataString) {
-      throw new QuoraServiceError('No data found');
+    try {
+      const { data } = await axios.get(`${this.url}${this.quoraUserID}`)
+      const posts = data.match(/(?<=postsCount\\":)\d+/gim)
+      return Number(posts[0])
+    } catch (error: any) {
+      throw new QuoraServiceError(`Cannot get Quora posts count: ${error.message}`)
     }
-
-    const { data: { user } } = JSON.parse(JSON.parse(dataString));
-
-    return Number(user.postsCount);
   }
 
   private async getQuoraPostsMetrics(): Promise<number> {
