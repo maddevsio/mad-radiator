@@ -10,8 +10,6 @@ import { QuoraParams } from './interfaces'
 export class QuoraService {
   private firestore: Firestore
 
-  // private readonly query = 'window.ansFrontendGlobals.data.inlineQueryResults.results';
-
   private readonly url: string = 'https://www.quora.com/profile/'
 
   private readonly fireStoreDir: string = 'quora'
