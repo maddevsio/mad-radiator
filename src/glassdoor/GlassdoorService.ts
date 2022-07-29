@@ -17,7 +17,7 @@ export class GlassdoorService {
 
   private currentCount: number
 
-  glassdoorUrl?: string
+  glassdoorUrl: string
 
   constructor(glassdoorConfig: GlassdoorParams, firestoreConfig: FirestoreConfig) {
     this.firestore = new Firestore(firestoreConfig)
