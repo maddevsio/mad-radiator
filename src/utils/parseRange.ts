@@ -1,5 +1,5 @@
 import { ParsedRange, RangeType } from 'interfaces'
-import moment from 'moment'
+import moment, { Moment } from 'moment'
 
 const DEFAULT_FORMAT = 'DD/MM/YYYY'
 
@@ -20,6 +20,10 @@ function getLastMonth(nodeEnv: string): string {
   return `${start} - ${end}`
 }
 
+function getTwoDaysAgo(): Moment {
+  return moment().subtract(2, 'day')
+}
+
 export function parseRange(range: string | RangeType = RangeType.day, nodeEnv: string = ''): ParsedRange {
   if (range === RangeType.day) {
     return {
@@ -33,6 +37,7 @@ export function parseRange(range: string | RangeType = RangeType.day, nodeEnv: s
         endDate: '2daysAgo',
       },
       text: getYesterday(nodeEnv),
+      analyticsDate: getTwoDaysAgo(),
     }
   }
 
@@ -48,6 +53,7 @@ export function parseRange(range: string | RangeType = RangeType.day, nodeEnv: s
         endDate: '7daysAgo',
       },
       text: getLastWeek(nodeEnv),
+      analyticsDate: getTwoDaysAgo(),
     }
   }
 
@@ -62,5 +68,6 @@ export function parseRange(range: string | RangeType = RangeType.day, nodeEnv: s
       endDate: '30daysAgo',
     },
     text: getLastMonth(nodeEnv),
+    analyticsDate: getTwoDaysAgo(),
   }
 }

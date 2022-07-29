@@ -20,7 +20,7 @@ describe('parseRange utility', () => {
   })
 
   it('should correctly return range for day with no arguments', () => {
-    expect(parseRange()).toEqual({
+    expect(JSON.stringify(parseRange())).toEqual(JSON.stringify({
       range: 'day',
       originalRange: {
         startDate: '1daysAgo',
@@ -31,11 +31,12 @@ describe('parseRange utility', () => {
         endDate: '2daysAgo',
       },
       text: '25/4/2021',
-    })
+      analyticsDate: {}
+    }))
   })
 
   it('should correctly return range for day with day arg', () => {
-    expect(parseRange(RangeType.day)).toEqual({
+    expect(JSON.stringify(parseRange(RangeType.day))).toEqual(JSON.stringify({
       range: 'day',
       originalRange: {
         startDate: '1daysAgo',
@@ -46,11 +47,14 @@ describe('parseRange utility', () => {
         endDate: '2daysAgo',
       },
       text: '25/4/2021',
-    })
+      analyticsDate: {
+        format: () => '25/4/2021',
+      },
+    }))
   })
 
   it('should correctly return range for week with week arg', () => {
-    expect(parseRange(RangeType.week)).toEqual({
+    expect(JSON.stringify(parseRange(RangeType.week))).toEqual(JSON.stringify({
       range: 'week',
       originalRange: {
         startDate: '7daysAgo',
@@ -61,11 +65,14 @@ describe('parseRange utility', () => {
         endDate: '7daysAgo',
       },
       text: '25/4/2021 - 25/4/2021',
-    })
+      analyticsDate: {
+        format: () => '25/4/2021',
+      },
+    }))
   })
 
   it('should correctly return range for month with month arg', () => {
-    expect(parseRange(RangeType.month)).toEqual({
+    expect(JSON.stringify(parseRange(RangeType.month))).toEqual(JSON.stringify({
       range: 'month',
       originalRange: {
         startDate: '30daysAgo',
@@ -76,6 +83,9 @@ describe('parseRange utility', () => {
         endDate: '30daysAgo',
       },
       text: '25/4/2021 - 25/4/2021',
-    })
+      analyticsDate: {
+        format: () => '25/4/2021',
+      },
+    }))
   })
 })
