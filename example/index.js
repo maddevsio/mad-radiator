@@ -1,7 +1,7 @@
 const { Radiator } = require('../lib')
 const config = require('./example.config.json')
-const dotenv = require('dotenv');
-dotenv.config();
+const dotenv = require('dotenv')
+dotenv.config()
 
 const {
   authConfig,
@@ -24,7 +24,7 @@ const dailyConfig = {
 
 const fireStore = {
   ...fireStoreAuthConfig,
-  firestorePrivateKey: process.env.RADIATOR_FIRESTORE_PRIVATE_KEY
+  firestorePrivateKey: process.env.RADIATOR_FIRESTORE_PRIVATE_KEY,
 }
 
 const radiator = new Radiator(dailyConfig)

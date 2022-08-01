@@ -182,6 +182,10 @@ describe('Radiator', () => {
     }))
   })
 
+  afterEach(() => {
+    jest.clearAllMocks()
+  })
+
   it('should correctly create an instance', () => {
     const radiator = new Radiator(defaultConfig)
     expect(MockedGoogleAuth).toHaveBeenCalledTimes(1)

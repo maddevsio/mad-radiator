@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { Moment } from 'moment';
 
 export class EnjiService {
   readonly url: string;
@@ -7,12 +8,16 @@ export class EnjiService {
     this.url = url;
   }
 
-  async sendTotalUsersToEnji(users: number) {
+  async sendTotalUsersToEnjiWithDate(users: number, analyticsDate: Moment) {
     try {
-      const { data } = await axios.get(this.url, { params: { count: users } });
+      const params = {
+        count: users,
+        date: analyticsDate.format('YYYY-MM-DD'),
+      };
+      const { data } = await axios.get(this.url, { params });
       return data;
     } catch (error: any) {
-      throw new Error(error);
+      throw new Error(`Cannot send data to Enji: ${error.message}`);
     }
   }
 }
