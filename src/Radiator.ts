@@ -2,7 +2,6 @@ import * as Sentry from '@sentry/node'
 import { AnalyticsService } from 'analytics'
 import { AnalyticsParams } from 'analytics/interfaces'
 import { GoogleAuthorization } from 'authorization'
-import { EnjiService } from 'enji'
 import { AnalyticsError } from 'errors/types/AnalyticsError'
 import { AuthorizationError } from 'errors/types/AuthorizationError'
 import { GlassdoorService } from 'glassdoor'
@@ -20,6 +19,7 @@ import { Scheduler } from 'scheduler'
 import { SitemapOptions } from 'sitemap/interfaces/SitemapOptions'
 import { parseRange } from 'utils/parseRange'
 
+import { EnjiService } from './enji'
 import { NewPagesInSite, PageAnalytics } from "./pagesAnalytics"
 import { PagesParams } from "./pagesAnalytics/interfaces"
 import { RedditCountPosts } from "./redditPosts"

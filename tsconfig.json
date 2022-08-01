@@ -16,7 +16,6 @@
     "paths": {
       "analytics": ["analytics"],
       "authorization": ["authorization"],
-      "enji": ["enji"],
       "blocks": ["blocks"],
       "chartBuilder": ["chartBuilder"],
       "emoji": ["emoji"],
@@ -60,7 +59,6 @@
     "analytics": ["analytics"],
     "authorization": ["authorization"],
     "blocks": ["blocks"],
-    "enji": ["enji"],
     "chartBuilder": ["chartBuilder"],
     "emoji": ["emoji"],
     "interfaces": ["interfaces"],
