@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { Moment } from 'moment';
 
-export class EnjiService {
+export class Enji {
   readonly url: string;
 
   constructor(url: string) {

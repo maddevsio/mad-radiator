@@ -1,1 +1,1 @@
-export * from 'enji/EnjiService'
+export * from 'enji/Enji'
