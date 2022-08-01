@@ -217,10 +217,10 @@ describe('Radiator', () => {
     await radiator.run()
     expect(Sentry.init).toHaveBeenCalledTimes(2)
     expect(getData).toHaveBeenCalledTimes(2)
-    expect(lighthouseInstance.getLighthouseMetrics).toHaveBeenCalledTimes(2)
-    expect(setCountOfQuoraPosts).toHaveBeenCalledTimes(2)
-    expect(getPageAnalyticsMetrics).toHaveBeenCalledTimes(2)
-    expect(unlink).toHaveBeenCalledTimes(2)
+    expect(lighthouseInstance.getLighthouseMetrics).toHaveBeenCalledTimes(1)
+    expect(setCountOfQuoraPosts).toHaveBeenCalledTimes(1)
+    expect(getPageAnalyticsMetrics).toHaveBeenCalledTimes(1)
+    expect(unlink).toHaveBeenCalledTimes(1)
   })
 
   it('should correctly called run without charts', async () => {

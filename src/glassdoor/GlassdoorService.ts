@@ -9,8 +9,6 @@ import { getFirstDayOfCurrentMonth } from 'utils/getFirstDayOfCurrentMonth'
 import { GlassdoorParams } from './interfaces/GlassdoorParams'
 
 export class GlassdoorService {
-  private readonly url: string = 'https://www.glassdoor.com/Overview/Working-at-Mad-Devs-EI_IE2507466.11,19.htm'
-
   private firestore: Firestore
 
   private readonly fireStoreDir: string = 'glassdoor'
@@ -46,9 +44,9 @@ export class GlassdoorService {
 
   public async setCountOfGlassdoorReviews(): Promise<any> {
     try {
-      const reviews = await this.getDataFromGlassdoor(this.url)
+      const reviews = await this.getDataFromGlassdoor(this.glassdoorUrl)
       this.currentCount = reviews
-
+      console.log(this.currentCount)
       await this.firestore.setData(this.fireStoreDir, {
         count: reviews,
         created: admin.firestore.Timestamp.fromDate(new Date()),
