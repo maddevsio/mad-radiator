@@ -34,6 +34,7 @@
   },
   "scripts": {
     "build": "tsc -p tsconfig.json && tsc-alias -p tsconfig.json",
+    "rebuild": "tsc --build tsconfig.json --force && tsc-alias -p tsconfig.json",
     "fix": "yarn fix:prettier && yarn fix:lint",
     "fix:prettier": "prettier \"src/**/*.ts\" --write --config .prettierrc",
     "lint": "eslint src --ext .ts",

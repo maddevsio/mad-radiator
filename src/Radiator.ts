@@ -2,7 +2,7 @@ import * as Sentry from '@sentry/node'
 import { AnalyticsService } from 'analytics'
 import { AnalyticsParams } from 'analytics/interfaces'
 import { GoogleAuthorization } from 'authorization'
-import { Enji } from 'enji'
+import { EnjiService } from 'enji'
 import { AnalyticsError } from 'errors/types/AnalyticsError'
 import { AuthorizationError } from 'errors/types/AuthorizationError'
 import { GlassdoorService } from 'glassdoor'
@@ -53,7 +53,7 @@ export class Radiator {
 
   private newPagesInSite: NewPagesInSite | undefined
 
-  private enjiService: Enji | undefined
+  private enjiService: EnjiService | undefined
 
   constructor(config: RadiatorConfig) {
     this.config = config
@@ -93,7 +93,7 @@ export class Radiator {
     }, this.parsedRange)
 
     if (analyticsParams.totalUsersToEnji?.url) {
-      this.enjiService = new Enji(analyticsParams.totalUsersToEnji.url)
+      this.enjiService = new EnjiService(analyticsParams.totalUsersToEnji.url)
     }
   }
 

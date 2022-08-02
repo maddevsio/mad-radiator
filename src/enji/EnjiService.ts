@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { Moment } from 'moment';
 
-export class Enji {
+export class EnjiService {
   readonly url: string;
 
   constructor(url: string) {
@@ -13,7 +13,7 @@ export class Enji {
       const params = {
         count: users,
         date: analyticsDate.format('YYYY-MM-DD'),
-      };
+      }
       const { data } = await axios.get(this.url, { params });
       console.log(data);
       return data;
