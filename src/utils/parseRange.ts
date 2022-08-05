@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { ParsedRange, RangeType } from 'interfaces'
 import moment, { Moment } from 'moment'
 

@@ -15,6 +15,7 @@ import { RedditCountPosts } from 'redditPosts'
 import { Scheduler } from 'scheduler'
 import { GoogleDriveStorage } from 'storage'
 import { Firestore } from 'utils/firestore'
+import { parseRange } from 'utils/parseRange'
 
 import { FirestoreData } from '../quora/interfaces'
 
@@ -40,6 +41,10 @@ jest.mock('@sentry/node', () => (
     captureException: jest.fn(),
   }
 ))
+
+jest.mock('utils/parseRange', () => ({
+  parseRange: jest.fn(),
+}))
 
 jest.mock('moment', () => () => ({
   tz: () => ({
@@ -92,6 +97,9 @@ const MockedFirestore = Firestore as jest.Mock<Firestore>
 // @ts-ignore
 const MockedReddit = RedditCountPosts as jest.Mock<RedditCountPosts>
 
+// @ts-ignore
+const MockedParseRange = parseRange as jest.Mock<typeof parseRange>
+
 describe('Radiator', () => {
   jest.spyOn(console, 'log').mockImplementation(() => { })
 
@@ -115,6 +123,7 @@ describe('Radiator', () => {
     MockedQuora.mockClear()
     MockedPageAnalytics.mockClear()
     MockedReddit.mockClear()
+    MockedParseRange.mockClear()
 
     scheduleJob = jest.fn((callback: (...args: any[]) => void) => {
       callback()
@@ -134,6 +143,11 @@ describe('Radiator', () => {
     // @ts-ignore
     MockedScheduler.mockImplementation(() => ({
       scheduleJob,
+    }))
+
+    // @ts-ignore
+    MockedParseRange.mockImplementation(() => ({
+      parseRange,
     }))
 
     // @ts-ignore

@@ -11,6 +11,7 @@ jest.mock('moment', () => () => ({
   subtract: () => ({
     format: () => '25/4/2021',
   }),
+  format: () => "2018–01–30T12:34:56+00:00"
 }))
 
 describe('parseRange utility', () => {
