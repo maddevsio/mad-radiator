@@ -57,7 +57,7 @@ export class Radiator {
 
   constructor(config: RadiatorConfig) {
     this.config = config
-    this.parsedRange = parseRange(this.config.range, this.config.nodeEnv)
+    this.parsedRange = parseRange(this.config.range)
     this.messengersParams = { websiteUrl: config.websiteUrl }
 
     // instances
