@@ -25,8 +25,9 @@ export class GlassdoorService {
 
   private async getDataFromGlassdoor(url: string) {
     try {
-      const req = await axios.get(url);
-      const $ = load(req.data);
+      const { data, status } = await axios.get(url);
+      console.log(status);
+      const $ = load(data);
       const selector = $('#EIProductHeaders');
       const reviews = $(selector[0]).find("span.eiHeaderLink")[1];
 
