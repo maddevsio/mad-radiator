@@ -1,11 +1,15 @@
+/* eslint-disable no-console */
+import logHelper from 'helpers/logHelper'
 import { ParsedRange, RangeType } from 'interfaces'
-import { Logger } from 'logger'
 import moment, { Moment } from 'moment'
 
 const DEFAULT_FORMAT = 'DD/MM/YYYY'
 
 export function getYesterday(): string {
-  Logger.logMessageDate('getYesterday', 'day', 1, 'DD/MM/YYYY h:mm:ss a')
+  console.log(`
+    Today: ${logHelper(moment(), 'DD/MM/YYYY h:mm:ss a')},
+    Yesterday: ${logHelper(moment().subtract(1, 'day'), 'DD/MM/YYYY h:mm:ss a')}
+  `)
   return moment().subtract(1, 'day').format(DEFAULT_FORMAT)
 }
 
@@ -22,7 +26,10 @@ function getLastMonth(): string {
 }
 
 export function getTwoDaysAgo(): Moment {
-  Logger.logMessageDate('getTwoDaysAgo', 'days', 2, 'DD/MM/YYYY h:mm:ss a')
+  console.log(`
+    Today: ${logHelper(moment(), 'DD/MM/YYYY h:mm:ss a')},
+    Two days ago: ${logHelper(moment().subtract(2, 'days'), 'DD/MM/YYYY h:mm:ss a')}
+  `);
   return moment().subtract(2, 'day')
 }
 
