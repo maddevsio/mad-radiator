@@ -4,7 +4,7 @@ import moment, { Moment } from 'moment'
 
 const DEFAULT_FORMAT = 'DD/MM/YYYY'
 
-function getYesterday(): string {
+export function getYesterday(): string {
   console.log(`getYesterday():\n1. moment().fomat('DD/MM/YYYY h:mm:ss a'): ${moment().format('DD/MM/YYYY h:mm:ss a')}\n2. moment().subtract(1, 'day').format(DEFAULT_FORMAT): ${moment().subtract(1, 'day').format('DD/MM/YYYY h:mm:ss a')}\n`)
   return moment().subtract(1, 'day').format(DEFAULT_FORMAT)
 }
@@ -21,7 +21,7 @@ function getLastMonth(): string {
   return `${start} - ${end}`
 }
 
-function getTwoDaysAgo(): Moment {
+export function getTwoDaysAgo(): Moment {
   console.log(`getTwoDaysAgo(): \n1. moment().format('DD/MM/YYYY h:mm:ss a'): ${moment().format('DD/MM/YYYY h:mm:ss a')}\n2. moment().subtract(2, 'days').format(DEFAULT_FORMAT): ${moment().subtract(2, 'days').format('DD/MM/YYYY h:mm:ss a')}\n`)
   return moment().subtract(2, 'day')
 }

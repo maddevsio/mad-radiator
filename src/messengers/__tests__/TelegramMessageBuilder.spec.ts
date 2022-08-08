@@ -5,6 +5,7 @@ import { lighthouseData } from '__tests__/fixtures/lighthouseData'
 import { parsedRange } from '__tests__/fixtures/parsedRange'
 import { LighthouseUrlResult } from 'lighthouse/interfaces'
 import { TelegramMessageBuilder } from 'messengers/TelegramMessageBuilder'
+import { getYesterday } from 'utils/parseRange'
 
 import { getMonthName } from '../../utils/getMonthName'
 
@@ -49,7 +50,7 @@ describe('TelegramMessageBuilder', () => {
       redditCountPosts: 0,
     })
 
-    expect(message).toEqual(`*📆 Отчет радиатора по ключевым метрикам за 31/7/2021*
+    expect(message).toEqual(`*📆 Отчет радиатора по ключевым метрикам за ${getYesterday()}*
 ———
 За отчетный период сайт  посетило *100 пользователей*. Всего *100 сессий*, средняя длительность 1 сессии составляет *100*. *100%* пользователей закрыли сайт никак с ним не провзаимодействовав.
 
