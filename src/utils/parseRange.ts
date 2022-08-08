@@ -1,23 +1,22 @@
 /* eslint-disable no-console */
+import getFormattedDate from 'helpers/getFormattedDate'
 import { ParsedRange, RangeType } from 'interfaces'
 import moment, { Moment } from 'moment'
 
-const DEFAULT_FORMAT = 'DD/MM/YYYY'
-
 export function getYesterday(): string {
   console.log(`getYesterday():\n1. moment().fomat('DD/MM/YYYY h:mm:ss a'): ${moment().format('DD/MM/YYYY h:mm:ss a')}\n2. moment().subtract(1, 'day').format(DEFAULT_FORMAT): ${moment().subtract(1, 'day').format('DD/MM/YYYY h:mm:ss a')}\n`)
-  return moment().subtract(1, 'day').format(DEFAULT_FORMAT)
+  return getFormattedDate('day')
 }
 
 function getLastWeek(): string {
   const end = getYesterday()
-  const start = moment().subtract(1, 'week').format(DEFAULT_FORMAT)
+  const start = getFormattedDate('week')
   return `${start} - ${end}`
 }
 
 function getLastMonth(): string {
   const end = getYesterday()
-  const start = moment().subtract(1, 'month').format(DEFAULT_FORMAT)
+  const start = getFormattedDate('month')
   return `${start} - ${end}`
 }
 
