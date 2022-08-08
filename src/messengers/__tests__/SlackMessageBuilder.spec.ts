@@ -4,6 +4,7 @@ import { defaultConfig } from '__tests__/fixtures/defaultRadiatorConfigs'
 import { lighthouseData } from '__tests__/fixtures/lighthouseData'
 import { parsedRange } from '__tests__/fixtures/parsedRange'
 import { SlackMessageBuilder } from 'messengers/SlackMessageBuilder'
+import { getYesterday } from 'utils/parseRange'
 
 import { getMonthName } from '../../utils/getMonthName'
 
@@ -34,7 +35,7 @@ describe('SlackMessageBuilder', () => {
       {
         text: {
           emoji: true,
-          text: ':calendar: Отчет радиатора по ключевым метрикам за 31/7/2021',
+          text: `:calendar: Отчет радиатора по ключевым метрикам за ${getYesterday()}`,
           type: 'plain_text',
         },
         type: 'header',

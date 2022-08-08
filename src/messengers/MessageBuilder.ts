@@ -1,9 +1,10 @@
 import { Blog, CoreItems, Country, EbookDownloads } from 'analytics/interfaces'
 import { Blocks } from 'blocks/Blocks'
 import { Emoji } from 'emoji/Emoji'
-import { ParsedRange, RadiatorConfig } from 'interfaces'
+import { RadiatorConfig } from 'interfaces'
 import { LighthouseMetrics, LighthouseUrlResult } from 'lighthouse/interfaces'
 import { BuildMessageData, SlackMessageBlock } from 'messengers/interfaces'
+import { getYesterday } from 'utils/parseRange'
 
 import { getMonthName } from "../utils/getMonthName";
 
@@ -34,7 +35,6 @@ export abstract class MessageBuilder {
 
   protected buildMessage({
     analytics,
-    range,
     lighthouse,
     redditCountPosts,
     quoraPosts,
@@ -47,7 +47,7 @@ export abstract class MessageBuilder {
     const message = []
 
     // header
-    message.push(this.blocksService.header(this.headerMessage(range)))
+    message.push(this.blocksService.header(this.headerMessage()))
     message.push(this.blocksService.divider())
 
     if (core) {
@@ -166,8 +166,8 @@ export abstract class MessageBuilder {
     return message
   }
 
-  private headerMessage(range: ParsedRange): string {
-    return `${this.emojiService.getEmoji('calendar')} Отчет радиатора по ключевым метрикам за ${range.text}`
+  private headerMessage(): string {
+    return `${this.emojiService.getEmoji('calendar')} Отчет радиатора по ключевым метрикам за ${getYesterday()}`
   }
 
   private coreMessage({ users, duration, sessions, bounceRate }: CoreItems): string {
