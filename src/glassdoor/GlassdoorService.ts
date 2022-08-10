@@ -25,13 +25,15 @@ export class GlassdoorService {
 
   private async getDataFromGlassdoor(url: string) {
     try {
+      console.log(`getDataFromGlassdoor(${url}):`);
       const { data, status } = await axios.get(url);
-      console.log(status);
+      console.log(`getDataFromGlassdoor() - status: ${status}`);
       const $ = load(data);
       const selector = $('#EIProductHeaders');
       const reviews = $(selector[0]).find("span.eiHeaderLink")[1];
-
-      return Number($(reviews).text().trim());
+      const result = Number($(reviews).text().trim());
+      console.log(`getDataFromGlassdoor(): ${result}`);
+      return result;
     } catch (error: any) {
       throw new GlassdoorError(`Cannot get Glassdoor reviews count: ${error.message}`)
     }
@@ -47,14 +49,13 @@ export class GlassdoorService {
     try {
       const reviews = await this.getDataFromGlassdoor(this.glassdoorUrl)
       this.currentCount = reviews
-      console.log(this.currentCount)
       await this.firestore.setData(this.fireStoreDir, {
         count: reviews,
         created: admin.firestore.Timestamp.fromDate(new Date()),
       })
       return await this.getGlassdoorReviewsMetrics()
     } catch (error: any) {
-      return new GlassdoorError(error)
+      throw new GlassdoorError(error)
     }
   }
 }
