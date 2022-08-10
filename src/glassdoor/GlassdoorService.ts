@@ -35,6 +35,7 @@ export class GlassdoorService {
       console.log(`getDataFromGlassdoor(): ${result}`);
       return result;
     } catch (error: any) {
+      console.log(error);
       throw new GlassdoorError(`Cannot get Glassdoor reviews count: ${error.message}`)
     }
   }
@@ -55,7 +56,7 @@ export class GlassdoorService {
       })
       return await this.getGlassdoorReviewsMetrics()
     } catch (error: any) {
-      throw new GlassdoorError(error)
+      return new GlassdoorError(error)
     }
   }
 }
