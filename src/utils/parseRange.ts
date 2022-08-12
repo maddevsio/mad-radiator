@@ -30,7 +30,7 @@ export function getTwoDaysAgo(): Moment {
     Today: ${logHelper(moment(), 'DD/MM/YYYY h:mm:ss a')},
     Two days ago: ${logHelper(moment().subtract(2, 'days'), 'DD/MM/YYYY h:mm:ss a')}
   `);
-  return moment().subtract(2, 'day')
+  return moment().subtract(2, 'days')
 }
 
 export function parseRange(range: string | RangeType = RangeType.day): ParsedRange {
@@ -46,7 +46,6 @@ export function parseRange(range: string | RangeType = RangeType.day): ParsedRan
         endDate: '2daysAgo',
       },
       text: getYesterday(),
-      analyticsDate: getTwoDaysAgo(),
     }
   }
 
@@ -62,7 +61,6 @@ export function parseRange(range: string | RangeType = RangeType.day): ParsedRan
         endDate: '7daysAgo',
       },
       text: getLastWeek(),
-      analyticsDate: getTwoDaysAgo(),
     }
   }
 
@@ -77,6 +75,5 @@ export function parseRange(range: string | RangeType = RangeType.day): ParsedRan
       endDate: '30daysAgo',
     },
     text: getLastMonth(),
-    analyticsDate: getTwoDaysAgo(),
   }
 }

@@ -1,5 +1,4 @@
 import { ParsedRange, RangeType } from 'interfaces'
-import moment from 'moment'
 
 export const parsedRange: ParsedRange = {
   range: RangeType.day,
@@ -12,5 +11,4 @@ export const parsedRange: ParsedRange = {
     endDate: '2daysAgo',
   },
   text: '31/7/2021',
-  analyticsDate: moment("2017-11-07T12:56:00.000")
 }
