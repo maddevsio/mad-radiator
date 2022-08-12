@@ -1,5 +1,4 @@
 import axios from 'axios'
-import { load } from 'cheerio'
 import { GlassdoorError } from 'errors/types/GlassdoorError'
 import admin from 'firebase-admin'
 import { FirestoreConfig } from 'interfaces'
@@ -17,26 +16,49 @@ export class GlassdoorService {
 
   glassdoorUrl: string
 
+  api_key: string
+
   constructor(glassdoorConfig: GlassdoorParams, firestoreConfig: FirestoreConfig) {
     this.firestore = new Firestore(firestoreConfig)
     this.currentCount = 0
     this.glassdoorUrl = glassdoorConfig.glassdoorUrl
+    this.api_key = glassdoorConfig.api_key
   }
 
-  private async getDataFromGlassdoor(url: string) {
+  private async getReviewsFromGlassdoor(api_key: string, glassdoorUrl: string) {
+    const apiUrl = 'https://www.page2api.com/api/v1/scrape'
+    const payload = {
+      api_key,
+      url: glassdoorUrl,
+      real_browser: true,
+      premium_proxy: 'us',
+      parse: {
+        reviews: '*'
+      },
+    }
+
     try {
-      console.log(`getDataFromGlassdoor(${url}):`);
-      const { data, status } = await axios.get(url);
-      console.log(`getDataFromGlassdoor() - status: ${status}`);
-      const $ = load(data);
-      const selector = $('#EIProductHeaders');
-      const reviews = $(selector[0]).find("span.eiHeaderLink")[1];
-      const result = Number($(reviews).text().trim());
-      console.log(`getDataFromGlassdoor(): ${result}`);
-      return result;
+      console.info(`getReviewsFromGlassdoor: POST apiUrl: "${apiUrl}"; payload: "${JSON.stringify(payload)}";`);
+      const { data, status } = await axios.post(apiUrl, payload);
+      console.info(`getReviewsFromGlassdoor: POST success: status ${status}`);
+      const source = data.result.reviews;
+      /* eslint-disable no-useless-escape */
+      const regexp = /\"ratingCount\"\s\:\s\"(\d+)/;
+      const match = source.match(regexp);
+      if (!match) {
+        console.error(`getReviewsFromGlassdoor: No match found in "source".`);
+        throw new Error('getReviewsFromGlassdoor: no match');
+      }
+      if (!match[1]) {
+        console.error(`getReviewsFromGlassdoor: No match[1] found in "source".`);
+        throw new Error('getReviewsFromGlassdoor: no match[1].');
+      }
+      const reviews = match[1];
+      console.info(`getReviewsFromGlassdoor: reviews: ${reviews}`);
+      return Number(reviews);
     } catch (error: any) {
-      console.log(error);
-      throw new GlassdoorError(`Cannot get Glassdoor reviews count: ${error.message}`)
+      console.error(error);
+      throw new Error(error);
     }
   }
 
@@ -48,7 +70,7 @@ export class GlassdoorService {
 
   public async setCountOfGlassdoorReviews(): Promise<any> {
     try {
-      const reviews = await this.getDataFromGlassdoor(this.glassdoorUrl)
+      const reviews = await this.getReviewsFromGlassdoor(this.api_key, this.glassdoorUrl)
       this.currentCount = reviews
       await this.firestore.setData(this.fireStoreDir, {
         count: reviews,

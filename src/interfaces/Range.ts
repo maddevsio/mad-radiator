@@ -1,5 +1,3 @@
-import { Moment } from 'moment'
-
 export enum RangeType {
   day = 'day',
   week = 'week',
@@ -20,5 +18,4 @@ export interface ParsedRange {
   originalRange: Range
   previousRange: Range
   text: string
-  analyticsDate: Moment
 }
