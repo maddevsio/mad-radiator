@@ -171,6 +171,7 @@ export class Radiator {
     try {
       let analytics
       let lighthouse
+      let imageURL
       let pageAnalytics
       let redditCountPosts
       let quoraPosts
@@ -247,6 +248,7 @@ export class Radiator {
           analytics,
           lighthouse,
           range: this.parsedRange,
+          imageURL,
           redditCountPosts,
           quoraPosts,
           glassdoorReviews,

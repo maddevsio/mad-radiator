@@ -9,6 +9,7 @@ export interface BuildMessageData {
   analytics?: AnalyticsData
   range: ParsedRange
   lighthouse?: LighthouseData
+  imageURL?: string
   pageAnalytics?: PageAnalyticsData | null
   redditCountPosts?: number
   quoraPosts?: number
