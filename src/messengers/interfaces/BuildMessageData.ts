@@ -3,6 +3,8 @@ import { ParsedRange } from 'interfaces'
 import { LighthouseData } from 'lighthouse/interfaces'
 import { PageAnalyticsData } from "pagesAnalytics/interfaces"
 
+import { ISearchConsoleData } from '../../searchConsole/interfaces'
+
 export interface BuildMessageData {
   analytics?: AnalyticsData
   range: ParsedRange
@@ -13,4 +15,5 @@ export interface BuildMessageData {
   quoraPosts?: number
   glassdoorReviews?: number
   newPagesInSite?: number
+  searchConsole?: ISearchConsoleData
 }

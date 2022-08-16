@@ -390,6 +390,13 @@
   resolved "https://registry.yarnpkg.com/@gar/promisify/-/promisify-1.1.3.tgz#555193ab2e3bb3b6adc3d551c9c030d9e860daf6"
   integrity sha512-k2Ty1JcVojjJFwrg/ThKi2ujJ7XNLYaFGNB/bWT9wGR+oSMJHMa5w+CUq6p/pVrKeNNgA7pCqEcjSnHVoqJQFw==
 
+"@googleapis/searchconsole@^0.5.1":
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/@googleapis/searchconsole/-/searchconsole-0.5.1.tgz#4f2abbd0d1b61242cb5925251c5937c672241997"
+  integrity sha512-K0ov+H7OhG5E7feSuz1yLLyrzSRQ6gJuA6krdLONiwP6uf2ooopEqD8L71o5fnbgdzs5tMVBsIENKkvZOiKhjA==
+  dependencies:
+    googleapis-common "^5.0.1"
+
 "@google-cloud/firestore@^5.0.2":
   version "5.0.2"
   resolved "https://registry.yarnpkg.com/@google-cloud/firestore/-/firestore-5.0.2.tgz#36923fde45987f928a220d347f341c5602f9e340"
@@ -4149,6 +4156,7 @@ google-p12-pem@^4.0.0:
     node-forge "^1.3.1"
 
 googleapis-common@^5.0.2:
+googleapis-common@^5.0.1, googleapis-common@^5.0.2:
   version "5.1.0"
   resolved "https://registry.yarnpkg.com/googleapis-common/-/googleapis-common-5.1.0.tgz#845a79471c787e522e03c50d415467140e9e356a"
   integrity sha512-RXrif+Gzhq1QAzfjxulbGvAY3FPj8zq/CYcvgjzDbaBNCD6bUl+86I7mUs4DKWHGruuK26ijjR/eDpWIDgNROA==

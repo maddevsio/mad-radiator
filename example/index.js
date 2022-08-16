@@ -27,6 +27,13 @@ const fireStore = {
   firestorePrivateKey: process.env.RADIATOR_FIRESTORE_PRIVATE_KEY,
 }
 
+const searchConsoleConfig = {
+  analyticsClientEmail: authConfig.analyticsClientEmail,
+  analyticsPrivateKey: process.env.RADIATOR_PRIVATE_KEY.replaceAll('\\n', '\n'),
+  website: 'https://maddevs.io/',
+  websiteSitemap: 'https://maddevs.io/sitemapindex.xml'
+}
+
 const radiator = new Radiator(dailyConfig)
 
 radiator.useAnalytics(analyticsConfig)
@@ -35,5 +42,6 @@ radiator.useQuoraService(quora, fireStore)
 radiator.useGlassdoorService(glassdoor, fireStore)
 radiator.useNewPagesInSite(lighthouseConfig, fireStore)
 radiator.usePageAnalytics(pageAnalyticsConfig, fireStore)
+radiator.useSearchConsole(searchConsoleConfig)
 radiator.useSlack(slackConfig)
 radiator.run()

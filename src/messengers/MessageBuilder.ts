@@ -6,6 +6,7 @@ import { LighthouseMetrics, LighthouseUrlResult } from 'lighthouse/interfaces'
 import { BuildMessageData, SlackMessageBlock } from 'messengers/interfaces'
 import { getYesterday } from 'utils/parseRange'
 
+import { ISearchConsoleData } from '../searchConsole/interfaces'
 import { getMonthName } from "../utils/getMonthName";
 
 export abstract class MessageBuilder {
@@ -27,6 +28,8 @@ export abstract class MessageBuilder {
 
   private readonly goalsCountries: Array<string> = ['United States', 'United Kingdom', 'Germany', 'France', 'Indonesia', 'Vietnam']
 
+  private readonly searchConsoleGoal: number = 0
+
   constructor(config: RadiatorConfig) {
     this.config = config
   }
@@ -41,6 +44,7 @@ export abstract class MessageBuilder {
     glassdoorReviews,
     pageAnalytics,
     newPagesInSite,
+    searchConsole,
   }: BuildMessageData): Array<string | SlackMessageBlock> {
     const { core, countries, blogs, contactMe, subscribers, ebookDownloads } = analytics || {}
 
@@ -63,6 +67,12 @@ export abstract class MessageBuilder {
       message.push(this.blocksService.section(this.countriesList(countries)))
       const isGoalAchieved = countries.every(country => this.goalsCountries.includes(country.title))
       message.push(this.blocksService.section(MessageBuilder.matchGoalsCountries(isGoalAchieved, this.goalsCountries)))
+      message.push(this.blocksService.divider())
+    }
+
+    if(searchConsole) {
+      const isGoalAchieved = this.searchConsoleGoal === Number(searchConsole.errors)
+      message.push(this.blocksService.section(MessageBuilder.searchConsoleMessage(isGoalAchieved, searchConsole)))
       message.push(this.blocksService.divider())
     }
 
@@ -346,5 +356,9 @@ export abstract class MessageBuilder {
 
   private static SubscribersMessage(subscribeCount: number) {
     return `:newspaper: *Подписки на рассылку за последние 28 дней:* ${subscribeCount}`
+  }
+
+  private static searchConsoleMessage(isMatch: boolean, searchConsole: ISearchConsoleData) {
+    return `*Search Console:*\n\n${isMatch ? ':white_check_mark:' : ':x:'} Coverage-Excluded pages: ${searchConsole.errors} /  Should be -> 0 ${!isMatch ? '<https://search.google.com/search-console/index?resource_id=sc-domain%3Amaddevs.io&hl=en|view errors>' : ''}`
   }
 }

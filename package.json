@@ -101,6 +101,7 @@
     ]
   },
   "dependencies": {
+    "@googleapis/searchconsole": "^0.5.1",
     "@sentry/node": "^6.13.3",
     "@types/cheerio": "^0.22.31",
     "axios": "^0.21.1",
