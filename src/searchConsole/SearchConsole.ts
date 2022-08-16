@@ -1,34 +1,51 @@
-import { google } from "googleapis";
+import { auth, searchconsole } from '@googleapis/searchconsole'
+
+import { SearchConsoleError } from '../errors/types/SearchConsoleError'
+
+import { ISearchConsoleAuthConfig, ISearchConsoleData } from './interfaces'
 
 export class SearchConsole {
-  private readonly webmasters: any;
+  private readonly config: ISearchConsoleAuthConfig
 
-  private readonly auth: any;
-
-  constructor(auth: any) {
-    this.auth = auth;
-    this.webmasters = google.webmasters("v3");
+  constructor(config: ISearchConsoleAuthConfig) {
+    this.config = config
   }
 
-  public async getSiteSearchAnalytics(): Promise<any> {
-    const params = {
-      auth: this.auth,
-      siteUrl: 'https://www.maddevs.io/',
-      resource: {
-        'startDate': '2022-06-20',
-        'endDate': '2022-07-20',
-        'dimensions': ['query']
-      }
-    }
+  private authorize(): any {
+    return new auth.GoogleAuth({
+      credentials: {
+        private_key: this.config.analyticsPrivateKey,
+        client_email: this.config.analyticsClientEmail,
+      },
+      scopes: [
+        'https://www.googleapis.com/auth/webmasters.readonly',
+        'https://www.googleapis.com/auth/webmasters',
+      ],
+    })
+  }
 
-    let response;
-
+  public async getSiteSearchAnalytics(): Promise<ISearchConsoleData> {
     try {
-      response = await this.webmasters.searchanalytics.query(params)
-    } catch (error: any) {
-      throw new Error(error)
-    }
+      const client = searchconsole({
+        version: 'v1',
+        auth: this.authorize(),
+      })
 
-    return response.data;
+      await client.sites.add({
+        siteUrl: this.config.website,
+      })
+
+      const response = await client.sitemaps.get({
+        feedpath: this.config.websiteSitemap,
+        siteUrl: this.config.website,
+      })
+
+      return {
+        errors: response.data.errors,
+        warnings: response.data.warnings,
+      }
+    } catch (error: any) {
+      throw new SearchConsoleError(`Cannot get Search Console data: ${error.message}`)
+    }
   }
 }

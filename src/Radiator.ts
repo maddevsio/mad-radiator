@@ -23,6 +23,8 @@ import { parseRange } from 'utils/parseRange'
 import { NewPagesInSite, PageAnalytics } from "./pagesAnalytics"
 import { PagesParams } from "./pagesAnalytics/interfaces"
 import { RedditCountPosts } from "./redditPosts"
+import { SearchConsole } from "./searchConsole";
+import { ISearchConsoleAuthConfig } from './searchConsole/interfaces'
 
 export class Radiator {
   private readonly config: RadiatorConfig
@@ -46,6 +48,8 @@ export class Radiator {
   private pageAnalytics: PageAnalytics | undefined
 
   private redditCountPosts: RedditCountPosts | undefined
+
+  private searchConsole: SearchConsole | undefined
 
   private quoraPosts: QuoraService | undefined
 
@@ -126,6 +130,10 @@ export class Radiator {
     this.glassdoorReviews = new GlassdoorService(glassdoorConfig, firestoreConfig)
   }
 
+  public useSearchConsole(authConfig: ISearchConsoleAuthConfig) {
+    this.searchConsole = new SearchConsole(authConfig)
+  }
+
   public useTelegram(telegramParams: MessengersParams) {
     this.messengersParams = {
       ...(this.messengersParams),
@@ -163,12 +171,12 @@ export class Radiator {
     try {
       let analytics
       let lighthouse
-      let imageURL
       let pageAnalytics
       let redditCountPosts
       let quoraPosts
       let newPagesInSite
       let glassdoorReviews
+      let searchConsole
 
       this.runCounter.incrementRunCounter()
 
@@ -223,6 +231,15 @@ export class Radiator {
         lighthouse = await this.lighthouse.getLighthouseMetrics()
       }
 
+      if (this.searchConsole) {
+        Logger.info('Getting SEARCH CONSOLE data...')
+        try {
+          searchConsole = await this.searchConsole.getSiteSearchAnalytics()
+        } catch (error: any) {
+          Logger.error(error.message)
+        }
+      }
+
       if (googleAuthorization && this.messengersParams) {
         Logger.info('Send messages...')
         const messengersService = new MessengersService(this.messengersParams)
@@ -230,12 +247,12 @@ export class Radiator {
           analytics,
           lighthouse,
           range: this.parsedRange,
-          imageURL,
           redditCountPosts,
           quoraPosts,
           glassdoorReviews,
           newPagesInSite,
           pageAnalytics,
+          searchConsole,
         })
 
         await googleAuthorization.unlink()
