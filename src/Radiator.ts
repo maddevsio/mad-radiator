@@ -61,7 +61,7 @@ export class Radiator {
 
   constructor(config: RadiatorConfig) {
     this.config = config
-    this.parsedRange = parseRange(this.config.range, this.config.nodeEnv)
+    this.parsedRange = parseRange(this.config.range)
     this.messengersParams = { websiteUrl: config.websiteUrl }
 
     // instances
@@ -191,7 +191,7 @@ export class Radiator {
         try {
           analytics = await this.analyticsService.getData()
           if (this.enjiService) {
-            await this.enjiService.sendTotalUsersToEnjiWithDate(Number(analytics.core.users.previous), this.parsedRange.analyticsDate)
+            await this.enjiService.sendTotalUsersToEnjiWithDate(Number(analytics.core.users.previous))
           }
         } catch (error: any) {
           Logger.error(`Cannot get analytics data: ${error.message}.`)

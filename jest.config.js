@@ -30,7 +30,7 @@ module.exports = {
       branches: 57,
       statements: 80,
       functions: 79,
-      lines: 81,
+      lines: 80,
     },
   },
   moduleNameMapper: pathsToModuleNameMapper({

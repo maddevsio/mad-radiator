@@ -11,6 +11,7 @@ jest.mock('moment', () => () => ({
   subtract: () => ({
     format: () => '25/4/2021',
   }),
+  format: () => "2018–01–30T12:34:56+00:00"
 }))
 
 describe('parseRange utility', () => {
@@ -31,7 +32,6 @@ describe('parseRange utility', () => {
         endDate: '2daysAgo',
       },
       text: '25/4/2021',
-      analyticsDate: {}
     }))
   })
 
@@ -47,9 +47,6 @@ describe('parseRange utility', () => {
         endDate: '2daysAgo',
       },
       text: '25/4/2021',
-      analyticsDate: {
-        format: () => '25/4/2021',
-      },
     }))
   })
 
@@ -65,9 +62,6 @@ describe('parseRange utility', () => {
         endDate: '7daysAgo',
       },
       text: '25/4/2021 - 25/4/2021',
-      analyticsDate: {
-        format: () => '25/4/2021',
-      },
     }))
   })
 
@@ -83,9 +77,6 @@ describe('parseRange utility', () => {
         endDate: '30daysAgo',
       },
       text: '25/4/2021 - 25/4/2021',
-      analyticsDate: {
-        format: () => '25/4/2021',
-      },
     }))
   })
 })

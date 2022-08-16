@@ -1,30 +1,39 @@
+/* eslint-disable no-console */
+import logHelper from 'helpers/logHelper'
 import { ParsedRange, RangeType } from 'interfaces'
 import moment, { Moment } from 'moment'
 
 const DEFAULT_FORMAT = 'DD/MM/YYYY'
 
-function getYesterday(nodeEnv: string): string {
-  if (nodeEnv === 'production') return moment().format(DEFAULT_FORMAT)
+export function getYesterday(): string {
+  console.log(`
+    Today: ${logHelper(moment(), 'DD/MM/YYYY h:mm:ss a')},
+    Yesterday: ${logHelper(moment().subtract(1, 'day'), 'DD/MM/YYYY h:mm:ss a')}
+  `)
   return moment().subtract(1, 'day').format(DEFAULT_FORMAT)
 }
 
-function getLastWeek(nodeEnv: string): string {
-  const end = getYesterday(nodeEnv)
+function getLastWeek(): string {
+  const end = getYesterday()
   const start = moment().subtract(1, 'week').format(DEFAULT_FORMAT)
   return `${start} - ${end}`
 }
 
-function getLastMonth(nodeEnv: string): string {
-  const end = getYesterday(nodeEnv)
+function getLastMonth(): string {
+  const end = getYesterday()
   const start = moment().subtract(1, 'month').format(DEFAULT_FORMAT)
   return `${start} - ${end}`
 }
 
-function getTwoDaysAgo(): Moment {
-  return moment().subtract(2, 'day')
+export function getTwoDaysAgo(): Moment {
+  console.log(`
+    Today: ${logHelper(moment(), 'DD/MM/YYYY h:mm:ss a')},
+    Two days ago: ${logHelper(moment().subtract(2, 'days'), 'DD/MM/YYYY h:mm:ss a')}
+  `);
+  return moment().subtract(2, 'days')
 }
 
-export function parseRange(range: string | RangeType = RangeType.day, nodeEnv: string = ''): ParsedRange {
+export function parseRange(range: string | RangeType = RangeType.day): ParsedRange {
   if (range === RangeType.day) {
     return {
       range,
@@ -36,8 +45,7 @@ export function parseRange(range: string | RangeType = RangeType.day, nodeEnv: s
         startDate: '2daysAgo',
         endDate: '2daysAgo',
       },
-      text: getYesterday(nodeEnv),
-      analyticsDate: getTwoDaysAgo(),
+      text: getYesterday(),
     }
   }
 
@@ -52,8 +60,7 @@ export function parseRange(range: string | RangeType = RangeType.day, nodeEnv: s
         startDate: '14daysAgo',
         endDate: '7daysAgo',
       },
-      text: getLastWeek(nodeEnv),
-      analyticsDate: getTwoDaysAgo(),
+      text: getLastWeek(),
     }
   }
 
@@ -67,7 +74,6 @@ export function parseRange(range: string | RangeType = RangeType.day, nodeEnv: s
       startDate: '60daysAgo',
       endDate: '30daysAgo',
     },
-    text: getLastMonth(nodeEnv),
-    analyticsDate: getTwoDaysAgo(),
+    text: getLastMonth(),
   }
 }
