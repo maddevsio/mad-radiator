@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { EnjiService } from 'enji/EnjiService';
+import moment from 'moment'
 
 jest.spyOn(axios, 'get').mockImplementation(() => Promise.resolve({ data: { success: true } }));
 
@@ -12,7 +13,7 @@ describe('EnjiService', () => {
 
   it('should send total users to Enji with date', async () => {
     const users = 10;
-    const date = '2022-08-10';
+    const date = moment().subtract(2, 'days').format('YYYY-MM-DD');
     const params = {
       count: users,
       date,
