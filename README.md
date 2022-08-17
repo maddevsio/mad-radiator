@@ -1,7 +1,6 @@
 # MAD RADIATOR
 ---
-Mad radiator is a simple script to collect a part of data from analytics/lighthouse and send it in the pretty format as
-message to slack and/or telegram
+Mad radiator is a simple script to collect a part of data from analytics, lighthouse, reddit, quora, glassdoor, and send it in the pretty format as message to slack and/or telegram
 
 ### How to run
 
@@ -9,7 +8,7 @@ message to slack and/or telegram
 
 To run radiator for your own project you need to do the following steps:
 
-* Install radiator as a dependency for your project(or for new project, that's not important)
+* Install radiator as a dependency for your project(or for a new project, that's not important)
 
 ```bash
 $ npm install @maddevs/mad-radiator
@@ -28,13 +27,15 @@ const { radiator } = require('@maddevs/mad-radiator')
 
 const radiator = new Radiator(baseConfig)
 radiator.useAnalytics(analyticsConfig)
-radiator.useLighthouse(lighthouseConfig)
+radiator.useRedditCountPosts(redditConfig)
+radiator.useQuoraService(quora, fireStore)
+radiator.useGlassdoorService(glassdoor, fireStore)
+radiator.useNewPagesInSite(lighthouseConfig, fireStore)
+radiator.usePageAnalytics(pageAnalyticsConfig, fireStore)
 radiator.useSlack(slackConfig)
-radiator.useTelegram(telegramConfig)
-radiator.scheduleJob(scheduleConfig)
 ```
 
-* Just run the file via nodeJS
+* Just run the file via nodeJS:
 
 ```bash
 $ node radiator
@@ -57,7 +58,12 @@ It is a list of core technologies that we used to make a business logic
 * googleapis
 * node-emoji
 * node-schedule
-* yargs
+* chalk
+* cheerio
+* firebase-admin
+* moment
+* reddit
+* sitemap-stream-parser
 
 #### Additional
 
@@ -70,53 +76,39 @@ Additional tools for development
 
 ### Configuration
 
-This is a most important part of the documentation. For running radiator you need to create the correct config (* required configs). In this
-section you can find all available options of the radiator:
+This is a most important part of the documentation. For running radiator you need to create the correct config (* required configs). In this section you can find all available options of the radiator:
 
 #### Base config *
 
-| name                     | type           | description                           |
-| -------------------------|:-------------  |:--------------------------------------|
-| clientId                 | string         | Google client id                      |
-| clientSecret             | string         | Google client secret                  |
-| redirectUri              | string         | Google redirect Uri                   |
-| accessToken              | string         | Google accessToken                    |
-| refreshToken             | string         | Google refreshToken                   |
-| googleapisKey            | string         | Googleapis key                        |
-| range                    | day/week/month | range for collect data from analytics |
-| websiteUrl               | string         | Website url for lighthouse            |
-| retryAttempts            | number         | number of repeated starts of the radiator when an error occurs|
+| name                     | type        | description                                                   |
+| -------------------------|:------------|:--------------------------------------------------------------|
+| authType                 | string      | Authentication type                                           |
+| analyticsProjectId       | string      | ID of your project (it’s available after project creation)    |
+| analyticsPrivateKeyId    | string      | Private key ID                                                |
+| analyticsPrivateKey      | string      | Private key                                                   |
+| analyticsClientEmail     | string      | Client email                                                  |
+| analyticsClientId        | string      | Client ID                                                     |
+| analyticsAuthUrl         | string      | Auth URL                                                      |
+| analyticsTokenUri        | string      | Token URI                                                     |
+| analyticsProviderCertUrl | string      | Provider cert URL                                             |
+| analyticsClientCertUrl   | string      | Client cert URL                                               |
+| googleapisKey            | string      | Google apis key                                               |
+| expiryDate               | number      | Expiry date                                                   |
+| tokenType                | string      | Token type                                                    |
+| idToken                  | string      | ID token                                                      |
+| websiteUrl               | string      | Website URL                                                   |
+| range                    | string      | Range                                                         |
+| retryAttempts            | number      | Retry attempts (Number of radiator restarts)                  |
+| nodeEnv                  | string      | Node env                                                      |
 
 #### Analytics config
 
 | name                       | type           | description                                     |
 | ---------------------------|:-------------  |:------------------------------------------------|
+| totalUsersToEnji           | { url: string }| After create a business goal in the enji - we get endpoint urls to send data from radiator|
 | analyticsViewId            | string         | Analytics auth type                             |
-| chart                      | Object         | Setting up for chart                            |
-| pagesPathForViewsAnalytics | Array          | List with page paths for analyzing user traffic |
-| analyticsConversions       | Object         | List of analytics conversions                   |
-
-#### Chart
-
-| name                 | type                | description                |
-| -------------        |:-------------       |:---------------------------|
-| period               | day/week/month      | Period for your chart      |
-| type                 | users               | Statistics on user traffic |
-| chartView            | line/bar/radar/etc. | View of chart              |
-
-Example
-
-```javascript
-const analyticsConfig = {
-  //...
-  chart: {
-    chartView: "line",
-    period: 150,
-    type: "users"
-  },
-  //...
-}
-```
+| pagesPathForViewsAnalytics | array          | List with page paths for analyzing user traffic |
+| analyticsConversions       | array         | List of analytics conversions                   |
 
 #### Pages path for views analytics
 
@@ -124,13 +116,13 @@ PagesPathForViewsAnalytics array needed to get statistics of views on these page
 
 ```javascript
 const analyticsConfig = {
-  //...
-  pagesPathForViewsAnalytics: [
+  // ...
+  "pagesPathForViewsAnalytics": [
     "/customer-university/",
-    "/insights/blog/"
+    "/blog/"
   ],
-  //...
-}
+  // ...
+};
 ```
 
 #### Analytics Conversions
@@ -184,19 +176,84 @@ const lighthouseConfig = {
 }
 ```
 
-#### Telegram Config
+#### Glassdoor config
 
-| name                 | type           | description        |
-| -------------        |:-------------  |:-------------------|
-| telegramToken        | string         | telegram token     |
-| telegramChannelId    | number         | telegram channel Id|
+| name                 | type           | description              |
+| -------------        |:-------------  |:-------------------------|
+| glassdoorUrl         | string         | The URL of your account  |
 
-#### slack Config
+Example
 
-| name                 | type           | description        |
-| -------------        |:-------------  |:-------------------|
-| slackWebhookUrl      | string         | slack webhook url  |
-| slackChannelId       | string         | slack channel Id   |
+```json
+// ...
+"glassdoor": {
+  "glassdoorUrl": "https://www.glassdoor.com/Overview/account-url"
+},
+// ...
+```
+
+#### Reddit config
+
+The reddit library is used for easy interaction with the API. Data about the number of posts is requested from Reddit.
+
+| name                 | type           | description                            |
+| -------------        |:-------------  |:---------------------------------------|
+| redditClientId       | string         | Reddit client ID from Reddit APP       |
+| redditClientSecret   | string         | Reddit client secret from Reddit APP   |
+| redditUserName       | string         | Reddit username account                |
+| redditPassword       | string         | Reddit password account                |
+
+Example
+
+```json
+// ...
+"redditConfig": {
+  "redditClientId": "clientid",
+  "redditClientSecret": "clientsecret",
+  "redditUsername": "username",
+  "redditPassword": "password"
+},
+// ...
+```
+
+#### Firestore auth config
+
+| name                         | type           | description                   |
+| -------------                |:-------------  |:------------------------------|
+| authType                     | string         |                               |
+| firestoreProjectId           | string         |                               |
+| firestorePrivateKeyId        | string         |                               |
+| firestoreClientEmail         | string         |                               |
+| firestoreClientId            | string         | From Firestore auth JSON file |
+| firestoreAuthUri             | string         |                               |
+| firestoreTokenUri            | string         |                               |
+| firestoreAuthProviderCertUrl | string         |                               |
+| firestoreClientCertUrl       | string         |                               |
+
+Example
+
+```json
+// ...
+"fireStoreAuthConfig": {
+  "authType": "service_account",
+  "firestoreProjectId": "project-id",
+  "firestorePrivateKeyId": "private-key-id",
+  "firestoreClientEmail": "client-email",
+  "firestoreClientId": "1111111111111111",
+  "firestoreAuthUri": "https://accounts.google.com/o/oauth2/auth",
+  "firestoreTokenUri": "https://oauth2.googleapis.com/token",
+  "firestoreAuthProviderCertUrl": "https://www.googleapis.com/oauth2/v1/certs",
+  "firestoreClientCertUrl": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-2dolj%client-cert-url"
+},
+// ...
+```
+
+#### Slack Config
+
+| name                 | type           | description                  |
+| -------------        |:-------------  |:-----------------------------|
+| slackWebhookUrl      | string         | slack webhook url            |
+| slackChannelId       | string         | name of your slack channel   |
 
 #### Schedule *
 
@@ -215,12 +272,13 @@ configuration**
 
 Example. You want to run your radiator script each day at 10AM. For this you need to use the following configuration:
 
-```javascript
-
-const scheduleConfig = {
-  period: 'day',
-  time: 10,
+```json
+// ...
+"scheduleConfig: {
+  "period": "day",
+  "cron": '12 15 * * *',
 }
+// ...
 ```
 
 ### Git commit format
