@@ -103,12 +103,13 @@ This is a most important part of the documentation. For running radiator you nee
 
 #### Analytics config
 
-| name                       | type           | description                                     |
-| ---------------------------|:-------------  |:------------------------------------------------|
-| totalUsersToEnji           | { url: string }| After create a business goal in the enji - we get endpoint urls to send data from radiator|
-| analyticsViewId            | string         | Analytics auth type                             |
-| pagesPathForViewsAnalytics | array          | List with page paths for analyzing user traffic |
-| analyticsConversions       | array         | List of analytics conversions                   |
+| name                       | type            | description                                     |
+| ---------------------------|:-------------   |:------------------------------------------------|
+| totalUsersToEnji           | { url: string } | After create a business goal in the enji - we   |
+|                            |                 | get endpoint urls to send data from radiator    |
+| analyticsViewId            | string          | Analytics auth type                             |
+| pagesPathForViewsAnalytics | array           | List with page paths for analyzing user traffic |
+| analyticsConversions       | array           | List of analytics conversions                   |
 
 #### Pages path for views analytics
 
