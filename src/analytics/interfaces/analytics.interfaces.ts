@@ -3,7 +3,6 @@ import { CoreItems } from 'analytics/interfaces/core.interfaces'
 import { Country } from 'analytics/interfaces/countries.interfaces'
 // import { Device } from 'analytics/interfaces/devices.interfaces'
 import { AnalyticsConversion } from 'analytics/interfaces/goals.interfaces'
-import { ChartConfig } from 'interfaces'
 
 import { ContactMe } from "./contactMe.interfaces"
 import { EbookDownloads } from "./ebookDownloads.interfaces"
@@ -46,7 +45,6 @@ export type EndPointToEnji = {
 export interface AnalyticsParams {
   analyticsViewId: string
   websiteUrl: string
-  chart?: ChartConfig
   pagesPathForViewsAnalytics?: Array<string>
   analyticsConversions?: Array<AnalyticsConversion>
   totalUsersToEnji?: EndPointToEnji
