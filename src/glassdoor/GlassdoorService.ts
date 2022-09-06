@@ -4,10 +4,13 @@ import admin from 'firebase-admin'
 import { FirestoreConfig } from 'interfaces'
 import { Firestore } from 'utils/firestore'
 import { getFirstDayOfCurrentMonth } from 'utils/getFirstDayOfCurrentMonth'
+import { BuildMessageDataSpec } from '../messengers/interfaces'
+import { RadiatorService, RadiatorSpec } from '../radiator-spec'
+import { executeWithRetry } from '../utils/executeWithRetry'
 
 import { GlassdoorParams } from './interfaces/GlassdoorParams'
 
-export class GlassdoorService {
+export class GlassdoorService implements RadiatorService {
   private firestore: Firestore
 
   private readonly fireStoreDir: string = 'glassdoor'
@@ -80,5 +83,21 @@ export class GlassdoorService {
     } catch (error: any) {
       return new GlassdoorError(error)
     }
+  }
+
+  public getName(): string {
+    return this.constructor.name
+  }
+
+  async perform(results: BuildMessageDataSpec, _radiator: RadiatorSpec): Promise<BuildMessageDataSpec> {
+    return Object.assign(
+      results,
+      {
+        glassdoorReviews: await executeWithRetry(
+          `${this.getName()}.setCountOfGlassdoorReviews()`, 5, 1500,
+          () => this.setCountOfGlassdoorReviews(),
+          (error: any) => error),
+      },
+    )
   }
 }
