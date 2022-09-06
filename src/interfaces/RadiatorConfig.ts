@@ -19,4 +19,12 @@ export interface RadiatorConfig {
   range: RangeType | string,
   retryAttempts: number
   nodeEnv?: string
+  scheduleConfig: {
+    period: string
+    time: number
+  }
+  sentryConfig: {
+    sentryDSN: string,
+    tracesSampleRate: number
+  }
 }
