@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 import { RepositoryFactory, RepositoryType, RepositoryTypes } from 'analytics/RepositoryFactory'
 import {
   AnalyticsData,
@@ -11,8 +12,8 @@ import {
 } from 'analytics/interfaces'
 import { AnalyticsError } from 'errors/types/AnalyticsError'
 import { ParsedRange } from 'interfaces'
-import { EnjiService } from '../enji'
 
+import { EnjiService } from '../enji'
 import { BuildMessageDataSpec } from '../messengers/interfaces'
 import { RadiatorService, RadiatorSpec } from '../radiator-spec'
 import { executeWithRetry } from '../utils/executeWithRetry'

@@ -2,8 +2,8 @@ import moment from "moment"
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import Reddit from 'reddit'
-import { BuildMessageDataSpec } from '../messengers/interfaces'
 
+import { BuildMessageDataSpec } from '../messengers/interfaces'
 import { RadiatorService, RadiatorSpec } from '../radiator-spec'
 import { executeWithRetry } from '../utils/executeWithRetry'
 
