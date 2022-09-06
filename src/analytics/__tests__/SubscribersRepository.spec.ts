@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { fakeResponseForEvents } from '__tests__/fixtures/analytics/fakeAnalyticsResponses'
 import { parsedRange } from '__tests__/fixtures/parsedRange'
 import { SubscribersRepository } from 'analytics/SubscribersRepository'

@@ -1,3 +1,4 @@
+/* eslint-disable */
 import axios from 'axios'
 import { GlassdoorError } from 'errors/types/GlassdoorError'
 import { GlassdoorService } from 'glassdoor/GlassdoorService'

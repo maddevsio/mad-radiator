@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { MockedDate } from '__tests__/fixtures/MockedDate'
 import { analyticsData } from '__tests__/fixtures/analyticsData'
 import { defaultConfig } from '__tests__/fixtures/defaultRadiatorConfigs'

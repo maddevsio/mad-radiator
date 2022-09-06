@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { defaultConfig } from '__tests__/fixtures/defaultRadiatorConfigs'
 import { AnalyticsService } from 'analytics'
 import { GoogleAuthorization } from 'authorization'

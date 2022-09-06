@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { fakeResponseForCoreData } from '__tests__/fixtures/analytics/fakeAnalyticsResponses'
 import { parsedRange } from '__tests__/fixtures/parsedRange'
 import { CoreRepository } from 'analytics/CoreRepository'

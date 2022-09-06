@@ -11,13 +11,12 @@ import {
 } from 'analytics/interfaces'
 import { AnalyticsError } from 'errors/types/AnalyticsError'
 import { ParsedRange } from 'interfaces'
+import { EnjiService } from '../enji'
 
 import { BuildMessageDataSpec } from '../messengers/interfaces'
 import { RadiatorService, RadiatorSpec } from '../radiator-spec'
 import { executeWithRetry } from '../utils/executeWithRetry'
 import { parseRange } from '../utils/parseRange'
-
-// import { Blog } from './interfaces'
 
 export class AnalyticsService implements RadiatorService {
   protected config: AnalyticsParams
@@ -66,6 +65,10 @@ export class AnalyticsService implements RadiatorService {
       const contactMe = (await this.repositories.contactMe.getData()) as ContactMe
       const subscribers = (await this.repositories.subscribers.getData()) as ISubscribers
       const ebookDownloads = (await this.repositories.ebookDownloads.getData()) as Array<EbookDownloads>
+
+      this.config.totalUsersToEnji?.url && await new EnjiService(this.config.totalUsersToEnji?.url)
+        .sendTotalUsersToEnjiWithDate(Number(core.users.previous))
+
       return {
         core,
         countries,
