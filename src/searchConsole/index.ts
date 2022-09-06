@@ -1,1 +1,1 @@
-export * from 'searchConsole/SearchConsole';
+export * from 'searchConsole/SearchConsoleService';

@@ -1,2 +1,2 @@
-export * from 'pagesAnalytics/PageAnalytics'
-export * from 'pagesAnalytics/NewPagesInSite'
+export * from 'pagesAnalytics/PageAnalyticsService'
+export * from 'pagesAnalytics/NewPagesInSiteService'
