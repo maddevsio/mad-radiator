@@ -3,7 +3,7 @@
 import Reddit from 'reddit'
 // eslint-disable-next-line
 import moment from 'moment'
-import { RedditCountPosts } from 'redditPosts/RedditCountPosts'
+import { RedditCountPostsService } from 'redditPosts/RedditCountPostsService'
 
 jest.mock('reddit')
 
@@ -57,7 +57,7 @@ describe('RedditCountPosts service', () => {
         jest.resetAllMocks()
     })
     it('should correctly return reddit posts count', async () => {
-        const reddit = new RedditCountPosts(mockConfig)
+        const reddit = new RedditCountPostsService(mockConfig)
         const redditCount = await reddit.getPostsCountInReddit()
         expect(redditCount).toBe(1)
     })
