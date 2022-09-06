@@ -1,15 +1,14 @@
 import { BlocksFactory } from 'blocks'
 import { EmojiFactory } from 'emoji'
-import { Integration } from 'interfaces'
 import { MessageBuilder } from 'messengers/MessageBuilder'
-import { BuildMessageData } from 'messengers/interfaces'
+import { BuildMessageDataSpec } from 'messengers/interfaces'
 
 export class SlackMessageBuilder extends MessageBuilder {
-  protected blocksService = BlocksFactory.createBlocksService(Integration.slack)
+  protected blocksService = BlocksFactory.createBlocksService()
 
-  protected emojiService = EmojiFactory.createEmojiService(Integration.slack)
+  protected emojiService = EmojiFactory.createEmojiService()
 
-  getMessage(buildMessageData: BuildMessageData): string | Array<Object> {
+  getMessage(buildMessageData: BuildMessageDataSpec): string | Array<Object> {
     return this.buildMessage(buildMessageData)
   }
 }

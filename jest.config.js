@@ -3,6 +3,7 @@ const { pathsToModuleNameMapper } = require('ts-jest/utils')
 const tsconfig = require('./tsconfig')
 
 module.exports = {
+  clearMocks: true,
   preset: 'ts-jest',
   globals: {
     'ts-jest': {
@@ -27,10 +28,10 @@ module.exports = {
   coverageReporters: ['lcov'],
   coverageThreshold: {
     global: {
-      branches: 57,
-      statements: 80,
-      functions: 79,
-      lines: 80,
+      branches: 51,
+      statements: 72,
+      functions: 68,
+      lines: 71,
     },
   },
   moduleNameMapper: pathsToModuleNameMapper({

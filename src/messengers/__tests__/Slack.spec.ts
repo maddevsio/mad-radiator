@@ -1,6 +1,5 @@
 import { analyticsData } from '__tests__/fixtures/analyticsData'
 import { defaultConfig } from '__tests__/fixtures/defaultRadiatorConfigs'
-import { lighthouseData } from '__tests__/fixtures/lighthouseData'
 import { parsedRange } from '__tests__/fixtures/parsedRange'
 import axios from 'axios'
 import { Slack } from 'messengers/Slack'
@@ -19,7 +18,6 @@ describe('Slack messenger', () => {
   it('should sendMessage correctly sendMessage', async () => {
     const buildMessageData = {
       analytics: analyticsData,
-      lighthouse: lighthouseData,
       range: parsedRange,
       imageURL: '123',
     }
