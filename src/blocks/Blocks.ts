@@ -3,7 +3,6 @@ import { ListItemParameters } from 'blocks/interfaces'
 import { Emoji } from 'emoji/Emoji'
 import { EmojiType } from 'emoji/interfaces'
 import { Rate } from 'interfaces'
-import { LighthouseUrlResult } from 'lighthouse/interfaces'
 import { SlackMessageBlock } from 'messengers/interfaces/slack'
 import { toISO } from 'utils/countryISO/toISO'
 
@@ -49,11 +48,6 @@ export abstract class Blocks {
 
   public ebookDownloadsListItem({ name, value }: EbookDownloads): string {
     return `${name}: ${value} `
-  }
-
-  public pagespeedRatingListItem({ url, average }: LighthouseUrlResult): string {
-    const rateEmoji = this.emojiService.getRateEmoji(Blocks.getRateForPerformance(average))
-    return `${rateEmoji} ${url} - *${average}%*`
   }
 
   private getFlag(title: string): string {

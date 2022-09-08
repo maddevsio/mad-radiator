@@ -1,13 +1,13 @@
 import axios from 'axios'
 import { MessageBuilder } from 'messengers/MessageBuilder'
-import { BuildMessageData } from 'messengers/interfaces'
+import { BuildMessageDataSpec } from 'messengers/interfaces'
 
 export abstract class Messenger {
   protected readonly config: any
 
   protected abstract readonly messageBuilder: MessageBuilder
 
-  public abstract sendMessage(buildMessageData: BuildMessageData): Promise<void>
+  public abstract sendMessage(buildMessageData: BuildMessageDataSpec): Promise<void>
 
   constructor(config: any) {
     this.config = config

@@ -1,6 +1,0 @@
-export * from 'lighthouse/interfaces/LighthouseCategory'
-export * from 'lighthouse/interfaces/LighthouseData'
-export * from 'lighthouse/interfaces/LighthousePayload'
-export * from 'lighthouse/interfaces/LighthouseUrlResult'
-export * from 'lighthouse/interfaces/LighthouseMetrics'
-export * from 'lighthouse/interfaces/LighthouseParams'

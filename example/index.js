@@ -1,18 +1,26 @@
 const { Radiator } = require('../lib')
 const config = require('./example.config.json')
 const dotenv = require('dotenv')
+const { MessengersService } = require('../lib/messengers')
+const { AnalyticsService } = require('../lib/analytics')
+const { RedditCountPostsService } = require('../lib/redditPosts')
+const { QuoraService } = require('../lib/quora')
+const { NewPagesInSiteService } = require('../lib/pagesAnalytics')
+const { PageAnalyticsService } = require('../lib/pagesAnalytics')
+const { SearchConsoleService } = require('../lib/searchConsole')
+
 dotenv.config()
 
 const {
   authConfig,
-  analyticsConfig,
   slackConfig,
-  lighthouseConfig,
+  newPagesInSiteConfig,
   quora,
-  glassdoor,
   redditConfig,
   pageAnalyticsConfig,
   fireStoreAuthConfig,
+  scheduleConfig,
+  sentryConfig,
 } = config
 
 const dailyConfig = {
@@ -20,6 +28,8 @@ const dailyConfig = {
   analyticsPrivateKey: process.env.RADIATOR_PRIVATE_KEY,
   range: 'day',
   nodeEnv: process.env.NODE_ENV,
+  scheduleConfig,
+  sentryConfig,
 }
 
 const fireStore = {
@@ -34,14 +44,21 @@ const searchConsoleConfig = {
   websiteSitemap: 'https://maddevs.io/sitemapindex.xml'
 }
 
-const radiator = new Radiator(dailyConfig)
+const messengersConfig = {
+  websiteUrl: dailyConfig.websiteUrl,
+  ...slackConfig,
+}
 
-radiator.useAnalytics(analyticsConfig)
-radiator.useRedditCountPosts(redditConfig)
-radiator.useQuoraService(quora, fireStore)
-radiator.useGlassdoorService(glassdoor, fireStore)
-radiator.useNewPagesInSite(lighthouseConfig, fireStore)
-radiator.usePageAnalytics(pageAnalyticsConfig, fireStore)
-radiator.useSearchConsole(searchConsoleConfig)
-radiator.useSlack(slackConfig)
-radiator.run()
+const analyticsConfig = {
+  ...config.analyticsConfig,
+  websiteUrl: dailyConfig.websiteUrl,
+}
+
+const radiator = new Radiator(dailyConfig, new MessengersService(messengersConfig))
+radiator.register(new AnalyticsService(analyticsConfig, dailyConfig.range))
+radiator.register(new RedditCountPostsService(redditConfig))
+radiator.register(new QuoraService(quora, fireStore))
+radiator.register(new NewPagesInSiteService(newPagesInSiteConfig, fireStore))
+radiator.register(new PageAnalyticsService(pageAnalyticsConfig, fireStore))
+radiator.register(new SearchConsoleService(searchConsoleConfig))
+radiator.execute()

@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { MockedDate } from '__tests__/fixtures/MockedDate'
 import { RangeType } from 'interfaces'
 import { parseRange } from 'utils/parseRange'

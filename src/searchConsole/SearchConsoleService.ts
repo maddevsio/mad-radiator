@@ -1,10 +1,13 @@
 import { auth, searchconsole } from '@googleapis/searchconsole'
 
 import { SearchConsoleError } from '../errors/types/SearchConsoleError'
+import { BuildMessageDataSpec } from '../messengers/interfaces'
+import { RadiatorService, RadiatorSpec } from '../radiator-spec'
+import { executeWithRetry } from '../utils/executeWithRetry'
 
 import { ISearchConsoleAuthConfig, ISearchConsoleData } from './interfaces'
 
-export class SearchConsole {
+export class SearchConsoleService implements RadiatorService {
   private readonly config: ISearchConsoleAuthConfig
 
   constructor(config: ISearchConsoleAuthConfig) {
@@ -47,5 +50,21 @@ export class SearchConsole {
     } catch (error: any) {
       throw new SearchConsoleError(`Cannot get Search Console data: ${error.message}`)
     }
+  }
+
+  public getName(): string {
+    return this.constructor.name
+  }
+
+  async perform(results: BuildMessageDataSpec, _radiator: RadiatorSpec): Promise<BuildMessageDataSpec> {
+    return Object.assign(
+      results,
+      {
+        searchConsole: await executeWithRetry(
+          `${this.getName()}.getSiteSearchAnalytics()`, 5, 1500,
+          () => this.getSiteSearchAnalytics(),
+          (error: any) => error),
+      },
+    )
   }
 }

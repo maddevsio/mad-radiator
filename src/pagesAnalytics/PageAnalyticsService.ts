@@ -1,3 +1,4 @@
+/* eslint-disable */
 import admin from 'firebase-admin'
 import { FirestoreConfig } from 'interfaces'
 import { Logger } from 'logger'
@@ -5,10 +6,13 @@ import moment, { Moment } from 'moment'
 import { Sitemap } from 'sitemap/Sitemap'
 import { SitemapOptions } from 'sitemap/interfaces'
 import { Firestore } from 'utils/firestore'
+import { BuildMessageDataSpec } from '../messengers/interfaces'
+import { RadiatorService, RadiatorSpec } from '../radiator-spec'
+import { executeWithRetry } from '../utils/executeWithRetry'
 
 import { PageAnalyticsData } from './interfaces'
 
-export class PageAnalytics {
+export class PageAnalyticsService implements RadiatorService {
   private readonly config: SitemapOptions
 
   private readonly sitemap: Sitemap
@@ -77,5 +81,21 @@ export class PageAnalytics {
     }
     Logger.error('Failed saving on firestore')
     return null
+  }
+
+  public getName(): string {
+    return this.constructor.name
+  }
+
+  async perform(results: BuildMessageDataSpec, _radiator: RadiatorSpec): Promise<BuildMessageDataSpec> {
+    return Object.assign(
+      results,
+      {
+        pageAnalytics: await executeWithRetry(
+          `${this.getName()}.getPageAnalyticsMetrics()`, 5, 1500,
+          () => this.getPageAnalyticsMetrics(),
+          (error: any) => error),
+      },
+    )
   }
 }

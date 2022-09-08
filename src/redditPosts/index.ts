@@ -1,1 +1,1 @@
-export * from 'redditPosts/RedditCountPosts'
+export * from 'redditPosts/RedditCountPostsService'

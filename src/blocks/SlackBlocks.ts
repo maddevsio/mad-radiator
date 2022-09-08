@@ -1,10 +1,9 @@
 import { Blocks } from 'blocks/Blocks'
 import { EmojiFactory } from 'emoji'
-import { Integration } from 'interfaces'
 import { SlackMessageBlock, SlackMessageBlockType } from 'messengers/interfaces'
 
 export class SlackBlocks extends Blocks {
-  emojiService = EmojiFactory.createEmojiService(Integration.slack)
+  emojiService = EmojiFactory.createEmojiService()
 
   divider(): SlackMessageBlock {
     return {

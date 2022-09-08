@@ -16,7 +16,8 @@
   "rules": {
     "class-methods-use-this": "off",
     "@typescript-eslint/explicit-module-boundary-types": "off",
-    "@typescript-eslint/ban-ts-comment": "warn",
+    "@typescript-eslint/ban-ts-comment": "off",
+    "@typescript-eslint/no-unused-vars" : "off",
     // jest
     "jest/prefer-expect-assertions": "off",
     "jest/no-hooks": "off",
@@ -25,7 +26,7 @@
     "jest/lowercase-name": "off",
     "import/prefer-default-export": "off",
     "import/order": [
-      "error",
+      "warn",
       { "newlines-between": "always", "alphabetize": { "order": "asc" } }
     ],
     "sort-imports": [
@@ -34,6 +35,7 @@
     ],
     "no-restricted-syntax": "off",
     "no-await-in-loop": "off",
-    "no-void": "off"
+    "no-void": "off",
+    "no-console": "off"
   }
 }

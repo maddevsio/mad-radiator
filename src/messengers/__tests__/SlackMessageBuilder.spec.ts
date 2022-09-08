@@ -1,7 +1,7 @@
+/* eslint-disable */
 import { MockedDate } from '__tests__/fixtures/MockedDate'
 import { analyticsData } from '__tests__/fixtures/analyticsData'
 import { defaultConfig } from '__tests__/fixtures/defaultRadiatorConfigs'
-import { lighthouseData } from '__tests__/fixtures/lighthouseData'
 import { parsedRange } from '__tests__/fixtures/parsedRange'
 import { SlackMessageBuilder } from 'messengers/SlackMessageBuilder'
 import { getYesterday } from 'utils/parseRange'
@@ -25,9 +25,7 @@ describe('SlackMessageBuilder', () => {
 
     const message = builder.getMessage({
       analytics: analyticsData,
-      lighthouse: lighthouseData,
       range: parsedRange,
-      imageURL: '123',
       redditCountPosts: 0,
     })
 
@@ -149,23 +147,6 @@ describe('SlackMessageBuilder', () => {
         text: {
           text:
             'Aproach DP: 4 \n\n',
-          type: 'mrkdwn',
-        },
-        type: 'section',
-      },
-      {
-        type: 'divider',
-      },
-      {
-        text: {
-          text: 'Средняя производительность сайта от Google PageSpeed(Проанализировано 100 страниц):\n\n',
-          type: 'mrkdwn',
-        },
-        type: 'section',
-      },
-      {
-        text: {
-          text: ":yum: :chart_with_upwards_trend: Performance: *100%*\n\n:yum: :wheelchair: Accessibility: *100%*\n\n:yum: :sign_of_the_horns: Best Practices: *100%*\n\n:yum: :sports_medal: SEO: *100%*\n\n:yum: :iphone: PWA: *100%*\n\n",
           type: 'mrkdwn',
         },
         type: 'section',

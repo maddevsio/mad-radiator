@@ -1,14 +1,18 @@
+/* eslint-disable */
 import admin from 'firebase-admin'
 import { FirestoreConfig } from 'interfaces'
 import { Logger } from 'logger'
 import { Sitemap } from 'sitemap/Sitemap'
+import { BuildMessageDataSpec } from '../messengers/interfaces'
+import { RadiatorService, RadiatorSpec } from '../radiator-spec'
+import { executeWithRetry } from '../utils/executeWithRetry'
 
 import { Firestore } from '../utils/firestore'
 import { getFirstDayOfCurrentMonth } from '../utils/getFirstDayOfCurrentMonth'
 
 import { PagesParams } from './interfaces'
 
-export class NewPagesInSite {
+export class NewPagesInSiteService implements RadiatorService {
   private readonly config: PagesParams
 
   private readonly sitemap: Sitemap
@@ -46,5 +50,21 @@ export class NewPagesInSite {
     const oldCount = await this.firestore.getDataAfterDate(getFirstDayOfCurrentMonth(), this.firestoreCollectionId, 1)
     const currentCount = this.currentCount - oldCount
     return currentCount < 0 ? 0 : currentCount
+  }
+
+  public getName(): string {
+    return this.constructor.name
+  }
+
+  async perform(results: BuildMessageDataSpec, _radiator: RadiatorSpec): Promise<BuildMessageDataSpec> {
+    return Object.assign(
+      results,
+      {
+        newPagesInSite: await executeWithRetry(
+          `${this.getName()}.setCountOfNewPages()`, 5, 1500,
+          () => this.setCountOfNewPages(),
+          (error: any) => error),
+      },
+    )
   }
 }

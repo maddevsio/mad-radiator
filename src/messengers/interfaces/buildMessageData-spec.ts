@@ -1,15 +1,12 @@
 import { AnalyticsData } from 'analytics/interfaces'
 import { ParsedRange } from 'interfaces'
-import { LighthouseData } from 'lighthouse/interfaces'
 import { PageAnalyticsData } from "pagesAnalytics/interfaces"
 
 import { ISearchConsoleData } from '../../searchConsole/interfaces'
 
-export interface BuildMessageData {
+export interface BuildMessageDataSpec {
   analytics?: AnalyticsData
-  range: ParsedRange
-  lighthouse?: LighthouseData
-  imageURL?: string
+  range?: ParsedRange
   pageAnalytics?: PageAnalyticsData | null
   redditCountPosts?: number
   quoraPosts?: number

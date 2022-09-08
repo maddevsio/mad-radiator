@@ -1,2 +1,2 @@
 export * from 'messengers/interfaces/slack'
-export * from 'messengers/interfaces/BuildMessageData'
+export * from 'messengers/interfaces/buildMessageData-spec'

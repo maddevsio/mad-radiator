@@ -1,6 +1,7 @@
 import { FirestoreConfig, RadiatorConfig, RangeType } from 'interfaces'
 
 export const defaultConfig: RadiatorConfig = {
+  scheduleConfig: { period: '', time: 0 },
   authType: '',
   analyticsProjectId: '',
   analyticsPrivateKeyId: '',
@@ -17,7 +18,11 @@ export const defaultConfig: RadiatorConfig = {
   tokenType: '',
   idToken: '',
   range: RangeType.day,
-  retryAttempts: 2
+  retryAttempts: 2,
+  sentryConfig: {
+    sentryDSN: '',
+    tracesSampleRate: 0,
+  },
 }
 
 export const defaultFirestoreConfig: FirestoreConfig = {

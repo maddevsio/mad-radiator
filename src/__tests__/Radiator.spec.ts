@@ -1,50 +1,62 @@
-/* eslint-disable max-classes-per-file */
-import * as Sentry from '@sentry/node'
-import { Radiator } from 'Radiator'
-import { analyticsData } from '__tests__/fixtures/analyticsData'
-import { defaultConfig, defaultFirestoreConfig } from '__tests__/fixtures/defaultRadiatorConfigs'
+/* eslint-disable */
+import { defaultConfig } from '__tests__/fixtures/defaultRadiatorConfigs'
 import { AnalyticsService } from 'analytics'
 import { GoogleAuthorization } from 'authorization'
-import { ChartBuilder } from 'chartBuilder'
-import { AuthorizationError } from 'errors/types/AuthorizationError'
-import { Lighthouse } from 'lighthouse'
 import { MessengersService } from 'messengers'
-import { PageAnalytics } from 'pagesAnalytics'
-import { QuoraService } from 'quora'
-import { RedditCountPosts } from 'redditPosts'
 import { Scheduler } from 'scheduler'
-import { GoogleDriveStorage } from 'storage'
-import { Firestore } from 'utils/firestore'
-import { parseRange } from 'utils/parseRange'
-
-import { FirestoreData } from '../quora/interfaces'
-
+import { PageAnalyticsService } from '../pagesAnalytics'
+import { QuoraService } from '../quora'
+import { SentryService } from 'sentry/sentryService'
 import { defaultAnalyticsParams } from './fixtures/defaultAnalyticsParams'
-import { defaultLighthouseParams } from './fixtures/defaultLighthouseParams'
 import { defaultMessengersParams } from './fixtures/defaultMessengersParams'
+import { FirestoreData } from '../quora/interfaces'
+import { Radiator } from '../Radiator'
+import { RedditCountPostsService } from '../redditPosts'
+import { analyticsData } from './fixtures/analyticsData'
 
-jest.mock('analytics/AnalyticsService')
-jest.mock('chartBuilder/ChartBuilder')
 jest.mock('authorization/GoogleAuthorization')
-jest.mock('lighthouse/Lighthouse')
-jest.mock('messengers/MessengersService')
-jest.mock('scheduler/Scheduler')
-jest.mock('storage/GoogleDriveStorage')
-jest.mock('@sentry/node')
-jest.mock('quora/QuoraService')
-jest.mock('pagesAnalytics/PageAnalytics')
-jest.mock('redditPosts/RedditCountPosts')
-jest.mock('utils/firestore')
 jest.mock('@sentry/node', () => (
   {
     init: jest.fn(),
     captureException: jest.fn(),
   }
 ))
-
-jest.mock('utils/parseRange', () => ({
-  parseRange: jest.fn(),
+jest.mock('analytics/AnalyticsService', () => ({
+  AnalyticsService: jest.fn().mockImplementation(() => ({
+    getName: jest.fn(() => 'AnalyticsService'),
+    perform: jest.fn(),
+    getData: jest.fn(async () => analyticsData)
+  }))
 }))
+jest.mock('authorization/GoogleAuthorization', () => ({
+  GoogleAuthorization: jest.fn().mockImplementation(() => ({
+    authorize() {
+      return {
+        unlink: jest.fn(),
+      }
+    },
+  }))
+}))
+jest.mock('messengers/MessengersService', () => ({
+  MessengersService: jest.fn().mockImplementation(() => ({
+    sendMessages: jest.fn().mockImplementation(() => {})
+  }))
+}))
+jest.mock('scheduler/Scheduler', () => ({
+  Scheduler: jest.fn().mockImplementation(() => ({
+    scheduleJob: jest.fn((callback: (...args: any[]) => void) => {
+      callback()
+    })
+  }))
+}))
+jest.mock('sentry/sentryService', () => ({
+  SentryService: jest.fn().mockImplementation(() => ({
+    sendErrorToSentry: jest.fn(),
+  }))
+}))
+jest.mock('quora/QuoraService')
+jest.mock('pagesAnalytics/PageAnalyticsService')
+jest.mock('redditPosts/RedditCountPostsService')
 
 jest.mock('moment', () => () => ({
   tz: () => ({
@@ -77,88 +89,38 @@ const getDataAfterDate = jest
   .fn()
   .mockImplementation(() => new Promise(res => res(responseFireStoreData)))
 const setData = jest.fn().mockImplementation(() => new Promise<void>(res => res()))
+jest.mock('utils/firestore', () => ({
+  Firestore: jest.fn().mockImplementation(() => ({
+    getDataAfterDate,
+    setData,
+  }))
+}))
+
 
 const MockedAnalytics = AnalyticsService as jest.Mock<AnalyticsService>
-// @ts-ignore
-const MockedLighthouse = Lighthouse as jest.Mock<Lighthouse>
-const MockedMessengers = MessengersService as jest.Mock<MessengersService>
+const MockedMessengersService = MessengersService as jest.Mock<MessengersService>
 const MockedScheduler = Scheduler as jest.Mock<Scheduler>
 const MockedGoogleAuth = GoogleAuthorization as jest.Mock<GoogleAuthorization>
-// @ts-ignore
-const MockedChart = ChartBuilder as jest.Mock<ChartBuilder>
-// @ts-ignore
-const MockedStorage = GoogleDriveStorage as jest.Mock<GoogleDriveStorage>
-// @ts-ignore
 const MockedQuora = QuoraService as jest.Mock<QuoraService>
-// @ts-ignore
-const MockedPageAnalytics = PageAnalytics as jest.Mock<PageAnalytics>
-// @ts-ignore
-const MockedFirestore = Firestore as jest.Mock<Firestore>
-// @ts-ignore
-const MockedReddit = RedditCountPosts as jest.Mock<RedditCountPosts>
-
-// @ts-ignore
-const MockedParseRange = parseRange as jest.Mock<typeof parseRange>
+const MockedPageAnalytics = PageAnalyticsService as jest.Mock<PageAnalyticsService>
+const MockedReddit = RedditCountPostsService as jest.Mock<RedditCountPostsService>
+const MockedSentryService = SentryService as jest.Mock<SentryService>
 
 describe('Radiator', () => {
-  jest.spyOn(console, 'log').mockImplementation(() => { })
-
-  let scheduleJob = jest.fn()
-  let unlink = jest.fn()
-  let getData = jest.fn()
-  let renderChart = jest.fn()
-  let storeFile = jest.fn()
-  let setCountOfQuoraPosts = jest.fn()
-  let getPageAnalyticsMetrics = jest.fn()
-  let getPostsCountInReddit = jest.fn()
+  jest.spyOn(console, 'log').mockImplementation(() => {})
 
   beforeEach(() => {
     MockedAnalytics.mockClear()
-    MockedLighthouse.mockClear()
-    MockedMessengers.mockClear()
+    MockedMessengersService.mockClear()
     MockedScheduler.mockClear()
     MockedGoogleAuth.mockClear()
-    MockedChart.mockClear()
-    MockedStorage.mockClear()
     MockedQuora.mockClear()
     MockedPageAnalytics.mockClear()
     MockedReddit.mockClear()
-    MockedParseRange.mockClear()
-
-    scheduleJob = jest.fn((callback: (...args: any[]) => void) => {
-      callback()
-    })
-
-    unlink = jest.fn()
-
-    getData = jest.fn(async () => analyticsData)
-    setCountOfQuoraPosts = jest.fn(async () => 1)
-    getPostsCountInReddit = jest.fn(async () => 1)
-    getPageAnalyticsMetrics = jest.fn(async () => [])
-
-    renderChart = jest.fn(async () => 'buffer')
-
-    storeFile = jest.fn(async () => 'success')
-
-    // @ts-ignore
-    MockedScheduler.mockImplementation(() => ({
-      scheduleJob,
-    }))
-
-    // @ts-ignore
-    MockedParseRange.mockImplementation(() => ({
-      parseRange,
-    }))
-
-    // @ts-ignore
-    MockedAnalytics.mockImplementation(() => ({
-      getData,
-    }))
-
-    // @ts-ignore
-    MockedChart.mockImplementation(() => ({
-      renderChart,
-    }))
+    MockedSentryService.mockClear()
+    const setCountOfQuoraPosts = jest.fn(async () => 1)
+    const getPostsCountInReddit = jest.fn(async () => 1)
+    const getPageAnalyticsMetrics = jest.fn(async () => [])
 
     // @ts-ignore
     MockedQuora.mockImplementation(() => ({
@@ -171,28 +133,12 @@ describe('Radiator', () => {
     }))
 
     // @ts-ignore
-    MockedStorage.mockImplementation(() => ({
-      storeFile,
-    }))
-
-    // @ts-ignore
     MockedPageAnalytics.mockImplementation(() => ({
       getPageAnalyticsMetrics,
     }))
-
     // @ts-ignore
-    MockedGoogleAuth.mockImplementation(() => ({
-      authorize() {
-        return {
-          unlink,
-        }
-      },
-    }))
-
-    // @ts-ignore
-    MockedFirestore.mockImplementation(() => ({
-      setData,
-      getDataAfterDate,
+    MockedSentryService.mockImplementation(() => ({
+      sendErrorToSentry: jest.fn(),
     }))
   })
 
@@ -201,67 +147,35 @@ describe('Radiator', () => {
   })
 
   it('should correctly create an instance', () => {
-    const radiator = new Radiator(defaultConfig)
+    // @ts-ignore
+    const radiator = new Radiator(defaultConfig, new MessengersService(defaultMessengersParams))
+    radiator.execute()
+    expect(MockedScheduler).toHaveBeenCalledTimes(1)
     expect(MockedGoogleAuth).toHaveBeenCalledTimes(1)
-    expect(radiator.run).toBeTruthy()
+    expect(radiator.execute()).toBeTruthy()
   })
 
-  it('should correctly called run', async () => {
-
-    const radiator = new Radiator(defaultConfig)
-    radiator.useSentry({
-      sentryDSN: 'test',
-      tracesSampleRate: 1.0,
-    })
-    radiator.useAnalytics(defaultAnalyticsParams)
-    radiator.useLighthouse(defaultLighthouseParams)
-    radiator.useSlack(defaultMessengersParams)
+  it('should correctly work execute', () => {
+    const radiator = new Radiator(defaultConfig, new MessengersService(defaultMessengersParams))
+    radiator.register(new AnalyticsService(defaultAnalyticsParams, defaultConfig.range))
+    radiator.execute()
+    expect(MockedScheduler).toHaveBeenCalledTimes(1)
+    expect(MockedGoogleAuth).toHaveBeenCalledTimes(1)
+    expect(MockedAnalytics).toHaveBeenCalledTimes(1)
     // @ts-ignore
-    radiator.usePageAnalytics({ urlTestRegexp: '/blog/', websiteUrl: 'maddevs.io' }, defaultFirestoreConfig)
-    radiator.useTelegram(defaultMessengersParams)
-    // @ts-ignore
-    radiator.useQuoraService({ quoraUserID: 'test' }, defaultFirestoreConfig)
-    radiator.scheduleJob({
-      period: 'day',
-      time: 10,
-    })
-
-    const lighthouseInstance = MockedLighthouse.mock.instances[0]
-
-    await radiator.run()
-    expect(Sentry.init).toHaveBeenCalledTimes(2)
-    expect(getData).toHaveBeenCalledTimes(2)
-    expect(lighthouseInstance.getLighthouseMetrics).toHaveBeenCalledTimes(2)
-    expect(setCountOfQuoraPosts).toHaveBeenCalledTimes(2)
-    expect(getPageAnalyticsMetrics).toHaveBeenCalledTimes(2)
-    expect(unlink).toHaveBeenCalledTimes(2)
+    expect(radiator.services).toHaveLength(1)
   })
 
-  it('should correctly called run without charts', async () => {
+  it('should correctly work catching errors', () => {
     // @ts-ignore
-    MockedAnalytics.mockImplementation(() => ({
-      getData: () => ({ ...analyticsData, chart: undefined }),
+    MockedAnalytics.mockImplementationOnce(() => ({
+      getName: jest.fn(() => 'AnalyticsService'),
+      perform: jest.fn(() => Promise.reject('Error')),
+      getData: jest.fn(async () => analyticsData)
     }))
-
-    const radiator = new Radiator(defaultConfig)
-    radiator.useAnalytics({ ...defaultAnalyticsParams, chart: undefined })
-
-    await radiator.run()
-    expect(renderChart).toHaveBeenCalledTimes(0)
-    expect(storeFile).toHaveBeenCalledTimes(0)
-  })
-
-  it('should correctly called handleRadiatorError', async () => {
-    // @ts-ignore
-    MockedAnalytics.mockImplementation(() => ({
-      getData: () => Promise.reject(new AuthorizationError('api error'))
-    }))
-
-    const radiator = new Radiator(defaultConfig)
-    radiator.useAnalytics(defaultAnalyticsParams)
-    await radiator.run()
-
-    expect(Sentry.captureException).toHaveBeenCalledTimes(0)
+    const radiator = new Radiator(defaultConfig, new MessengersService(defaultMessengersParams))
+    radiator.register(new AnalyticsService(defaultAnalyticsParams, defaultConfig.range))
+    radiator.execute()
+    expect(MockedSentryService).toHaveBeenCalledTimes(1)
   })
 })
-

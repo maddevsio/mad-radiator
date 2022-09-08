@@ -1,6 +1,6 @@
 import { DeviceTitle } from 'analytics/interfaces'
 import { EmojiType } from 'emoji/interfaces'
-import { Integration, Rate } from 'interfaces'
+import { Rate } from 'interfaces'
 import emoji from 'node-emoji'
 
 export abstract class Emoji {
@@ -15,8 +15,6 @@ export abstract class Emoji {
     mobile: 'iphone',
     tablet: 'pager',
   }
-
-  protected abstract readonly integration: Integration
 
   public abstract getEmoji(type: EmojiType): string
 

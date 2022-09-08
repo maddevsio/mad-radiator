@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { parsedRange } from '__tests__/fixtures/parsedRange'
 import { BlogsRepository } from 'analytics/BlogsRepository'
 import { ContactMeRepository } from 'analytics/ContactMeRepository'

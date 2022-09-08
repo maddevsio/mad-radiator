@@ -1,39 +1,56 @@
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 import { RepositoryFactory, RepositoryType, RepositoryTypes } from 'analytics/RepositoryFactory'
-import { AnalyticsData, AnalyticsParams, Blog, ContactMe, CoreItems, Country, EbookDownloads, ISubscribers } from 'analytics/interfaces'
+import {
+  AnalyticsData,
+  AnalyticsParams,
+  Blog,
+  ContactMe,
+  CoreItems,
+  Country,
+  EbookDownloads,
+  ISubscribers,
+} from 'analytics/interfaces'
 import { AnalyticsError } from 'errors/types/AnalyticsError'
 import { ParsedRange } from 'interfaces'
 
-// import { Blog } from './interfaces'
+import { EnjiService } from '../enji'
+import { BuildMessageDataSpec } from '../messengers/interfaces'
+import { RadiatorService, RadiatorSpec } from '../radiator-spec'
+import { executeWithRetry } from '../utils/executeWithRetry'
+import { parseRange } from '../utils/parseRange'
 
-/**
- * Analytics service
- */
-export class AnalyticsService {
-  /**
-   * Range for requests
-   */
-  private range: ParsedRange
-
-  /**
-   * Main radiator config
-   */
+export class AnalyticsService implements RadiatorService {
   protected config: AnalyticsParams
 
-  /**
-   * Repositories factory
-   */
+  private readonly range: ParsedRange
+
   private factory: RepositoryFactory
 
-  /**
-   * All Repositories
-   */
   private repositories: Record<RepositoryTypes, RepositoryType>
 
-  constructor(config: AnalyticsParams, range: ParsedRange) {
+  constructor(config: AnalyticsParams, range: string) {
     this.config = config
-    this.range = range
+    this.range = parseRange(range)
     this.factory = new RepositoryFactory()
     this.repositories = this.createRepositories()
+  }
+
+  async perform(results: BuildMessageDataSpec, radiator: RadiatorSpec): Promise<BuildMessageDataSpec> {
+    return Object.assign(
+      results,
+      radiator.authorized
+        ? {
+          analytics: await executeWithRetry(
+            `${this.getName()}.getData()`, 5, 1500,
+            () => this.getData(),
+            (error: any) => error instanceof AnalyticsError),
+        }
+        : {},
+    )
+  }
+
+  public getName(): string {
+    return this.constructor.name
   }
 
   /**
@@ -49,6 +66,10 @@ export class AnalyticsService {
       const contactMe = (await this.repositories.contactMe.getData()) as ContactMe
       const subscribers = (await this.repositories.subscribers.getData()) as ISubscribers
       const ebookDownloads = (await this.repositories.ebookDownloads.getData()) as Array<EbookDownloads>
+
+      this.config.totalUsersToEnji?.url && await new EnjiService(this.config.totalUsersToEnji?.url)
+        .sendTotalUsersToEnjiWithDate(Number(core.users.previous))
+
       return {
         core,
         countries,

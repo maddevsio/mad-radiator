@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { fakeResponseForCountries, fakeResponseSecond } from '__tests__/fixtures/analytics/fakeAnalyticsResponses'
 import { parsedRange } from '__tests__/fixtures/parsedRange'
 import { CountriesRepository } from 'analytics/CountriesRepository'

@@ -3,9 +3,13 @@ import moment from "moment"
 // @ts-ignore
 import Reddit from 'reddit'
 
+import { BuildMessageDataSpec } from '../messengers/interfaces'
+import { RadiatorService, RadiatorSpec } from '../radiator-spec'
+import { executeWithRetry } from '../utils/executeWithRetry'
+
 import { IRedditParams, Post, Posts } from "./interfaces"
 
-export class RedditCountPosts {
+export class RedditCountPostsService implements RadiatorService {
   private redditConnect: Reddit
 
   constructor({
@@ -21,6 +25,22 @@ export class RedditCountPosts {
       appSecret: redditClientSecret,
       userAgent: 'Whatever',
     })
+  }
+
+  public getName(): string {
+    return this.constructor.name
+  }
+
+  async perform(results: BuildMessageDataSpec, _radiator: RadiatorSpec): Promise<BuildMessageDataSpec> {
+    return Object.assign(
+      results,
+      {
+          redditCountPosts: await executeWithRetry(
+            `${this.getName()}.getPostsCountInReddit()`, 5, 1500,
+            () => this.getPostsCountInReddit(),
+            (error: any) => error),
+        },
+    )
   }
 
   public async getPostsCountInReddit(): Promise<number> {

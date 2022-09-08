@@ -2,8 +2,7 @@ import { Blog, CoreItems, Country, EbookDownloads } from 'analytics/interfaces'
 import { Blocks } from 'blocks/Blocks'
 import { Emoji } from 'emoji/Emoji'
 import { RadiatorConfig } from 'interfaces'
-import { LighthouseMetrics, LighthouseUrlResult } from 'lighthouse/interfaces'
-import { BuildMessageData, SlackMessageBlock } from 'messengers/interfaces'
+import { BuildMessageDataSpec, SlackMessageBlock } from 'messengers/interfaces'
 import { getYesterday } from 'utils/parseRange'
 
 import { ISearchConsoleData } from '../searchConsole/interfaces'
@@ -34,18 +33,17 @@ export abstract class MessageBuilder {
     this.config = config
   }
 
-  public abstract getMessage(buildMessageData: BuildMessageData): string | Array<Object>
+  public abstract getMessage(buildMessageData: BuildMessageDataSpec): string | Array<Object>
 
   protected buildMessage({
     analytics,
-    lighthouse,
     redditCountPosts,
     quoraPosts,
     glassdoorReviews,
     pageAnalytics,
     newPagesInSite,
     searchConsole,
-  }: BuildMessageData): Array<string | SlackMessageBlock> {
+  }: BuildMessageDataSpec): Array<string | SlackMessageBlock> {
     const { core, countries, blogs, contactMe, subscribers, ebookDownloads } = analytics || {}
 
     const message = []
@@ -143,29 +141,6 @@ export abstract class MessageBuilder {
       message.push(this.blocksService.section(MessageBuilder.ebookDownloadsTitle()))
       message.push(this.blocksService.section(this.ebookDownloadsList(ebookDownloads)))
       message.push(this.blocksService.divider())
-    }
-
-    if (lighthouse) {
-      // pagespeed average
-      message.push(
-        this.blocksService.section(MessageBuilder.pagespeedAverageMessage(lighthouse.urlCount)),
-      )
-      message.push(this.blocksService.section(this.pagespeedList(lighthouse.average)))
-      message.push(this.blocksService.divider())
-
-      // pagespeed top
-      if (lighthouse.top.length) {
-        message.push(this.blocksService.section(MessageBuilder.pagespeedBestMessage()))
-        message.push(this.blocksService.section(this.pagespeedRating(lighthouse.top)))
-        message.push(this.blocksService.divider())
-      }
-
-      // pagespeed worst
-      if (lighthouse.worst.length) {
-        message.push(this.blocksService.section(MessageBuilder.pagespeedWorstMessage()))
-        message.push(this.blocksService.section(this.pagespeedRating(lighthouse.worst)))
-        message.push(this.blocksService.divider())
-      }
     }
 
     if (subscribers) {
@@ -302,46 +277,6 @@ export abstract class MessageBuilder {
 
   private static blogPostsWeeklyGoalMessage(isMatch: boolean, blogPostCount: number) {
     return `${isMatch ? ':white_check_mark:' : ':x:'} Новых статей за неделю: ${blogPostCount} / Should be > 1`
-  }
-
-  private static pagespeedAverageMessage(count: number) {
-    return `Средняя производительность сайта от Google PageSpeed(Проанализировано ${count} страниц):`
-  }
-
-  private pagespeedList(lighthouse: LighthouseMetrics) {
-    return this.blocksService.list([
-      this.blocksService.performanceListItem(
-        'Performance',
-        lighthouse.performance,
-        'chart_with_upwards_trend',
-      ),
-      this.blocksService.performanceListItem(
-        'Accessibility',
-        lighthouse.accessibility,
-        'wheelchair',
-      ),
-      this.blocksService.performanceListItem(
-        'Best Practices',
-        lighthouse.best_practices,
-        'the_horns',
-      ),
-      this.blocksService.performanceListItem('SEO', lighthouse.seo, 'sports_medal'),
-      this.blocksService.performanceListItem('PWA', lighthouse.pwa, 'iphone'),
-    ])
-  }
-
-  private static pagespeedBestMessage() {
-    return 'Лучшие страницы:'
-  }
-
-  private static pagespeedWorstMessage() {
-    return 'Худшие страницы:'
-  }
-
-  private pagespeedRating(urls: Array<LighthouseUrlResult>) {
-    return this.blocksService.list(
-      urls.map(urlResult => this.blocksService.pagespeedRatingListItem(urlResult)),
-    )
   }
 
   private static blogsMessage() {
