@@ -45,6 +45,12 @@ export class EbookDownloadsRepository extends Repository {
             name: 'Approach Development Process',
           })
         }
+        if(row.dimensionValues[0]?.value === 'submit_engineerings_handbook_form') {
+          acc.push({
+            value: Number(row.metricValues[0].value),
+            name: 'Mad Devs Engineering’s Handbook',
+          })
+        }
         return acc
       },<Array<AnalyticDataRows>>[])
   }
