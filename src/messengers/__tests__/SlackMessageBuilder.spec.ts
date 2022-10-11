@@ -52,7 +52,7 @@ describe('SlackMessageBuilder', () => {
       {
         text: {
           text:
-            ':yum: :man: Users: *100* (100%%)\n\n:yum: :door: Sessions: *100* (100%%)\n\n:yum: :moyai: Bounce Rate: *100%* (100%%)\n\n:yum: :clock1: Session Duration: *100* (100%%)\n\n:x: Пользователей за последние 7 дней: *2888* / Should be > *3000*\n\n:x: Пользователей за последние 28 дней: *10001* / Should be > *11000*\n\n',
+            ':yum: :man: Users: *100* (100%%)\n\n:yum: :door: Sessions: *100* (100%%)\n\n:yum: :moyai: Bounce Rate: *100%* (100%%)\n\n:yum: :clock1: Session Duration: *100* (100%%)\n\n:x: Пользователей за последние 7 дней: *2888* / Should be > *4200*\n\n:x: Пользователей за последние 28 дней: *10001* / Should be > *16000*\n\n',
           type: 'mrkdwn',
         },
         type: 'section',
