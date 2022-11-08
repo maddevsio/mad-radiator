@@ -6,6 +6,7 @@ import { BuildMessageDataSpec, SlackMessageBlock } from 'messengers/interfaces'
 import { getYesterday } from 'utils/parseRange'
 
 import { ISearchConsoleData } from '../searchConsole/interfaces'
+import { ISendpulseData } from '../sendpulse/interfaces'
 import { getMonthName } from "../utils/getMonthName";
 
 export abstract class MessageBuilder {
@@ -43,6 +44,7 @@ export abstract class MessageBuilder {
     pageAnalytics,
     newPagesInSite,
     searchConsole,
+    emailsCount,
   }: BuildMessageDataSpec): Array<string | SlackMessageBlock> {
     const { core, countries, blogs, contactMe, subscribers, ebookDownloads } = analytics || {}
 
@@ -97,6 +99,12 @@ export abstract class MessageBuilder {
         }
 
         message.push(this.blocksService.divider())
+
+        if (pageAnalytics.total !== null) {
+          message.push(this.blocksService.section(MessageBuilder.blogPostsTotalMessage(pageAnalytics.total)))
+        }
+
+        message.push(this.blocksService.divider())
       }
     }
 
@@ -145,6 +153,7 @@ export abstract class MessageBuilder {
 
     if (subscribers) {
       message.push(this.blocksService.section(MessageBuilder.SubscribersMessage(subscribers.value)))
+      message.push(this.blocksService.section(MessageBuilder.subscribersMessageTotal(emailsCount)))
       message.push(this.blocksService.divider())
     }
 
@@ -279,6 +288,10 @@ export abstract class MessageBuilder {
     return `${isMatch ? ':white_check_mark:' : ':x:'} Новых статей за неделю: ${blogPostCount} / Should be > 1`
   }
 
+  private static blogPostsTotalMessage(blogPostTotal: number) {
+    return `:page_facing_up: *Всего статей в блоге:* ${blogPostTotal}`
+  }
+
   private static blogsMessage() {
     return '*Топ-3 популярных статей в блоге:*'
   }
@@ -295,5 +308,9 @@ export abstract class MessageBuilder {
 
   private static searchConsoleMessage(isMatch: boolean, searchConsole: ISearchConsoleData) {
     return `*Search Console:*\n\n${isMatch ? ':white_check_mark:' : ':x:'} Coverage-Excluded pages: ${searchConsole.errors} /  Should be -> 0 ${!isMatch ? '<https://search.google.com/search-console/index?resource_id=sc-domain%3Amaddevs.io&hl=en|view errors>' : ''}`
+  }
+
+  private static subscribersMessageTotal(subscribersCountTotal: ISendpulseData | undefined) {
+    return `:postbox: *Всего подписано на рассылку:* ${subscribersCountTotal}`
   }
 }

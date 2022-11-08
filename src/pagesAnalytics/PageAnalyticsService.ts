@@ -73,6 +73,7 @@ export class PageAnalyticsService implements RadiatorService {
         return {
           perMonth: await this.getCountOfBlogs(this.firstDayOfCurrentMonth),
           perWeek: await this.getCountOfBlogs(this.firstDayOfCurrentWeek),
+          total: this.currentCount
         }
       } catch (error) {
         Logger.error(`Error getting count of blog pages: ${error}`)
