@@ -1,1 +1,1 @@
-export * from 'sendpulse/sendpulseCountEmailsService'
+export * from 'sendpulse/SendpulseCountEmailsService'
