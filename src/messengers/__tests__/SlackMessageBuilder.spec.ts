@@ -162,6 +162,13 @@ describe('SlackMessageBuilder', () => {
         type: 'section',
       },
       {
+        text: {
+          text: `:postbox: *Всего подписано на рассылку:* undefined\n\n`,
+          type: 'mrkdwn',
+        },
+        type: 'section',
+      },
+      {
         type: 'divider',
       },
     ])

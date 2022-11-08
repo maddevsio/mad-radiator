@@ -115,6 +115,7 @@
     "node-schedule": "^2.0.0",
     "quickchart-js": "^3.0.2",
     "reddit": "^1.2.1",
+    "sendpulse-api-request": "^0.0.2",
     "sitemap-stream-parser": "^1.7.0",
     "yarn": "^1.22.18"
   },
