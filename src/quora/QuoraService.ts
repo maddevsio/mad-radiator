@@ -62,7 +62,8 @@ export class QuoraService implements RadiatorService {
     try {
       const { data } = await axios.get(`${this.url}${this.quoraUserID}`)
       const posts = data.match(/(?<=postsCount\\":)\d+/gim)
-      return Number(posts[0])
+      const answers = data.match(/(?<=numPublicAnswers\\":)\d+/gim)
+      return Number(posts[0]) + Number(answers[0])
     } catch (error: any) {
       throw new QuoraServiceError(`Cannot get Quora posts count: ${error.message}`)
     }
