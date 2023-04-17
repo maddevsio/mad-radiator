@@ -201,13 +201,13 @@ export abstract class MessageBuilder {
       }),
       this.blocksService.totalListItem(weeklyUsers, {
         title: 'Пользователей за последние 7 дней',
-        total: 4200,
-        emojiType: weeklyUsers.value > 4200 ? 'white_check_mark' : 'x',
+        total: 4600,
+        emojiType: weeklyUsers.value > 4600 ? 'white_check_mark' : 'x',
       }),
       this.blocksService.totalListItem(monthlyUsers, {
         title: 'Пользователей за последние 28 дней',
-        total: 16000,
-        emojiType: monthlyUsers.value > 16000 ? 'white_check_mark' : 'x',
+        total: 18000,
+        emojiType: monthlyUsers.value > 18000 ? 'white_check_mark' : 'x',
       }),
     ])
   }
