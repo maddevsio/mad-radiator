@@ -8,7 +8,7 @@ const { QuoraService } = require('../lib/quora')
 const { NewPagesInSiteService } = require('../lib/pagesAnalytics')
 const { PageAnalyticsService } = require('../lib/pagesAnalytics')
 const { SearchConsoleService } = require('../lib/searchConsole')
-const { SendpulseCountEmailsService } = require('../lib/sendpulse')
+const { MoosendCountEmailsService } = require('../lib/moosend')
 
 dotenv.config()
 
@@ -22,7 +22,7 @@ const {
   fireStoreAuthConfig,
   scheduleConfig,
   sentryConfig,
-  sendpulseConfig,
+  moosendConfig,
 } = config
 
 const dailyConfig = {
@@ -63,5 +63,5 @@ radiator.register(new QuoraService(quora, fireStore))
 radiator.register(new NewPagesInSiteService(newPagesInSiteConfig, fireStore))
 radiator.register(new PageAnalyticsService(pageAnalyticsConfig, fireStore))
 radiator.register(new SearchConsoleService(searchConsoleConfig))
-radiator.register(new SendpulseCountEmailsService(sendpulseConfig))
+radiator.register(new MoosendCountEmailsService(moosendConfig))
 radiator.execute()
