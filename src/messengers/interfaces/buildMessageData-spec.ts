@@ -3,7 +3,7 @@ import { ParsedRange } from 'interfaces'
 import { PageAnalyticsData } from "pagesAnalytics/interfaces"
 
 import { ISearchConsoleData } from '../../searchConsole/interfaces'
-import { ISendpulseData } from '../../sendpulse/interfaces'
+import { IMoosendData } from '../../moosend/interfaces'
 
 export interface BuildMessageDataSpec {
   analytics?: AnalyticsData
@@ -14,5 +14,5 @@ export interface BuildMessageDataSpec {
   glassdoorReviews?: number
   newPagesInSite?: number
   searchConsole?: ISearchConsoleData
-  emailsCount?: ISendpulseData
+  emailsCount?: IMoosendData
 }

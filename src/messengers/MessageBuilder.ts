@@ -6,7 +6,7 @@ import { BuildMessageDataSpec, SlackMessageBlock } from 'messengers/interfaces'
 import { getYesterday } from 'utils/parseRange'
 
 import { ISearchConsoleData } from '../searchConsole/interfaces'
-import { ISendpulseData } from '../sendpulse/interfaces'
+import { IMoosendData } from '../moosend/interfaces'
 import { getMonthName } from "../utils/getMonthName";
 
 export abstract class MessageBuilder {
@@ -310,7 +310,7 @@ export abstract class MessageBuilder {
     return `*Search Console:*\n\n${isMatch ? ':white_check_mark:' : ':x:'} Coverage-Excluded pages: ${searchConsole.errors} /  Should be -> 0 ${!isMatch ? '<https://search.google.com/search-console/index?resource_id=sc-domain%3Amaddevs.io&hl=en|view errors>' : ''}`
   }
 
-  private static subscribersMessageTotal(subscribersCountTotal: ISendpulseData | undefined) {
+  private static subscribersMessageTotal(subscribersCountTotal: IMoosendData | undefined) {
     return `:postbox: *Всего подписано на рассылку:* ${subscribersCountTotal}`
   }
 }
