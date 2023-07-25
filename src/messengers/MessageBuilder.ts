@@ -5,8 +5,8 @@ import { RadiatorConfig } from 'interfaces'
 import { BuildMessageDataSpec, SlackMessageBlock } from 'messengers/interfaces'
 import { getYesterday } from 'utils/parseRange'
 
-import { ISearchConsoleData } from '../searchConsole/interfaces'
 import { IMoosendData } from '../moosend/interfaces'
+import { ISearchConsoleData } from '../searchConsole/interfaces'
 import { getMonthName } from "../utils/getMonthName";
 
 export abstract class MessageBuilder {
