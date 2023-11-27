@@ -84,6 +84,7 @@ export default [
   { Code: 'DE', Name: 'Germany' },
   { Code: 'GH', Name: 'Ghana' },
   { Code: 'GI', Name: 'Gibraltar' },
+  { Code: 'GB', Name: 'Great Britain' },
   { Code: 'GR', Name: 'Greece' },
   { Code: 'GL', Name: 'Greenland' },
   { Code: 'GD', Name: 'Grenada' },
