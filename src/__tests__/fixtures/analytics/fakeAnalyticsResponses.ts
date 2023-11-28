@@ -202,6 +202,33 @@ export const blogFakeResponse = {
   }
 }
 
+export const pagesFakeResponse = {
+  data: {
+    rows: [
+      {
+        "dimensionValues": [{ "value": "/blog/" }, { "value": "date_range_0" }],
+        "metricValues": [{ "value": "59" }]
+      },
+      {
+        "dimensionValues": [{ "value": "/blog/main-software-development-metrics-and-kpis/" }, { "value": "date_range_0" }],
+        "metricValues": [{ "value": "112" }]
+      },
+      {
+        "dimensionValues": [{ "value": "/customer-university/" }, { "value": "date_range_0" }],
+        "metricValues": [{ "value": "11" }]
+      },
+      {
+        "dimensionValues": [{ "value": "/writeups/hackthebox-codify/" }, { "value": "date_range_0" }],
+        "metricValues": [{ "value": "153" }]
+      },
+      {
+        "dimensionValues": [{ "value": "/writeups/" }, { "value": "date_range_0" }],
+        "metricValues": [{ "value": "120" }]
+      },
+    ]
+  }
+}
+
 export const fakeResponseForEvents = {
   data: {
     "dimensionHeaders": [

@@ -54,6 +54,12 @@ export const analyticsData: AnalyticsData = {
       pageViews: 19,
     },
   ],
+  pages: [
+    {
+      pagePath: 'https://maddevs.io/cloud-infrastructure-optimization/',
+      pageViews: 35,
+    },
+  ],
   contactMe: {
       value: 4
   },

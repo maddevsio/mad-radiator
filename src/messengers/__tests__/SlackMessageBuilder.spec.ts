@@ -52,7 +52,7 @@ describe('SlackMessageBuilder', () => {
       {
         text: {
           text:
-            ':yum: :man: Users: *100* (100%%)\n\n:yum: :door: Sessions: *100* (100%%)\n\n:yum: :moyai: Bounce Rate: *100%* (100%%)\n\n:yum: :clock1: Session Duration: *100* (100%%)\n\n:x: Пользователей за последние 7 дней: *2888* / Should be > *4600*\n\n:x: Пользователей за последние 28 дней: *10001* / Should be > *18000*\n\n',
+            ':yum: :man: Users: *100* (100%%)\n\n:yum: :door: Sessions: *100* (100%%)\n\n:yum: :moyai: Bounce Rate: *100%* (100%%)\n\n:yum: :clock1: Session Duration: *100* (100%%)\n\n:x: Пользователей за последние 7 дней: *2888* / Should be > *7500*\n\n:x: Пользователей за последние 28 дней: *10001* / Should be > *30000*\n\n',
           type: 'mrkdwn',
         },
         type: 'section',
@@ -77,6 +77,23 @@ describe('SlackMessageBuilder', () => {
       {
         text: {
           text: ':x: Should be -> United States, United Kingdom, Germany, France, Indonesia, Vietnam\n\n',
+          type: 'mrkdwn',
+        },
+        type: 'section',
+      },
+      {
+        type: 'divider',
+      },
+      {
+        text: {
+          text: '*Топ-3 популярных страницы на сайте:*\n\n',
+          type: 'mrkdwn',
+        },
+        type: 'section',
+      },
+      {
+        text: {
+          text: ':yum: https://maddevs.io/cloud-infrastructure-optimization/ - *35* посещений\n\n',
           type: 'mrkdwn',
         },
         type: 'section',
