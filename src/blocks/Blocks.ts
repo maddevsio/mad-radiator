@@ -1,4 +1,4 @@
-import {Blog, CoreItem, Country, Device, EbookDownloads, Goal, Page} from 'analytics/interfaces'
+import { Blog, CoreItem, Country, Device, EbookDownloads, Goal, Page } from 'analytics/interfaces'
 import { ListItemParameters } from 'blocks/interfaces'
 import { Emoji } from 'emoji/Emoji'
 import { EmojiType } from 'emoji/interfaces'
@@ -51,7 +51,7 @@ export abstract class Blocks {
   }
 
   private getFlag(title: string): string {
-    const iso = toISO(title)
+    const iso = title === 'United Kingdom' ? toISO('Great Britain') : toISO(title)
     if (!iso) return this.emojiService.getEmoji('flags')
     const emoji = `flag-${iso.toLowerCase()}` as EmojiType
     return this.emojiService.getEmoji(emoji)
