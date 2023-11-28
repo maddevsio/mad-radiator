@@ -9,6 +9,7 @@ import {
   Country,
   EbookDownloads,
   ISubscribers,
+  Page,
 } from 'analytics/interfaces'
 import { AnalyticsError } from 'errors/types/AnalyticsError'
 import { ParsedRange } from 'interfaces'
@@ -63,6 +64,7 @@ export class AnalyticsService implements RadiatorService {
 
       const countries = (await this.repositories.countries.getData()) as Array<Country>
       const blogs = (await this.repositories.blogs.getData()) as Array<Blog>
+      const pages = (await this.repositories.pages.getData()) as Array<Page>
       const contactMe = (await this.repositories.contactMe.getData()) as ContactMe
       const subscribers = (await this.repositories.subscribers.getData()) as ISubscribers
       const ebookDownloads = (await this.repositories.ebookDownloads.getData()) as Array<EbookDownloads>
@@ -75,6 +77,7 @@ export class AnalyticsService implements RadiatorService {
         countries,
         // chart,
         blogs,
+        pages,
         contactMe,
         subscribers,
         ebookDownloads,
@@ -94,6 +97,7 @@ export class AnalyticsService implements RadiatorService {
       // devices: this.factory.createRepository(RepositoryTypes.devices, this.config, this.range),
       // goals: this.factory.createRepository(RepositoryTypes.goals, this.config, this.range),
       blogs: this.factory.createRepository(RepositoryTypes.blogs, this.config, this.range),
+      pages: this.factory.createRepository(RepositoryTypes.pages, this.config, this.range),
       contactMe: this.factory.createRepository(RepositoryTypes.contactMe, this.config, this.range),
       subscribers: this.factory.createRepository(RepositoryTypes.subscribers, this.config, this.range),
       ebookDownloads: this.factory.createRepository(RepositoryTypes.ebookDownloads, this.config, this.range),
