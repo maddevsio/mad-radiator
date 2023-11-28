@@ -1,4 +1,4 @@
-import { Blog, CoreItems, Country, EbookDownloads } from 'analytics/interfaces'
+import { Blog, CoreItems, Country, EbookDownloads, Page } from 'analytics/interfaces'
 import { Blocks } from 'blocks/Blocks'
 import { Emoji } from 'emoji/Emoji'
 import { RadiatorConfig } from 'interfaces'
@@ -46,7 +46,7 @@ export abstract class MessageBuilder {
     searchConsole,
     emailsCount,
   }: BuildMessageDataSpec): Array<string | SlackMessageBlock> {
-    const { core, countries, blogs, contactMe, subscribers, ebookDownloads } = analytics || {}
+    const { core, countries, pages, blogs, contactMe, subscribers, ebookDownloads } = analytics || {}
 
     const message = []
 
@@ -73,6 +73,13 @@ export abstract class MessageBuilder {
     if(searchConsole) {
       const isGoalAchieved = this.searchConsoleGoal === Number(searchConsole.errors)
       message.push(this.blocksService.section(MessageBuilder.searchConsoleMessage(isGoalAchieved, searchConsole)))
+      message.push(this.blocksService.divider())
+    }
+
+    // pages views statistics
+    if (pages?.length) {
+      message.push(this.blocksService.section(MessageBuilder.pagesMessage()))
+      message.push(this.blocksService.section(this.pagesList(pages)))
       message.push(this.blocksService.divider())
     }
 
@@ -290,6 +297,16 @@ export abstract class MessageBuilder {
 
   private static blogPostsTotalMessage(blogPostTotal: number) {
     return `:page_facing_up: *Всего статей в блоге:* ${blogPostTotal}`
+  }
+
+  private static pagesMessage() {
+    return '*Топ-3 популярных страницы на сайте:*'
+  }
+
+  private pagesList(pages: Array<Page>) {
+    return this.blocksService.list(
+      pages.map(page => this.blocksService.pagesListItem(page)),
+    )
   }
 
   private static blogsMessage() {
