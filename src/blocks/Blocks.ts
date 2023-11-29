@@ -1,4 +1,4 @@
-import { Blog, CoreItem, Country, Device, EbookDownloads, Goal } from 'analytics/interfaces'
+import { Blog, CoreItem, Country, Device, EbookDownloads, Goal, Page } from 'analytics/interfaces'
 import { ListItemParameters } from 'blocks/interfaces'
 import { Emoji } from 'emoji/Emoji'
 import { EmojiType } from 'emoji/interfaces'
@@ -51,7 +51,7 @@ export abstract class Blocks {
   }
 
   private getFlag(title: string): string {
-    const iso = toISO(title)
+    const iso = title === 'United Kingdom' ? toISO('Great Britain') : toISO(title)
     if (!iso) return this.emojiService.getEmoji('flags')
     const emoji = `flag-${iso.toLowerCase()}` as EmojiType
     return this.emojiService.getEmoji(emoji)
@@ -69,6 +69,16 @@ export abstract class Blocks {
     return Rate.bad
   }
 
+  private static getRateForPagesViews(value: number): Rate {
+    if (value >= 20) return Rate.good
+    if (value >= 15) return Rate.neutral
+    return Rate.bad
+  }
+
+  public pagesListItem({ pagePath, pageViews }: Page): string {
+    const rateEmoji = this.emojiService.getRateEmoji(Blocks.getRateForPagesViews(pageViews))
+    return `${rateEmoji} ${pagePath} - *${pageViews}* посещений`
+  }
 
   public blogListItem({ pagePath, pageViews }: Blog): string {
     const rateEmoji = this.emojiService.getRateEmoji(Blocks.getRateForBlogsViews(pageViews))

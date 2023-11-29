@@ -3,9 +3,10 @@ import { CoreItems } from 'analytics/interfaces/core.interfaces'
 import { Country } from 'analytics/interfaces/countries.interfaces'
 // import { Device } from 'analytics/interfaces/devices.interfaces'
 import { AnalyticsConversion } from 'analytics/interfaces/goals.interfaces'
+import { Page } from 'analytics/interfaces/pages.interface'
 
-import { ContactMe } from "./contactMe.interfaces"
-import { EbookDownloads } from "./ebookDownloads.interfaces"
+import { ContactMe } from './contactMe.interfaces'
+import { EbookDownloads } from './ebookDownloads.interfaces'
 import { ISubscribers } from './subscribers.interface'
 
 export interface AnalyticsMetric {
@@ -57,6 +58,7 @@ export interface AnalyticsData {
   // goals: Goals
   chart?: Record<string, number>
   blogs: Array<Blog>
+  pages: Array<Page>
   contactMe: ContactMe
   ebookDownloads: Array<EbookDownloads>
   subscribers: ISubscribers

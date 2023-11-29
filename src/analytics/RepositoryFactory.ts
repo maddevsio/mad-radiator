@@ -3,6 +3,7 @@ import { ContactMeRepository } from 'analytics/ContactMeRepository'
 import { CoreRepository } from 'analytics/CoreRepository'
 import { CountriesRepository } from 'analytics/CountriesRepository'
 import { EbookDownloadsRepository } from 'analytics/EbookDownloadsRepository'
+import { PagesRepository } from 'analytics/PagesRepository'
 import { SubscribersRepository } from 'analytics/SubscribersRepository'
 import { ParsedRange } from 'interfaces'
 
@@ -13,6 +14,7 @@ export enum RepositoryTypes {
   core = 'core',
   countries = 'countries',
   blogs = 'blogs',
+  pages = 'pages',
   subscribers = 'subscribers',
   contactMe = 'contactMe',
   ebookDownloads = 'ebookDownloads'
@@ -22,6 +24,7 @@ export type RepositoryType =
   | CountriesRepository
   | CoreRepository
   | BlogsRepository
+  | PagesRepository
   | ContactMeRepository
   | SubscribersRepository
   | EbookDownloadsRepository
@@ -43,6 +46,8 @@ export class RepositoryFactory {
         return new CountriesRepository(config, range)
       case RepositoryTypes.blogs:
         return new BlogsRepository(config, range)
+      case RepositoryTypes.pages:
+        return new PagesRepository(config, range)
       case RepositoryTypes.contactMe:
         return new ContactMeRepository(config, range)
       case RepositoryTypes.subscribers:
