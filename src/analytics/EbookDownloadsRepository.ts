@@ -51,7 +51,7 @@ export class EbookDownloadsRepository extends Repository {
             name: 'Mad Devs Engineering’s Handbook',
           })
         }
-        if(row.dimensionValues[0]?.value === 'submit_transparent_relationships_ebook_form') {
+        if(row.dimensionValues[0]?.value === 'submit_transparent_relationships_ebook_f') {
           acc.push({
               value: Number(row.metricValues[0].value),
               name: 'Transparent Relationships With Stakeholders',
