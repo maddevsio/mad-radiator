@@ -2,11 +2,11 @@
 import admin from 'firebase-admin'
 import { FirestoreConfig } from 'interfaces'
 import { Logger } from 'logger'
-import moment, { Moment } from 'moment'
 import { Sitemap } from 'sitemap/Sitemap'
 import { SitemapOptions } from 'sitemap/interfaces'
 import { Firestore } from 'utils/firestore'
 import { BuildMessageDataSpec } from '../messengers/interfaces'
+import { PrismicService } from "../prismic/PrismicService";
 import { RadiatorService, RadiatorSpec } from '../radiator-spec'
 import { executeWithRetry } from '../utils/executeWithRetry'
 
@@ -17,10 +17,6 @@ export class PageAnalyticsService implements RadiatorService {
 
   private readonly sitemap: Sitemap
 
-  private readonly firstDayOfCurrentMonth: Moment
-
-  private readonly firstDayOfCurrentWeek: Moment
-
   private firestore: Firestore
 
   private currentCount: number
@@ -30,8 +26,6 @@ export class PageAnalyticsService implements RadiatorService {
     this.sitemap = new Sitemap(this.config)
     this.firestore = new Firestore(firestoreConfig)
     this.currentCount = 0
-    this.firstDayOfCurrentMonth = moment().startOf('month')
-    this.firstDayOfCurrentWeek = moment().startOf('week')
   }
 
   private async setCountOfBlogPages(): Promise<any> {
@@ -53,26 +47,17 @@ export class PageAnalyticsService implements RadiatorService {
     return null
   }
 
-  private async getCountOfBlogs(date: Moment): Promise<number | null> {
-    Logger.info(`Start getting data from firestore`)
-    const count = await this.firestore.getDataAfterDate(date, 'blog', 1)
-    if (count) {
-      const oldCount = count
-
-      Logger.info(`New posts after date ${date}: ${this.currentCount - oldCount}`)
-      return this.currentCount - oldCount
-    }
-    return null
-  }
-
   public async getPageAnalyticsMetrics(): Promise<PageAnalyticsData | null> {
     const data = await this.setCountOfBlogPages()
+    const prismicService = new PrismicService()
     if (data) {
       Logger.success('Count saved!')
       try {
+        const perMonthData = await prismicService.getBlogPagesForMonth()
+        const perWeekData = await prismicService.getBlogPagesForWeek()
         return {
-          perMonth: await this.getCountOfBlogs(this.firstDayOfCurrentMonth),
-          perWeek: await this.getCountOfBlogs(this.firstDayOfCurrentWeek),
+          perMonth: perMonthData?.total_results_size,
+          perWeek: perWeekData?.total_results_size,
           total: this.currentCount
         }
       } catch (error) {
