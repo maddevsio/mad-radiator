@@ -13,6 +13,15 @@ jest.mock('googleapis', () => ({
     }
 }))
 
+const mockedContactMeData = {
+    contactMePerDay: {
+        value: 4,
+    },
+    contactMePerMonth: {
+        value: 4,
+    },
+}
+
 describe('ContactMeRepository', () => {
     let config: AnalyticsParams
 
@@ -38,6 +47,6 @@ describe('ContactMeRepository', () => {
         const repository = new ContactMeRepository(config, parsedRange)
         const data = await repository.getData()
 
-        expect(data).toEqual({ value: 4 })
+        expect(data).toStrictEqual(mockedContactMeData)
     })
 })

@@ -44,6 +44,14 @@ export const analyticsData: AnalyticsData = {
       percentage: 100,
     },
   ],
+  contactMe: {
+    contactMePerMonth: {
+      value: 10
+    },
+    contactMePerDay: {
+      value: 4
+    },
+  },
   chart: {
     key: 0,
     key2: 10,
@@ -60,9 +68,6 @@ export const analyticsData: AnalyticsData = {
       pageViews: 35,
     },
   ],
-  contactMe: {
-      value: 4
-  },
   ebookDownloads: [
     {
       value: 4,
