@@ -16,7 +16,7 @@ export abstract class MessageBuilder {
 
   protected readonly config: RadiatorConfig
 
-  private readonly fillingsContactMeGoal: number = 5
+  private readonly fillingsContactMeMonthGoal: number = 18
 
   private readonly redditPostsInMonthGoal: number = 2
 
@@ -70,6 +70,15 @@ export abstract class MessageBuilder {
       message.push(this.blocksService.divider())
     }
 
+    if (contactMe) {
+      // submit contact me form
+      message.push(this.blocksService.section(MessageBuilder.contactMeMessage()))
+      const isMonthGoalAchieved = contactMe.contactMePerMonth.value >= this.fillingsContactMeMonthGoal
+      message.push(this.blocksService.section(MessageBuilder.contactMeMessageGoalPerDay(contactMe.contactMePerDay.value)))
+      message.push(this.blocksService.section(MessageBuilder.contactMeMessageGoalPerMonth(isMonthGoalAchieved, contactMe.contactMePerMonth.value, this.fillingsContactMeMonthGoal)))
+      message.push(this.blocksService.divider())
+    }
+
     if(searchConsole) {
       const isGoalAchieved = this.searchConsoleGoal === Number(searchConsole.errors)
       message.push(this.blocksService.section(MessageBuilder.searchConsoleMessage(isGoalAchieved, searchConsole)))
@@ -120,14 +129,6 @@ export abstract class MessageBuilder {
       message.push(this.blocksService.section(MessageBuilder.newPagesTitle()))
       const isGoalAchieved = newPagesInSite >= this.newPagesInMonthGoal
       message.push(this.blocksService.section(MessageBuilder.newPagesGoalMessage(isGoalAchieved, newPagesInSite, this.newPagesInMonthGoal)))
-      message.push(this.blocksService.divider())
-    }
-
-    if (contactMe) {
-      // submit contact me form
-      message.push(this.blocksService.section(MessageBuilder.contactMeMessage()))
-      const isGoalAchieved = contactMe.value >= this.fillingsContactMeGoal
-      message.push(this.blocksService.section(MessageBuilder.contactMeMessageGoal(isGoalAchieved, contactMe.value, this.fillingsContactMeGoal)))
       message.push(this.blocksService.divider())
     }
 
@@ -237,6 +238,14 @@ export abstract class MessageBuilder {
     return '*Заполнения формы contact me:*'
   }
 
+  private static contactMeMessageGoalPerMonth(isGoalAchieved: boolean, contactMeValue: number, goal: number) {
+    return `${isGoalAchieved ? ':white_check_mark:' : ':x:'} Заполнения за последние 30 дней: ${contactMeValue} / Should be > ${goal}`
+  }
+
+  private static contactMeMessageGoalPerDay(contactMeValue: number) {
+    return `:mailbox_with_mail: Заполнения за день: ${contactMeValue}`
+  }
+
   private static ebookDownloadsTitle() {
     return `*Количество скачиваний Ebook'ов за последние 30 дней:*`
   }
@@ -245,10 +254,6 @@ export abstract class MessageBuilder {
     return this.blocksService.list(
       ebookDownloads.map(ebookDownload => this.blocksService.ebookDownloadsListItem(ebookDownload)),
     )
-  }
-
-  private static contactMeMessageGoal(isGoalAchieved: boolean, contactMeValue: number, goal: number) {
-    return `${isGoalAchieved ? ':white_check_mark:' : ':x:'} Заполнения за последние 30 дней: ${contactMeValue} / Should be > ${goal}`
   }
 
   private static quoraTitle() {

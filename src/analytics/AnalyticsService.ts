@@ -4,7 +4,7 @@ import {
   AnalyticsData,
   AnalyticsParams,
   Blog,
-  ContactMe,
+  ContactMeMetrics,
   CoreItems,
   Country,
   EbookDownloads,
@@ -65,7 +65,7 @@ export class AnalyticsService implements RadiatorService {
       const countries = (await this.repositories.countries.getData()) as Array<Country>
       const blogs = (await this.repositories.blogs.getData()) as Array<Blog>
       const pages = (await this.repositories.pages.getData()) as Array<Page>
-      const contactMe = (await this.repositories.contactMe.getData()) as ContactMe
+      const contactMe = (await this.repositories.contactMe.getData()) as ContactMeMetrics
       const subscribers = (await this.repositories.subscribers.getData()) as ISubscribers
       const ebookDownloads = (await this.repositories.ebookDownloads.getData()) as Array<EbookDownloads>
 

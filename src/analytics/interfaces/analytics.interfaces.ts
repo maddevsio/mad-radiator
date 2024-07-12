@@ -5,7 +5,7 @@ import { Country } from 'analytics/interfaces/countries.interfaces'
 import { AnalyticsConversion } from 'analytics/interfaces/goals.interfaces'
 import { Page } from 'analytics/interfaces/pages.interface'
 
-import { ContactMe } from './contactMe.interfaces'
+import { ContactMeMetrics } from './contactMe.interfaces'
 import { EbookDownloads } from './ebookDownloads.interfaces'
 import { ISubscribers } from './subscribers.interface'
 
@@ -54,12 +54,12 @@ export interface AnalyticsParams {
 export interface AnalyticsData {
   core: CoreItems
   countries: Array<Country>
+  contactMe: ContactMeMetrics
   // devices: Array<Device>
   // goals: Goals
   chart?: Record<string, number>
   blogs: Array<Blog>
   pages: Array<Page>
-  contactMe: ContactMe
   ebookDownloads: Array<EbookDownloads>
   subscribers: ISubscribers
 }

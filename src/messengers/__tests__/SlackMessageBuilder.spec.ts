@@ -86,6 +86,30 @@ describe('SlackMessageBuilder', () => {
       },
       {
         text: {
+          text: '*Заполнения формы contact me:*\n\n',
+          type: 'mrkdwn',
+        },
+        type: 'section',
+      },
+      {
+        text: {
+          text: ':mailbox_with_mail: Заполнения за день: 4\n\n',
+          type: 'mrkdwn',
+        },
+        type: 'section',
+      },
+      {
+        text: {
+          text: ':x: Заполнения за последние 30 дней: 10 / Should be > 18\n\n',
+          type: 'mrkdwn',
+        },
+        type: 'section',
+      },
+      {
+        type: 'divider',
+      },
+      {
+        text: {
           text: '*Топ-3 популярных страницы на сайте:*\n\n',
           type: 'mrkdwn',
         },
@@ -111,23 +135,6 @@ describe('SlackMessageBuilder', () => {
       {
         text: {
           text: ':yum: https://maddevs.io/insights/blog/how-to-start-developing-for-raspberry-pi-with-qt/ - *19* посещений\n\n',
-          type: 'mrkdwn',
-        },
-        type: 'section',
-      },
-      {
-        type: 'divider',
-      },
-      {
-        text: {
-          text: '*Заполнения формы contact me:*\n\n',
-          type: 'mrkdwn',
-        },
-        type: 'section',
-      },
-      {
-        text: {
-          text: ':x: Заполнения за последние 30 дней: 4 / Should be > 5\n\n',
           type: 'mrkdwn',
         },
         type: 'section',
