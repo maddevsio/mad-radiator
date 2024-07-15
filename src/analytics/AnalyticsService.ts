@@ -36,16 +36,22 @@ export class AnalyticsService implements RadiatorService {
     this.repositories = this.createRepositories()
   }
 
-  async perform(results: BuildMessageDataSpec, radiator: RadiatorSpec): Promise<BuildMessageDataSpec> {
+  async perform(
+    results: BuildMessageDataSpec,
+    radiator: RadiatorSpec,
+  ): Promise<BuildMessageDataSpec> {
     return Object.assign(
       results,
       radiator.authorized
         ? {
-          analytics: await executeWithRetry(
-            `${this.getName()}.getData()`, 5, 1500,
-            () => this.getData(),
-            (error: any) => error instanceof AnalyticsError),
-        }
+            analytics: await executeWithRetry(
+              `${this.getName()}.getData()`,
+              5,
+              1500,
+              () => this.getData(),
+              (error: any) => error instanceof AnalyticsError,
+            ),
+          }
         : {},
     )
   }
@@ -67,10 +73,13 @@ export class AnalyticsService implements RadiatorService {
       const pages = (await this.repositories.pages.getData()) as Array<Page>
       const contactMe = (await this.repositories.contactMe.getData()) as ContactMeMetrics
       const subscribers = (await this.repositories.subscribers.getData()) as ISubscribers
-      const ebookDownloads = (await this.repositories.ebookDownloads.getData()) as Array<EbookDownloads>
+      const ebookDownloads =
+        (await this.repositories.ebookDownloads.getData()) as Array<EbookDownloads>
 
-      this.config.totalUsersToEnji?.url && await new EnjiService(this.config.totalUsersToEnji?.url)
-        .sendTotalUsersToEnjiWithDate(Number(core.users.previous))
+      this.config.totalUsersToEnji?.url &&
+        (await new EnjiService(this.config.totalUsersToEnji?.url).sendTotalUsersToEnjiWithDate(
+          Number(core.users.previous),
+        ))
 
       return {
         core,
@@ -99,8 +108,16 @@ export class AnalyticsService implements RadiatorService {
       blogs: this.factory.createRepository(RepositoryTypes.blogs, this.config, this.range),
       pages: this.factory.createRepository(RepositoryTypes.pages, this.config, this.range),
       contactMe: this.factory.createRepository(RepositoryTypes.contactMe, this.config, this.range),
-      subscribers: this.factory.createRepository(RepositoryTypes.subscribers, this.config, this.range),
-      ebookDownloads: this.factory.createRepository(RepositoryTypes.ebookDownloads, this.config, this.range),
+      subscribers: this.factory.createRepository(
+        RepositoryTypes.subscribers,
+        this.config,
+        this.range,
+      ),
+      ebookDownloads: this.factory.createRepository(
+        RepositoryTypes.ebookDownloads,
+        this.config,
+        this.range,
+      ),
     }
   }
 }

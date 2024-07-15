@@ -8,57 +8,60 @@ import { RedditCountPostsService } from 'redditPosts/RedditCountPostsService'
 jest.mock('reddit')
 
 const mockConfig = {
-    "redditClientId": "test",
-    "redditClientSecret": "test",
-    "redditUsername": "test",
-    "redditPassword": "test"
+  redditClientId: 'test',
+  redditClientSecret: 'test',
+  redditUsername: 'test',
+  redditPassword: 'test',
 }
 
 const MockedReddit = Reddit as jest.Mock<Reddit>
 
 describe('RedditCountPosts service', () => {
-    beforeEach(() => {
-        MockedReddit.mockImplementation(() => ({
-            get: jest.fn().mockReturnValueOnce({
+  beforeEach(() => {
+    MockedReddit.mockImplementation(() => ({
+      get: jest
+        .fn()
+        .mockReturnValueOnce({
+          data: {
+            children: [
+              {
                 data: {
-                    children: [
-                        {
-                            data: {
-                                title: 'Test 1',
-                                created_utc: 1556004744
-                            },
-                        },
-                    ],
-                    after: 'test'
+                  title: 'Test 1',
+                  created_utc: 1556004744,
                 },
-            }).mockReturnValueOnce({
+              },
+            ],
+            after: 'test',
+          },
+        })
+        .mockReturnValueOnce({
+          data: {
+            children: [
+              {
                 data: {
-                    children: [
-                        {
-                            data: {
-                                title: 'Test 1',
-                                created_utc: moment().startOf('month').unix() + 20
-                            },
-                        },
-                        {
-                            data: {
-                                title: 'Test 1',
-                                created_utc: moment().startOf('month').unix()  + 30
-                            },
-                        },
-                    ],
-                    after: null
+                  title: 'Test 1',
+                  created_utc: moment().startOf('month').unix() + 20,
                 },
-            })
-        }))
-    })
+              },
+              {
+                data: {
+                  title: 'Test 1',
+                  created_utc: moment().startOf('month').unix() + 30,
+                },
+              },
+            ],
+            after: null,
+          },
+        }),
+    }))
+  })
 
-    afterEach(() => {
-        jest.resetAllMocks()
-    })
-    it('should correctly return reddit posts count', async () => {
-        const reddit = new RedditCountPostsService(mockConfig)
-        const redditCount = await reddit.getPostsCountInReddit()
-        expect(redditCount).toBe(1)
-    })
+  afterEach(() => {
+    jest.resetAllMocks()
+  })
+  it('should correctly return reddit posts count', async () => {
+    const reddit = new RedditCountPostsService(mockConfig)
+    const redditCount = await reddit.getPostsCountInReddit()
+    expect(redditCount).toBe(1)
+  })
 })

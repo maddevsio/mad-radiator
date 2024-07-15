@@ -22,8 +22,9 @@ export class CountriesRepository extends Repository {
   public async getData(): Promise<Array<Country>> {
     const reports = await this.getAnalytics(this.metrics, this.dimensions)
 
-    reports.rows = reports.rows
-      .filter((row: AnalyticDataRows) => row.dimensionValues[1]?.value === 'date_range_0')
+    reports.rows = reports.rows.filter(
+      (row: AnalyticDataRows) => row.dimensionValues[1]?.value === 'date_range_0',
+    )
 
     return CountriesRepository.format(reports)
   }
@@ -37,10 +38,11 @@ export class CountriesRepository extends Repository {
     return reports?.rows
       .map(
         (row: AnalyticDataRows): Country => ({
-          title: row.dimensionValues[0].value === '(not set)' ? 'Other' : row.dimensionValues[0].value,
+          title:
+            row.dimensionValues[0].value === '(not set)' ? 'Other' : row.dimensionValues[0].value,
           value: Number(row.metricValues[0].value),
           percentage: CountriesRepository.getPercentage(Number(row.metricValues[0].value), total),
-          rate: Rate.neutral
+          rate: Rate.neutral,
         }),
       )
       .sort((a, b) => b.value - a.value)

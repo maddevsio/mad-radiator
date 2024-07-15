@@ -38,7 +38,7 @@ describe('PagesRepository', () => {
     const result = [
       {
         pagePath: 'https://maddevs.io/writeups/hackthebox-codify/',
-        pageViews: 153
+        pageViews: 153,
       },
       {
         pagePath: 'https://maddevs.io/writeups/',
@@ -46,7 +46,7 @@ describe('PagesRepository', () => {
       },
       {
         pagePath: 'https://maddevs.io/blog/',
-        pageViews: 59
+        pageViews: 59,
       },
     ]
 

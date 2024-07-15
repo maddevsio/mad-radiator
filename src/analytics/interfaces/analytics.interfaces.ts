@@ -32,7 +32,7 @@ export interface AnalyticsPayload {
   rows: Array<AnalyticDataRows>
   rowCount: number
   metadata?: {
-    currencyCode: string,
+    currencyCode: string
     timeZone: string
   }
   kind?: string

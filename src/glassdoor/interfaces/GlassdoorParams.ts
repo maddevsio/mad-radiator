@@ -1,4 +1,4 @@
 export interface GlassdoorParams {
-  glassdoorUrl: string;
-  api_key: string;
+  glassdoorUrl: string
+  api_key: string
 }

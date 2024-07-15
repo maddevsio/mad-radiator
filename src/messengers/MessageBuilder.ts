@@ -7,7 +7,7 @@ import { getYesterday } from 'utils/parseRange'
 
 import { IMoosendData } from '../moosend/interfaces'
 import { ISearchConsoleData } from '../searchConsole/interfaces'
-import { getMonthName } from "../utils/getMonthName";
+import { getMonthName } from '../utils/getMonthName'
 
 export abstract class MessageBuilder {
   protected abstract readonly blocksService: Blocks
@@ -26,7 +26,14 @@ export abstract class MessageBuilder {
 
   private readonly newGlassdoorReviewsGoal: number = 2
 
-  private readonly goalsCountries: Array<string> = ['United States', 'United Kingdom', 'Germany', 'France', 'Indonesia', 'Vietnam']
+  private readonly goalsCountries: Array<string> = [
+    'United States',
+    'United Kingdom',
+    'Germany',
+    'France',
+    'Indonesia',
+    'Vietnam',
+  ]
 
   private readonly searchConsoleGoal: number = 0
 
@@ -46,7 +53,8 @@ export abstract class MessageBuilder {
     searchConsole,
     emailsCount,
   }: BuildMessageDataSpec): Array<string | SlackMessageBlock> {
-    const { core, countries, pages, blogs, contactMe, subscribers, ebookDownloads } = analytics || {}
+    const { core, countries, pages, blogs, contactMe, subscribers, ebookDownloads } =
+      analytics || {}
 
     const message = []
 
@@ -66,22 +74,43 @@ export abstract class MessageBuilder {
       message.push(this.blocksService.section(MessageBuilder.countriesMessage()))
       message.push(this.blocksService.section(this.countriesList(countries)))
       const isGoalAchieved = countries.every(country => this.goalsCountries.includes(country.title))
-      message.push(this.blocksService.section(MessageBuilder.matchGoalsCountries(isGoalAchieved, this.goalsCountries)))
+      message.push(
+        this.blocksService.section(
+          MessageBuilder.matchGoalsCountries(isGoalAchieved, this.goalsCountries),
+        ),
+      )
       message.push(this.blocksService.divider())
     }
 
     if (contactMe) {
       // submit contact me form
       message.push(this.blocksService.section(MessageBuilder.contactMeMessage()))
-      const isMonthGoalAchieved = contactMe.contactMePerMonth.value >= this.fillingsContactMeMonthGoal
-      message.push(this.blocksService.section(MessageBuilder.contactMeMessageGoalPerDay(contactMe.contactMePerDay.value)))
-      message.push(this.blocksService.section(MessageBuilder.contactMeMessageGoalPerMonth(isMonthGoalAchieved, contactMe.contactMePerMonth.value, this.fillingsContactMeMonthGoal)))
+      const isMonthGoalAchieved =
+        contactMe.contactMePerMonth.value >= this.fillingsContactMeMonthGoal
+      message.push(
+        this.blocksService.section(
+          MessageBuilder.contactMeMessageGoalPerDay(contactMe.contactMePerDay.value),
+        ),
+      )
+      message.push(
+        this.blocksService.section(
+          MessageBuilder.contactMeMessageGoalPerMonth(
+            isMonthGoalAchieved,
+            contactMe.contactMePerMonth.value,
+            this.fillingsContactMeMonthGoal,
+          ),
+        ),
+      )
       message.push(this.blocksService.divider())
     }
 
-    if(searchConsole) {
+    if (searchConsole) {
       const isGoalAchieved = this.searchConsoleGoal === Number(searchConsole.errors)
-      message.push(this.blocksService.section(MessageBuilder.searchConsoleMessage(isGoalAchieved, searchConsole)))
+      message.push(
+        this.blocksService.section(
+          MessageBuilder.searchConsoleMessage(isGoalAchieved, searchConsole),
+        ),
+      )
       message.push(this.blocksService.divider())
     }
 
@@ -106,18 +135,28 @@ export abstract class MessageBuilder {
 
         if (pageAnalytics.perMonth !== null) {
           const isMatch = pageAnalytics.perMonth >= 4
-          message.push(this.blocksService.section(MessageBuilder.blogPostsMonthlyGoalMessage(isMatch, pageAnalytics.perMonth)))
+          message.push(
+            this.blocksService.section(
+              MessageBuilder.blogPostsMonthlyGoalMessage(isMatch, pageAnalytics.perMonth),
+            ),
+          )
         }
 
         if (pageAnalytics.perWeek !== null) {
           const isMatch = pageAnalytics.perWeek >= 1
-          message.push(this.blocksService.section(MessageBuilder.blogPostsWeeklyGoalMessage(isMatch, pageAnalytics.perWeek)))
+          message.push(
+            this.blocksService.section(
+              MessageBuilder.blogPostsWeeklyGoalMessage(isMatch, pageAnalytics.perWeek),
+            ),
+          )
         }
 
         message.push(this.blocksService.divider())
 
         if (pageAnalytics.total !== null) {
-          message.push(this.blocksService.section(MessageBuilder.blogPostsTotalMessage(pageAnalytics.total)))
+          message.push(
+            this.blocksService.section(MessageBuilder.blogPostsTotalMessage(pageAnalytics.total)),
+          )
         }
 
         message.push(this.blocksService.divider())
@@ -128,28 +167,56 @@ export abstract class MessageBuilder {
     if (newPagesInSite !== undefined) {
       message.push(this.blocksService.section(MessageBuilder.newPagesTitle()))
       const isGoalAchieved = newPagesInSite >= this.newPagesInMonthGoal
-      message.push(this.blocksService.section(MessageBuilder.newPagesGoalMessage(isGoalAchieved, newPagesInSite, this.newPagesInMonthGoal)))
+      message.push(
+        this.blocksService.section(
+          MessageBuilder.newPagesGoalMessage(
+            isGoalAchieved,
+            newPagesInSite,
+            this.newPagesInMonthGoal,
+          ),
+        ),
+      )
       message.push(this.blocksService.divider())
     }
 
     if (quoraPosts !== undefined) {
       message.push(this.blocksService.section(MessageBuilder.quoraTitle()))
       const isMatch = quoraPosts > this.newQuoraPostsInMonthGoal
-      message.push(this.blocksService.section(MessageBuilder.quoraGoalMessage(isMatch, quoraPosts, this.newQuoraPostsInMonthGoal)))
+      message.push(
+        this.blocksService.section(
+          MessageBuilder.quoraGoalMessage(isMatch, quoraPosts, this.newQuoraPostsInMonthGoal),
+        ),
+      )
       message.push(this.blocksService.divider())
     }
 
     if (redditCountPosts !== undefined) {
       message.push(this.blocksService.section(MessageBuilder.redditTitle()))
       const isGoalAchieved = redditCountPosts >= this.redditPostsInMonthGoal
-      message.push(this.blocksService.section(MessageBuilder.redditGoalMessage(isGoalAchieved, redditCountPosts, this.redditPostsInMonthGoal)))
+      message.push(
+        this.blocksService.section(
+          MessageBuilder.redditGoalMessage(
+            isGoalAchieved,
+            redditCountPosts,
+            this.redditPostsInMonthGoal,
+          ),
+        ),
+      )
       message.push(this.blocksService.divider())
     }
 
     if (glassdoorReviews !== undefined) {
       message.push(this.blocksService.section(MessageBuilder.glassdoorTitle()))
       const isMatch = glassdoorReviews > this.newGlassdoorReviewsGoal
-      message.push(this.blocksService.section(MessageBuilder.glassdoorGoalMessage(isMatch, glassdoorReviews, this.newGlassdoorReviewsGoal)))
+      message.push(
+        this.blocksService.section(
+          MessageBuilder.glassdoorGoalMessage(
+            isMatch,
+            glassdoorReviews,
+            this.newGlassdoorReviewsGoal,
+          ),
+        ),
+      )
       message.push(this.blocksService.divider())
     }
 
@@ -169,7 +236,9 @@ export abstract class MessageBuilder {
   }
 
   private headerMessage(): string {
-    return `${this.emojiService.getEmoji('calendar')} Отчет радиатора по ключевым метрикам за ${getYesterday()}`
+    return `${this.emojiService.getEmoji(
+      'calendar',
+    )} Отчет радиатора по ключевым метрикам за ${getYesterday()}`
   }
 
   private coreMessage({ users, duration, sessions, bounceRate }: CoreItems): string {
@@ -177,7 +246,14 @@ export abstract class MessageBuilder {
     return `За отчетный период сайт ${this.config.websiteUrl} посетило *${users.value} пользователей*. Всего *${sessions.value} сессий*, средняя длительность 1 сессии составляет *${duration.value}*. *${bounceRate.value}%* пользователей закрыли сайт никак с ним не провзаимодействовав.`
   }
 
-  private coreList({ users, weeklyUsers, monthlyUsers, duration, sessions, bounceRate }: CoreItems) {
+  private coreList({
+    users,
+    weeklyUsers,
+    monthlyUsers,
+    duration,
+    sessions,
+    bounceRate,
+  }: CoreItems) {
     return this.blocksService.list([
       this.blocksService.listItem(users, {
         title: 'Users',
@@ -231,15 +307,23 @@ export abstract class MessageBuilder {
   }
 
   private static matchGoalsCountries(isGoalAchieved: boolean, goalsCountries: Array<string>) {
-    return `${isGoalAchieved ? ':white_check_mark:' : ':x:'} Should be -> ${goalsCountries.join(', ')}`
+    return `${isGoalAchieved ? ':white_check_mark:' : ':x:'} Should be -> ${goalsCountries.join(
+      ', ',
+    )}`
   }
 
   private static contactMeMessage() {
     return '*Заполнения формы contact me:*'
   }
 
-  private static contactMeMessageGoalPerMonth(isGoalAchieved: boolean, contactMeValue: number, goal: number) {
-    return `${isGoalAchieved ? ':white_check_mark:' : ':x:'} Заполнения за последние 30 дней: ${contactMeValue} / Should be > ${goal}`
+  private static contactMeMessageGoalPerMonth(
+    isGoalAchieved: boolean,
+    contactMeValue: number,
+    goal: number,
+  ) {
+    return `${
+      isGoalAchieved ? ':white_check_mark:' : ':x:'
+    } Заполнения за последние 30 дней: ${contactMeValue} / Should be > ${goal}`
   }
 
   private static contactMeMessageGoalPerDay(contactMeValue: number) {
@@ -265,11 +349,15 @@ export abstract class MessageBuilder {
   }
 
   private static quoraGoalMessage(isMath: boolean, quoraCount: number, goal: number) {
-    return `${isMath ? ':white_check_mark:' : ':x:'} Новых статей за ${getMonthName()}: ${quoraCount} / Should be -> ${goal}`
+    return `${
+      isMath ? ':white_check_mark:' : ':x:'
+    } Новых статей за ${getMonthName()}: ${quoraCount} / Should be -> ${goal}`
   }
 
   private static glassdoorGoalMessage(isMath: boolean, glassdoorCount: number, goal: number) {
-    return `${isMath ? ':white_check_mark:' : ':x:'} Новых отзывов за ${getMonthName()}: ${glassdoorCount} / Should be -> ${goal}`
+    return `${
+      isMath ? ':white_check_mark:' : ':x:'
+    } Новых отзывов за ${getMonthName()}: ${glassdoorCount} / Should be -> ${goal}`
   }
 
   private static redditTitle() {
@@ -277,7 +365,9 @@ export abstract class MessageBuilder {
   }
 
   private static redditGoalMessage(isGoalAchieved: boolean, redditCount: number, goal: number) {
-    return `${isGoalAchieved ? ':white_check_mark:' : ':x:'} Новых статей за ${getMonthName()}: ${redditCount} / Should be -> ${goal}`
+    return `${
+      isGoalAchieved ? ':white_check_mark:' : ':x:'
+    } Новых статей за ${getMonthName()}: ${redditCount} / Should be -> ${goal}`
   }
 
   private static newPagesTitle() {
@@ -285,7 +375,9 @@ export abstract class MessageBuilder {
   }
 
   private static newPagesGoalMessage(isGoalAchieved: boolean, pagesCount: number, goal: number) {
-    return `${isGoalAchieved ? ':white_check_mark:' : ':x:'} Новых страниц за ${getMonthName()}: ${pagesCount} / Should be -> ${goal}`
+    return `${
+      isGoalAchieved ? ':white_check_mark:' : ':x:'
+    } Новых страниц за ${getMonthName()}: ${pagesCount} / Should be -> ${goal}`
   }
 
   private static blogPostsMonthlyTitle() {
@@ -293,11 +385,15 @@ export abstract class MessageBuilder {
   }
 
   private static blogPostsMonthlyGoalMessage(isMatch: boolean, blogPostCount: number) {
-    return `${isMatch ? ':white_check_mark:' : ':x:'} Новых статей за ${getMonthName()}: ${blogPostCount} / Should be > 4`
+    return `${
+      isMatch ? ':white_check_mark:' : ':x:'
+    } Новых статей за ${getMonthName()}: ${blogPostCount} / Should be > 4`
   }
 
   private static blogPostsWeeklyGoalMessage(isMatch: boolean, blogPostCount: number) {
-    return `${isMatch ? ':white_check_mark:' : ':x:'} Новых статей за неделю: ${blogPostCount} / Should be > 1`
+    return `${
+      isMatch ? ':white_check_mark:' : ':x:'
+    } Новых статей за неделю: ${blogPostCount} / Should be > 1`
   }
 
   private static blogPostsTotalMessage(blogPostTotal: number) {
@@ -309,9 +405,7 @@ export abstract class MessageBuilder {
   }
 
   private pagesList(pages: Array<Page>) {
-    return this.blocksService.list(
-      pages.map(page => this.blocksService.pagesListItem(page)),
-    )
+    return this.blocksService.list(pages.map(page => this.blocksService.pagesListItem(page)))
   }
 
   private static blogsMessage() {
@@ -319,9 +413,7 @@ export abstract class MessageBuilder {
   }
 
   private blogsList(blogs: Array<Blog>) {
-    return this.blocksService.list(
-      blogs.map(blog => this.blocksService.blogListItem(blog)),
-    )
+    return this.blocksService.list(blogs.map(blog => this.blocksService.blogListItem(blog)))
   }
 
   private static SubscribersMessage(subscribeCount: number) {
@@ -329,7 +421,13 @@ export abstract class MessageBuilder {
   }
 
   private static searchConsoleMessage(isMatch: boolean, searchConsole: ISearchConsoleData) {
-    return `*Search Console:*\n\n${isMatch ? ':white_check_mark:' : ':x:'} Coverage-Excluded pages: ${searchConsole.errors} /  Should be -> 0 ${!isMatch ? '<https://search.google.com/search-console/index?resource_id=sc-domain%3Amaddevs.io&hl=en|view errors>' : ''}`
+    return `*Search Console:*\n\n${
+      isMatch ? ':white_check_mark:' : ':x:'
+    } Coverage-Excluded pages: ${searchConsole.errors} /  Should be -> 0 ${
+      !isMatch
+        ? '<https://search.google.com/search-console/index?resource_id=sc-domain%3Amaddevs.io&hl=en|view errors>'
+        : ''
+    }`
   }
 
   private static subscribersMessageTotal(subscribersCountTotal: IMoosendData | undefined) {

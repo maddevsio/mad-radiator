@@ -6,7 +6,7 @@ import { Sitemap } from 'sitemap/Sitemap'
 import { SitemapOptions } from 'sitemap/interfaces'
 import { Firestore } from 'utils/firestore'
 import { BuildMessageDataSpec } from '../messengers/interfaces'
-import { PrismicService } from "../prismic/PrismicService";
+import { PrismicService } from '../prismic/PrismicService'
 import { RadiatorService, RadiatorSpec } from '../radiator-spec'
 import { executeWithRetry } from '../utils/executeWithRetry'
 
@@ -58,7 +58,7 @@ export class PageAnalyticsService implements RadiatorService {
         return {
           perMonth: perMonthData?.total_results_size,
           perWeek: perWeekData?.total_results_size,
-          total: this.currentCount
+          total: this.currentCount,
         }
       } catch (error) {
         Logger.error(`Error getting count of blog pages: ${error}`)
@@ -73,15 +73,18 @@ export class PageAnalyticsService implements RadiatorService {
     return this.constructor.name
   }
 
-  async perform(results: BuildMessageDataSpec, _radiator: RadiatorSpec): Promise<BuildMessageDataSpec> {
-    return Object.assign(
-      results,
-      {
-        pageAnalytics: await executeWithRetry(
-          `${this.getName()}.getPageAnalyticsMetrics()`, 5, 1500,
-          () => this.getPageAnalyticsMetrics(),
-          (error: any) => error),
-      },
-    )
+  async perform(
+    results: BuildMessageDataSpec,
+    _radiator: RadiatorSpec,
+  ): Promise<BuildMessageDataSpec> {
+    return Object.assign(results, {
+      pageAnalytics: await executeWithRetry(
+        `${this.getName()}.getPageAnalyticsMetrics()`,
+        5,
+        1500,
+        () => this.getPageAnalyticsMetrics(),
+        (error: any) => error,
+      ),
+    })
   }
 }

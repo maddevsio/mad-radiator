@@ -1,5 +1,8 @@
 /* eslint-disable */
-import { fakeResponseForCountries, fakeResponseSecond } from '__tests__/fixtures/analytics/fakeAnalyticsResponses'
+import {
+  fakeResponseForCountries,
+  fakeResponseSecond,
+} from '__tests__/fixtures/analytics/fakeAnalyticsResponses'
 import { parsedRange } from '__tests__/fixtures/parsedRange'
 import { CountriesRepository } from 'analytics/CountriesRepository'
 import { google } from 'googleapis'
@@ -10,7 +13,7 @@ import { AnalyticsParams } from '../interfaces'
 jest.mock('googleapis', () => ({
   google: {
     analyticsdata: jest.fn(),
-  }
+  },
 }))
 
 describe('CountriesRepository', () => {
@@ -41,7 +44,7 @@ describe('CountriesRepository', () => {
     expect(data).toEqual([
       { title: 'United States', value: 81, percentage: 15.06, rate: 'neutral' },
       { title: 'Ukraine', value: 11, percentage: 2.04, rate: 'neutral' },
-      { title: 'Indonesia', value: 10, percentage: 1.86, rate: 'neutral' }
+      { title: 'Indonesia', value: 10, percentage: 1.86, rate: 'neutral' },
     ])
   })
 
@@ -65,8 +68,8 @@ describe('CountriesRepository', () => {
         title: 'United States',
         value: 51,
         percentage: 71.83,
-        rate: 'neutral'
-      }
+        rate: 'neutral',
+      },
     ])
   })
 })

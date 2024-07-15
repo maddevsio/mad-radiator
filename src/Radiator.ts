@@ -38,7 +38,9 @@ export class Radiator implements RadiatorSpec {
       const googleAuthorization = new GoogleAuthorization(this.config)
       const sentry = new SentryService(this.config.sentryConfig)
       this.authorization = await executeWithRetry(
-        'googleAuthorization.authorize()', 5, 1500,
+        'googleAuthorization.authorize()',
+        5,
+        1500,
         () => googleAuthorization.authorize(),
         (error: any) => error instanceof AuthorizationError,
       )
@@ -49,7 +51,7 @@ export class Radiator implements RadiatorSpec {
           Logger.info(`${serviceName}: Starting.`)
           try {
             messageData = {
-              ...await service.perform(messageData, this)
+              ...(await service.perform(messageData, this)),
             }
             Logger.info(`${serviceName}: Done.`)
           } catch (error) {

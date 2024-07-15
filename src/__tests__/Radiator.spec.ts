@@ -15,18 +15,16 @@ import { RedditCountPostsService } from '../redditPosts'
 import { analyticsData } from './fixtures/analyticsData'
 
 jest.mock('authorization/GoogleAuthorization')
-jest.mock('@sentry/node', () => (
-  {
-    init: jest.fn(),
-    captureException: jest.fn(),
-  }
-))
+jest.mock('@sentry/node', () => ({
+  init: jest.fn(),
+  captureException: jest.fn(),
+}))
 jest.mock('analytics/AnalyticsService', () => ({
   AnalyticsService: jest.fn().mockImplementation(() => ({
     getName: jest.fn(() => 'AnalyticsService'),
     perform: jest.fn(),
-    getData: jest.fn(async () => analyticsData)
-  }))
+    getData: jest.fn(async () => analyticsData),
+  })),
 }))
 jest.mock('authorization/GoogleAuthorization', () => ({
   GoogleAuthorization: jest.fn().mockImplementation(() => ({
@@ -35,24 +33,24 @@ jest.mock('authorization/GoogleAuthorization', () => ({
         unlink: jest.fn(),
       }
     },
-  }))
+  })),
 }))
 jest.mock('messengers/MessengersService', () => ({
   MessengersService: jest.fn().mockImplementation(() => ({
-    sendMessages: jest.fn().mockImplementation(() => {})
-  }))
+    sendMessages: jest.fn().mockImplementation(() => {}),
+  })),
 }))
 jest.mock('scheduler/Scheduler', () => ({
   Scheduler: jest.fn().mockImplementation(() => ({
     scheduleJob: jest.fn((callback: (...args: any[]) => void) => {
       callback()
-    })
-  }))
+    }),
+  })),
 }))
 jest.mock('sentry/sentryService', () => ({
   SentryService: jest.fn().mockImplementation(() => ({
     sendErrorToSentry: jest.fn(),
-  }))
+  })),
 }))
 jest.mock('quora/QuoraService')
 jest.mock('pagesAnalytics/PageAnalyticsService')
@@ -70,19 +68,21 @@ jest.mock('moment', () => () => ({
 }))
 
 const responseFireStoreData: FirestoreData = {
-  data: [{
-    document: {
-      name: 'projects/mad-radiator-e9549/databases/(default)/documents/quora/06FUTXctDClabsVXq5Ti',
-      fields: {
-        count: {
-          integerValue: '3',
+  data: [
+    {
+      document: {
+        name: 'projects/mad-radiator-e9549/databases/(default)/documents/quora/06FUTXctDClabsVXq5Ti',
+        fields: {
+          count: {
+            integerValue: '3',
+          },
         },
+        createTime: '2022-06-07T14:05:49.532227Z',
+        updateTime: '2022-06-07T14:10:19.836976Z',
       },
-      createTime: '2022-06-07T14:05:49.532227Z',
-      updateTime: '2022-06-07T14:10:19.836976Z',
+      readTime: '2022-06-08T04:55:30.242905Z',
     },
-    readTime: '2022-06-08T04:55:30.242905Z',
-  }],
+  ],
 }
 
 const getDataAfterDate = jest
@@ -93,9 +93,8 @@ jest.mock('utils/firestore', () => ({
   Firestore: jest.fn().mockImplementation(() => ({
     getDataAfterDate,
     setData,
-  }))
+  })),
 }))
-
 
 const MockedAnalytics = AnalyticsService as jest.Mock<AnalyticsService>
 const MockedMessengersService = MessengersService as jest.Mock<MessengersService>
@@ -171,7 +170,7 @@ describe('Radiator', () => {
     MockedAnalytics.mockImplementationOnce(() => ({
       getName: jest.fn(() => 'AnalyticsService'),
       perform: jest.fn(() => Promise.reject('Error')),
-      getData: jest.fn(async () => analyticsData)
+      getData: jest.fn(async () => analyticsData),
     }))
     const radiator = new Radiator(defaultConfig, new MessengersService(defaultMessengersParams))
     radiator.register(new AnalyticsService(defaultAnalyticsParams, defaultConfig.range))

@@ -1,10 +1,10 @@
-export class MessagesError extends Error{
-  constructor(message:string) {
+export class MessagesError extends Error {
+  constructor(message: string) {
     super(message)
     this.name = 'MessagesError'
   }
 
-  toString(){
+  toString() {
     return this.message
   }
 }

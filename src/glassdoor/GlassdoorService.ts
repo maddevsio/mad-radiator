@@ -43,16 +43,19 @@ export class GlassdoorService implements RadiatorService {
     return this.constructor.name
   }
 
-  async perform(results: BuildMessageDataSpec, _radiator: RadiatorSpec): Promise<BuildMessageDataSpec> {
-    return Object.assign(
-      results,
-      {
-        glassdoorReviews: await executeWithRetry(
-          `${this.getName()}.setCountOfGlassdoorReviews()`, 5, 1500,
-          () => this.setCountOfGlassdoorReviews(),
-          (error: any) => error),
-      },
-    )
+  async perform(
+    results: BuildMessageDataSpec,
+    _radiator: RadiatorSpec,
+  ): Promise<BuildMessageDataSpec> {
+    return Object.assign(results, {
+      glassdoorReviews: await executeWithRetry(
+        `${this.getName()}.setCountOfGlassdoorReviews()`,
+        5,
+        1500,
+        () => this.setCountOfGlassdoorReviews(),
+        (error: any) => error,
+      ),
+    })
   }
 
   private async getReviewsFromGlassdoor(api_key: string, glassdoorUrl: string) {
@@ -68,7 +71,9 @@ export class GlassdoorService implements RadiatorService {
     }
 
     try {
-      console.info(`getReviewsFromGlassdoor: POST apiUrl: "${apiUrl}"; payload: "${JSON.stringify(payload)}";`)
+      console.info(
+        `getReviewsFromGlassdoor: POST apiUrl: "${apiUrl}"; payload: "${JSON.stringify(payload)}";`,
+      )
       const { data, status } = await axios.post(apiUrl, payload)
       console.info(`getReviewsFromGlassdoor: POST success: status ${status}`)
       const source = data.result.reviews
@@ -93,7 +98,11 @@ export class GlassdoorService implements RadiatorService {
   }
 
   private async getGlassdoorReviewsMetrics(): Promise<number> {
-    const oldCount = await this.firestore.getDataAfterDate(getFirstDayOfCurrentMonth(), this.fireStoreDir, 1)
+    const oldCount = await this.firestore.getDataAfterDate(
+      getFirstDayOfCurrentMonth(),
+      this.fireStoreDir,
+      1,
+    )
     const currentCount = this.currentCount - oldCount
     return currentCount < 0 ? 0 : currentCount
   }

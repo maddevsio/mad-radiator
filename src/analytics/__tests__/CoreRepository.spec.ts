@@ -69,7 +69,7 @@ describe('CoreRepository', () => {
       },
       weeklyUsers: {
         value: 2898,
-      }
+      },
     })
   })
 })

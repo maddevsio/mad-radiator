@@ -67,7 +67,11 @@ export class Firestore {
 
   public async getDataAfterDate(date: Moment, dir: string, limit?: number) {
     let count: number = 0
-    const data = await this.db?.collection(dir).where('created', '>=', date).limit(limit || 1).get()
+    const data = await this.db
+      ?.collection(dir)
+      .where('created', '>=', date)
+      .limit(limit || 1)
+      .get()
     data?.forEach(doc => {
       count = doc.data().count
     })

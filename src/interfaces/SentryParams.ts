@@ -1,4 +1,4 @@
 export interface SentryParams {
-  sentryDSN: string,
-  tracesSampleRate: number,
+  sentryDSN: string
+  tracesSampleRate: number
 }

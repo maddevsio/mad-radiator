@@ -1,5 +1,5 @@
 export interface PageAnalyticsData {
-    perMonth: number | null
-    perWeek: number | null
-    total: number | null
+  perMonth: number | null
+  perWeek: number | null
+  total: number | null
 }

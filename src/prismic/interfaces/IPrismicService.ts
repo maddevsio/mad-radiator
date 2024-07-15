@@ -1,4 +1,4 @@
-import { Client } from "@prismicio/client";
+import { Client } from '@prismicio/client'
 
 interface Embed {
   embed?: {
@@ -68,9 +68,9 @@ export interface BlogQueryResponse {
   results_size: number
   total_results_size: number
   total_pages: number
-  next_page: string | null,
-  prev_page: string | null,
-  results: BlogPost[],
+  next_page: string | null
+  prev_page: string | null
+  results: BlogPost[]
 }
 
 export interface IPrismicService {

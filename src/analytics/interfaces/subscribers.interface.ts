@@ -1,3 +1,3 @@
 export interface ISubscribers {
-    value: number
+  value: number
 }

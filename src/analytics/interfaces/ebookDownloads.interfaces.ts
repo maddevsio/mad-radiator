@@ -1,4 +1,4 @@
 export interface EbookDownloads {
-    value: number
-    name: string
+  value: number
+  name: string
 }

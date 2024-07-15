@@ -29,7 +29,7 @@ export function getTwoDaysAgo(): Moment {
   console.log(`
     Today: ${logHelper(moment(), 'DD/MM/YYYY h:mm:ss a')},
     Two days ago: ${logHelper(moment().subtract(2, 'days'), 'DD/MM/YYYY h:mm:ss a')}
-  `);
+  `)
   return moment().subtract(2, 'days')
 }
 

@@ -3,16 +3,16 @@ import { executeWithRetry } from '../executeWithRetry'
 import chalk from 'chalk'
 
 interface TestData {
-  prompt: string,
-  attempt: number,
-  sleepMs: number,
-  successCb?: any,
-  errorCb?: any,
+  prompt: string
+  attempt: number
+  sleepMs: number
+  successCb?: any
+  errorCb?: any
 }
 
-let countCallFunc = 1;
+let countCallFunc = 1
 
-const fakeApi = async function(){
+const fakeApi = async function () {
   if (countCallFunc === 2) return Promise.resolve('Success!')
   countCallFunc++
   return Promise.reject('Error!.')
@@ -37,8 +37,11 @@ describe('executeWithRetry util', () => {
 
     const expected = 'Success!'
     const result = await executeWithRetry(
-      testData.prompt, testData.attempt, testData.sleepMs,
-      testData.successCb, testData.errorCb,
+      testData.prompt,
+      testData.attempt,
+      testData.sleepMs,
+      testData.successCb,
+      testData.errorCb,
     )
 
     expect(result).toBe(expected)
@@ -51,8 +54,11 @@ describe('executeWithRetry util', () => {
 
     const expected = 'Success!'
     const result = await executeWithRetry(
-      testData.prompt, testData.attempt, testData.sleepMs,
-      testData.successCb, testData.errorCb,
+      testData.prompt,
+      testData.attempt,
+      testData.sleepMs,
+      testData.successCb,
+      testData.errorCb,
     )
 
     expect(result).toBe(expected)
@@ -66,8 +72,11 @@ describe('executeWithRetry util', () => {
     const expected = 'Error!'
     try {
       await executeWithRetry(
-        testData.prompt, testData.attempt, testData.sleepMs,
-        testData.successCb, testData.errorCb,
+        testData.prompt,
+        testData.attempt,
+        testData.sleepMs,
+        testData.successCb,
+        testData.errorCb,
       )
     } catch (error: any) {
       expect(error).toEqual(expected)

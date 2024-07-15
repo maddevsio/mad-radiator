@@ -1,6 +1,6 @@
 import { AnalyticsData } from 'analytics/interfaces'
 import { ParsedRange } from 'interfaces'
-import { PageAnalyticsData } from "pagesAnalytics/interfaces"
+import { PageAnalyticsData } from 'pagesAnalytics/interfaces'
 
 import { IMoosendData } from '../../moosend/interfaces'
 import { ISearchConsoleData } from '../../searchConsole/interfaces'

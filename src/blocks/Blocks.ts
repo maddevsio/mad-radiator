@@ -21,7 +21,13 @@ export abstract class Blocks {
 
   public listItem(
     entity: CoreItem | Goal | Device,
-    { title, emojiType, parensKey = "difference", valueType = '', parensType = '' }: ListItemParameters,
+    {
+      title,
+      emojiType,
+      parensKey = 'difference',
+      valueType = '',
+      parensType = '',
+    }: ListItemParameters,
   ): string {
     const rateEmoji = this.emojiService.getRateEmoji(entity.rate)
     const emoji = this.emojiService.getEmoji(emojiType)
@@ -85,4 +91,3 @@ export abstract class Blocks {
     return `${rateEmoji} ${pagePath} - *${pageViews}* посещений`
   }
 }
-

@@ -7,7 +7,7 @@ import { Logger } from 'logger'
 
 import { defaultGoogleAuthorizationParams } from '../../__tests__/fixtures/defaultGoogleAuthorizationParams'
 
-jest.spyOn(Logger, 'error').mockImplementation(() => { })
+jest.spyOn(Logger, 'error').mockImplementation(() => {})
 
 jest.mock('googleapis', () => ({
   google: {

@@ -1,8 +1,8 @@
 export interface ContactMe {
-    value: number
+  value: number
 }
 
 export interface ContactMeMetrics {
-    contactMePerDay: ContactMe
-    contactMePerMonth: ContactMe
+  contactMePerDay: ContactMe
+  contactMePerMonth: ContactMe
 }

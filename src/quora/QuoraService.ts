@@ -46,16 +46,19 @@ export class QuoraService implements RadiatorService {
     return this.constructor.name
   }
 
-  async perform(results: BuildMessageDataSpec, _radiator: RadiatorSpec): Promise<BuildMessageDataSpec> {
-    return Object.assign(
-      results,
-      {
-          quoraPosts: await executeWithRetry(
-            `${this.getName()}.setCountOfQuoraPosts()`, 5, 1500,
-            () => this.setCountOfQuoraPosts(),
-            (error: any) => error),
-        },
-    )
+  async perform(
+    results: BuildMessageDataSpec,
+    _radiator: RadiatorSpec,
+  ): Promise<BuildMessageDataSpec> {
+    return Object.assign(results, {
+      quoraPosts: await executeWithRetry(
+        `${this.getName()}.setCountOfQuoraPosts()`,
+        5,
+        1500,
+        () => this.setCountOfQuoraPosts(),
+        (error: any) => error,
+      ),
+    })
   }
 
   private async parseHTML(): Promise<number> {
@@ -70,7 +73,11 @@ export class QuoraService implements RadiatorService {
   }
 
   private async getQuoraPostsMetrics(): Promise<number> {
-    const oldCount = await this.firestore.getDataAfterDate(getFirstDayOfCurrentMonth(), this.fireStoreDir, 1)
+    const oldCount = await this.firestore.getDataAfterDate(
+      getFirstDayOfCurrentMonth(),
+      this.fireStoreDir,
+      1,
+    )
     const currentCount = this.currentCount - oldCount
     return currentCount < 0 ? 0 : currentCount
   }

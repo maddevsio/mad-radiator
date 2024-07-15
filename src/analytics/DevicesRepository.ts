@@ -33,7 +33,10 @@ export class DevicesRepository extends Repository {
 
     return reports.rows
       .map(
-        (row: { dimensionValues: Array<{ value: string }>; metricValues: Array<{ value: number }> }): Device => ({
+        (row: {
+          dimensionValues: Array<{ value: string }>
+          metricValues: Array<{ value: number }>
+        }): Device => ({
           title: row.dimensionValues[0].value.toLowerCase() as DeviceTitle,
           value: DevicesRepository.getPercentage(Number(row.metricValues[0]?.value), total),
           previous: DevicesRepository.getPercentage(Number(row.metricValues[1]?.value), totalPrev),

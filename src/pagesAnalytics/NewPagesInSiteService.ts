@@ -47,7 +47,11 @@ export class NewPagesInSiteService implements RadiatorService {
 
   public async getNewPagesAnalyticsMetrics(): Promise<number> {
     Logger.info(`Start getting pages data from firestore`)
-    const oldCount = await this.firestore.getDataAfterDate(getFirstDayOfCurrentMonth(), this.firestoreCollectionId, 1)
+    const oldCount = await this.firestore.getDataAfterDate(
+      getFirstDayOfCurrentMonth(),
+      this.firestoreCollectionId,
+      1,
+    )
     const currentCount = this.currentCount - oldCount
     return currentCount < 0 ? 0 : currentCount
   }
@@ -56,15 +60,18 @@ export class NewPagesInSiteService implements RadiatorService {
     return this.constructor.name
   }
 
-  async perform(results: BuildMessageDataSpec, _radiator: RadiatorSpec): Promise<BuildMessageDataSpec> {
-    return Object.assign(
-      results,
-      {
-        newPagesInSite: await executeWithRetry(
-          `${this.getName()}.setCountOfNewPages()`, 5, 1500,
-          () => this.setCountOfNewPages(),
-          (error: any) => error),
-      },
-    )
+  async perform(
+    results: BuildMessageDataSpec,
+    _radiator: RadiatorSpec,
+  ): Promise<BuildMessageDataSpec> {
+    return Object.assign(results, {
+      newPagesInSite: await executeWithRetry(
+        `${this.getName()}.setCountOfNewPages()`,
+        5,
+        1500,
+        () => this.setCountOfNewPages(),
+        (error: any) => error,
+      ),
+    })
   }
 }
