@@ -1,10 +1,10 @@
-export class AuthorizationError extends Error{
-  constructor(message:string) {
+export class AuthorizationError extends Error {
+  constructor(message: string) {
     super(message)
     this.name = 'AuthorizationError'
   }
 
-  toString(){
+  toString() {
     return this.message
   }
 }

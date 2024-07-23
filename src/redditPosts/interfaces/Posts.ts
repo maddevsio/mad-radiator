@@ -1,7 +1,7 @@
 export interface Posts {
   data: {
-    title: string,
-    created_utc: number,
+    title: string
+    created_utc: number
   }
 }
 

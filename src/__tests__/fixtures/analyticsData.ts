@@ -33,8 +33,8 @@ export const analyticsData: AnalyticsData = {
     },
     monthlyUsers: {
       value: 10001,
-      rate: Rate.good
-    }
+      rate: Rate.good,
+    },
   },
   countries: [
     {
@@ -44,13 +44,22 @@ export const analyticsData: AnalyticsData = {
       percentage: 100,
     },
   ],
+  contactMe: {
+    contactMePerMonth: {
+      value: 10,
+    },
+    contactMePerDay: {
+      value: 4,
+    },
+  },
   chart: {
     key: 0,
     key2: 10,
   },
   blogs: [
     {
-      pagePath: 'https://maddevs.io/insights/blog/how-to-start-developing-for-raspberry-pi-with-qt/',
+      pagePath:
+        'https://maddevs.io/insights/blog/how-to-start-developing-for-raspberry-pi-with-qt/',
       pageViews: 19,
     },
   ],
@@ -60,13 +69,10 @@ export const analyticsData: AnalyticsData = {
       pageViews: 35,
     },
   ],
-  contactMe: {
-      value: 4
-  },
   ebookDownloads: [
     {
       value: 4,
-      name: 'Aproach DP'
+      name: 'Aproach DP',
     },
   ],
   subscribers: {

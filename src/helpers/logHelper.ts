@@ -1,5 +1,5 @@
-import { Moment } from 'moment';
+import { Moment } from 'moment'
 
 export default (cb: Moment, format: string) => {
-  return cb.format(format);
+  return cb.format(format)
 }

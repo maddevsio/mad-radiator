@@ -38,9 +38,7 @@ export class GoalsRepository extends Repository {
    * Get conversions from GA
    */
   private async getConversion(conversion: AnalyticsConversion): Promise<ComputedGoal> {
-    const payload = await this.getAnalytics(
-      [{ name: 'conversions' }],
-    )
+    const payload = await this.getAnalytics([{ name: 'conversions' }])
     return {
       payload,
       conversion,
@@ -80,9 +78,17 @@ export class GoalsRepository extends Repository {
   private static calculateValue(entity: any) {
     return {
       value:
-        entity[0] && entity[0].data.totals[0].values.reduce((acc: number, curr: number | string) => acc + Number(curr), 0),
+        entity[0] &&
+        entity[0].data.totals[0].values.reduce(
+          (acc: number, curr: number | string) => acc + Number(curr),
+          0,
+        ),
       previous:
-        entity[0] && entity[0].data.totals[1].values.reduce((acc: number, curr: number | string) => acc + Number(curr), 0),
+        entity[0] &&
+        entity[0].data.totals[1].values.reduce(
+          (acc: number, curr: number | string) => acc + Number(curr),
+          0,
+        ),
     }
   }
 }

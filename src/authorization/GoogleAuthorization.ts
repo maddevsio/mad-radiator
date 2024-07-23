@@ -1,5 +1,5 @@
-import { unlink } from 'fs';
-import { writeFile } from 'fs/promises';
+import { unlink } from 'fs'
+import { writeFile } from 'fs/promises'
 import path from 'path'
 
 import { AuthorizationError } from 'errors/types/AuthorizationError'

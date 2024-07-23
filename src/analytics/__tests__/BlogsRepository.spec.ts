@@ -43,8 +43,8 @@ describe('BlogRepository', () => {
     expect(data).toEqual([
       {
         pagePath: 'https://maddevs.io/blog/main-software-development-metrics-and-kpis/',
-        pageViews: 112
-      }
+        pageViews: 112,
+      },
     ])
   })
 

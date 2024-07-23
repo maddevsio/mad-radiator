@@ -43,16 +43,14 @@ describe('SlackMessageBuilder', () => {
       },
       {
         text: {
-          text:
-            'За отчетный период сайт  посетило *100 пользователей*. Всего *100 сессий*, средняя длительность 1 сессии составляет *100*. *100%* пользователей закрыли сайт никак с ним не провзаимодействовав.\n\n',
+          text: 'За отчетный период сайт  посетило *100 пользователей*. Всего *100 сессий*, средняя длительность 1 сессии составляет *100*. *100%* пользователей закрыли сайт никак с ним не провзаимодействовав.\n\n',
           type: 'mrkdwn',
         },
         type: 'section',
       },
       {
         text: {
-          text:
-            ':yum: :man: Users: *100* (100%%)\n\n:yum: :door: Sessions: *100* (100%%)\n\n:yum: :moyai: Bounce Rate: *100%* (100%%)\n\n:yum: :clock1: Session Duration: *100* (100%%)\n\n:x: Пользователей за последние 7 дней: *2888* / Should be > *7500*\n\n:x: Пользователей за последние 28 дней: *10001* / Should be > *30000*\n\n',
+          text: ':yum: :man: Users: *100* (100%%)\n\n:yum: :door: Sessions: *100* (100%%)\n\n:yum: :moyai: Bounce Rate: *100%* (100%%)\n\n:yum: :clock1: Session Duration: *100* (100%%)\n\n:x: Пользователей за последние 7 дней: *2888* / Should be > *7500*\n\n:x: Пользователей за последние 28 дней: *10001* / Should be > *30000*\n\n',
           type: 'mrkdwn',
         },
         type: 'section',
@@ -77,6 +75,30 @@ describe('SlackMessageBuilder', () => {
       {
         text: {
           text: ':x: Should be -> United States, United Kingdom, Germany, France, Indonesia, Vietnam\n\n',
+          type: 'mrkdwn',
+        },
+        type: 'section',
+      },
+      {
+        type: 'divider',
+      },
+      {
+        text: {
+          text: '*Заполнения формы contact me:*\n\n',
+          type: 'mrkdwn',
+        },
+        type: 'section',
+      },
+      {
+        text: {
+          text: ':mailbox_with_mail: Заполнения за день: 4\n\n',
+          type: 'mrkdwn',
+        },
+        type: 'section',
+      },
+      {
+        text: {
+          text: ':x: Заполнения за последние 30 дней: 10 / Should be > 18\n\n',
           type: 'mrkdwn',
         },
         type: 'section',
@@ -120,23 +142,6 @@ describe('SlackMessageBuilder', () => {
       },
       {
         text: {
-          text: '*Заполнения формы contact me:*\n\n',
-          type: 'mrkdwn',
-        },
-        type: 'section',
-      },
-      {
-        text: {
-          text: ':x: Заполнения за последние 30 дней: 4 / Should be > 5\n\n',
-          type: 'mrkdwn',
-        },
-        type: 'section',
-      },
-      {
-        type: 'divider',
-      },
-      {
-        text: {
           text: '*Количество новых постов на Reddit:*\n\n',
           type: 'mrkdwn',
         },
@@ -154,16 +159,14 @@ describe('SlackMessageBuilder', () => {
       },
       {
         text: {
-          text:
-            '*Количество скачиваний Ebook\'ов за последние 30 дней:*\n\n',
+          text: "*Количество скачиваний Ebook'ов за последние 30 дней:*\n\n",
           type: 'mrkdwn',
         },
         type: 'section',
       },
       {
         text: {
-          text:
-            'Aproach DP: 4 \n\n',
+          text: 'Aproach DP: 4 \n\n',
           type: 'mrkdwn',
         },
         type: 'section',

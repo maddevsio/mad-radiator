@@ -18,16 +18,19 @@ export class MoosendCountEmailsService implements RadiatorService {
     return this.constructor.name
   }
 
-  async perform(results: BuildMessageDataSpec, _radiator: RadiatorSpec): Promise<BuildMessageDataSpec> {
-    return Object.assign(
-      results,
-      {
-        emailsCount: await executeWithRetry(
-          `${this.getName()}.getEmailsFromMoosend()`, 5, 1500,
-          () => this.getEmailsFromMoosend(),
-          (error: any) => error),
-      },
-    )
+  async perform(
+    results: BuildMessageDataSpec,
+    _radiator: RadiatorSpec,
+  ): Promise<BuildMessageDataSpec> {
+    return Object.assign(results, {
+      emailsCount: await executeWithRetry(
+        `${this.getName()}.getEmailsFromMoosend()`,
+        5,
+        1500,
+        () => this.getEmailsFromMoosend(),
+        (error: any) => error,
+      ),
+    })
   }
 
   private async getEmailsFromMoosend(): Promise<number> {

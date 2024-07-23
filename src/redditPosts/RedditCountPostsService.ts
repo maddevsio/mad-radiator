@@ -1,4 +1,4 @@
-import moment from "moment"
+import moment from 'moment'
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import Reddit from 'reddit'
@@ -7,7 +7,7 @@ import { BuildMessageDataSpec } from '../messengers/interfaces'
 import { RadiatorService, RadiatorSpec } from '../radiator-spec'
 import { executeWithRetry } from '../utils/executeWithRetry'
 
-import { IRedditParams, Post, Posts } from "./interfaces"
+import { IRedditParams, Post, Posts } from './interfaces'
 
 export class RedditCountPostsService implements RadiatorService {
   private redditConnect: Reddit
@@ -16,7 +16,7 @@ export class RedditCountPostsService implements RadiatorService {
     redditClientId,
     redditClientSecret,
     redditUsername,
-    redditPassword
+    redditPassword,
   }: IRedditParams) {
     this.redditConnect = new Reddit({
       username: redditUsername,
@@ -31,16 +31,19 @@ export class RedditCountPostsService implements RadiatorService {
     return this.constructor.name
   }
 
-  async perform(results: BuildMessageDataSpec, _radiator: RadiatorSpec): Promise<BuildMessageDataSpec> {
-    return Object.assign(
-      results,
-      {
-          redditCountPosts: await executeWithRetry(
-            `${this.getName()}.getPostsCountInReddit()`, 5, 1500,
-            () => this.getPostsCountInReddit(),
-            (error: any) => error),
-        },
-    )
+  async perform(
+    results: BuildMessageDataSpec,
+    _radiator: RadiatorSpec,
+  ): Promise<BuildMessageDataSpec> {
+    return Object.assign(results, {
+      redditCountPosts: await executeWithRetry(
+        `${this.getName()}.getPostsCountInReddit()`,
+        5,
+        1500,
+        () => this.getPostsCountInReddit(),
+        (error: any) => error,
+      ),
+    })
   }
 
   public async getPostsCountInReddit(): Promise<number> {
@@ -58,12 +61,16 @@ export class RedditCountPostsService implements RadiatorService {
     return [...new Set(posts.map(post => post.data.title))]
   }
 
-  private getPostsInCurrentMonth = (posts: Array<Posts>): Array<Posts> => posts.filter(post => moment().startOf('month').unix() < post.data.created_utc)
+  private getPostsInCurrentMonth = (posts: Array<Posts>): Array<Posts> =>
+    posts.filter(post => moment().startOf('month').unix() < post.data.created_utc)
 
   private getPosts = async (nextPage: string | null = null): Promise<Array<Posts>> => {
     let posts: Array<Posts> = []
     try {
-      const response = await this.redditConnect.get('/user/darikanur/submitted', { limit: 100, after: nextPage })
+      const response = await this.redditConnect.get('/user/darikanur/submitted', {
+        limit: 100,
+        after: nextPage,
+      })
       posts = posts.concat(response.data.children)
       if (response.data.after) posts = posts.concat(await this.getPosts(response.data.after))
     } catch (error: any) {

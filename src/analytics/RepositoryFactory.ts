@@ -9,7 +9,6 @@ import { ParsedRange } from 'interfaces'
 
 import { AnalyticsParams } from './interfaces'
 
-
 export enum RepositoryTypes {
   core = 'core',
   countries = 'countries',
@@ -17,7 +16,7 @@ export enum RepositoryTypes {
   pages = 'pages',
   subscribers = 'subscribers',
   contactMe = 'contactMe',
-  ebookDownloads = 'ebookDownloads'
+  ebookDownloads = 'ebookDownloads',
 }
 
 export type RepositoryType =

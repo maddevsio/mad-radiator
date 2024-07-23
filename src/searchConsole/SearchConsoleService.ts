@@ -56,15 +56,18 @@ export class SearchConsoleService implements RadiatorService {
     return this.constructor.name
   }
 
-  async perform(results: BuildMessageDataSpec, _radiator: RadiatorSpec): Promise<BuildMessageDataSpec> {
-    return Object.assign(
-      results,
-      {
-        searchConsole: await executeWithRetry(
-          `${this.getName()}.getSiteSearchAnalytics()`, 5, 1500,
-          () => this.getSiteSearchAnalytics(),
-          (error: any) => error),
-      },
-    )
+  async perform(
+    results: BuildMessageDataSpec,
+    _radiator: RadiatorSpec,
+  ): Promise<BuildMessageDataSpec> {
+    return Object.assign(results, {
+      searchConsole: await executeWithRetry(
+        `${this.getName()}.getSiteSearchAnalytics()`,
+        5,
+        1500,
+        () => this.getSiteSearchAnalytics(),
+        (error: any) => error,
+      ),
+    })
   }
 }

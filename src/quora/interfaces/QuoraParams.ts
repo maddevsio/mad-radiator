@@ -1,3 +1,3 @@
 export interface QuoraParams {
-  quoraUserID: string;
+  quoraUserID: string
 }

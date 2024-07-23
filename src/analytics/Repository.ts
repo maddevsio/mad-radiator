@@ -3,7 +3,6 @@ import { AnalyticsError } from 'errors/types/AnalyticsError'
 import { analyticsdata_v1beta, google } from 'googleapis'
 import { ParsedRange, Range } from 'interfaces'
 
-
 /**
  * Abstract Analytics repository
  */
@@ -54,13 +53,9 @@ export abstract class Repository {
           dateRanges,
           dimensions,
           metrics,
-          metricAggregations: [
-            "TOTAL",
-            "MAXIMUM",
-            "MINIMUM"
-          ]
-        }
-      });
+          metricAggregations: ['TOTAL', 'MAXIMUM', 'MINIMUM'],
+        },
+      })
 
       const payload = response?.data
 

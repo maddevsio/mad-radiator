@@ -11,7 +11,6 @@ export async function executeWithRetry(
 ) {
   Logger.info(`${prompt}: Starting.`)
   for (let attempt = 1; attempt <= retryCount; attempt += 1) {
-
     function promptStr(): string {
       return `${prompt} attempt ${attempt}:`
     }

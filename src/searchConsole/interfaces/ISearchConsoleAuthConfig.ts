@@ -1,6 +1,6 @@
 export interface ISearchConsoleAuthConfig {
-  analyticsClientEmail: string,
-  analyticsPrivateKey: string,
-  website: string,
-  websiteSitemap: string,
+  analyticsClientEmail: string
+  analyticsPrivateKey: string
+  website: string
+  websiteSitemap: string
 }

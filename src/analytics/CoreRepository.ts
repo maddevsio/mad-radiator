@@ -16,7 +16,7 @@ export class CoreRepository extends Repository {
     { name: 'active28DayUsers' },
     { name: 'sessions' },
     { name: 'bounceRate' },
-    { name: 'averageSessionDuration' }
+    { name: 'averageSessionDuration' },
   ]
 
   /**
@@ -45,24 +45,21 @@ export class CoreRepository extends Repository {
    */
   private static format(reports: AnalyticsPayload): CoreItems {
     const currentReport = {
-      rows: reports.rows
-        .filter((row: AnalyticDataRows) => row.dimensionValues[0].value === 'date_range_0'),
+      rows: reports.rows.filter(
+        (row: AnalyticDataRows) => row.dimensionValues[0].value === 'date_range_0',
+      ),
     }
 
     const previousReport = {
-      rows: reports.rows
-        .filter((row: AnalyticDataRows) => row.dimensionValues[0].value === 'date_range_1'),
+      rows: reports.rows.filter(
+        (row: AnalyticDataRows) => row.dimensionValues[0].value === 'date_range_1',
+      ),
     }
 
-    const [
-      users,
-      usersForWeek,
-      usersForMonth,
-      sessions,
-      bounceRate,
-      duration,
-    ] = currentReport.rows[0].metricValues
-      .map((n: { value: number }) => Number(Number(n.value).toFixed(2)))
+    const [users, usersForWeek, usersForMonth, sessions, bounceRate, duration] =
+      currentReport.rows[0].metricValues.map((n: { value: number }) =>
+        Number(Number(n.value).toFixed(2)),
+      )
 
     const [
       usersPrev,
@@ -71,8 +68,9 @@ export class CoreRepository extends Repository {
       sessionsPrev,
       bounceRatePrev,
       durationPrev,
-    ] = previousReport.rows[0].metricValues
-      .map((n: { value: number }) => Number(Number(n.value).toFixed(2)))
+    ] = previousReport.rows[0].metricValues.map((n: { value: number }) =>
+      Number(Number(n.value).toFixed(2)),
+    )
 
     const usersDifference = CoreRepository.getPercentage(users, usersPrev)
     const sessionsDifference = CoreRepository.getPercentage(sessions, sessionsPrev)
@@ -112,7 +110,7 @@ export class CoreRepository extends Repository {
       },
       monthlyUsers: {
         value: usersForMonth,
-      }
+      },
     }
   }
 
@@ -120,7 +118,7 @@ export class CoreRepository extends Repository {
    * Get percentage between two numbers
    */
   private static getPercentage(first: number, second: number): number {
-    if (first > second) return Number(Number((first - second) / first * 100).toFixed(2))
-    return Number(Number((first - second) / second * 100).toFixed(2))
+    if (first > second) return Number(Number(((first - second) / first) * 100).toFixed(2))
+    return Number(Number(((first - second) / second) * 100).toFixed(2))
   }
 }

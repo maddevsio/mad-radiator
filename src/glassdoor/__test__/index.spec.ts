@@ -11,9 +11,7 @@ const expectedValue = 12
 
 jest.mock('utils/firestore')
 jest.spyOn(axios, 'get').mockImplementation(() => Promise.resolve(responseFireStoreData))
-jest.spyOn(axios, 'post').mockImplementation(
-  () => new Promise<void>(res => res()),
-)
+jest.spyOn(axios, 'post').mockImplementation(() => new Promise<void>(res => res()))
 
 const getDataAfterDate = jest
   .fn()
@@ -32,17 +30,20 @@ describe('Glassdoor service', () => {
   })
 
   afterEach(() => {
-    jest.restoreAllMocks();
-  });
+    jest.restoreAllMocks()
+  })
 
   it('should correctly return a count of glassdoor reviews', async () => {
-    const posts = new GlassdoorService({ api_key: 'api_key', glassdoorUrl: 'url' }, defaultFirestoreConfig)
-    const getHtmlMock = jest.spyOn(GlassdoorService.prototype as any, 'getReviewsFromGlassdoor');
-    getHtmlMock.mockImplementation(() => new Promise(resolve => resolve(22)));
+    const posts = new GlassdoorService(
+      { api_key: 'api_key', glassdoorUrl: 'url' },
+      defaultFirestoreConfig,
+    )
+    const getHtmlMock = jest.spyOn(GlassdoorService.prototype as any, 'getReviewsFromGlassdoor')
+    getHtmlMock.mockImplementation(() => new Promise(resolve => resolve(22)))
     const countOfPosts = await posts.setCountOfGlassdoorReviews()
 
     expect(countOfPosts).toBe(expectedValue)
-  });
+  })
 
   it('should correctly throw GlassdoorError', async () => {
     const error = () => {

@@ -7,11 +7,11 @@ export interface FirestoreData {
           count: {
             integerValue: string
           }
-        },
+        }
         createTime: string
         updateTime: string
-      },
+      }
       readTime: string
-    }
+    },
   ]
 }
