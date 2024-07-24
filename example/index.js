@@ -3,8 +3,6 @@ const config = require('./example.config.json')
 const dotenv = require('dotenv')
 const { MessengersService } = require('../lib/messengers')
 const { AnalyticsService } = require('../lib/analytics')
-const { RedditCountPostsService } = require('../lib/redditPosts')
-const { QuoraService } = require('../lib/quora')
 const { NewPagesInSiteService } = require('../lib/pagesAnalytics')
 const { PageAnalyticsService } = require('../lib/pagesAnalytics')
 const { SearchConsoleService } = require('../lib/searchConsole')
@@ -16,8 +14,6 @@ const {
   authConfig,
   slackConfig,
   newPagesInSiteConfig,
-  quora,
-  redditConfig,
   pageAnalyticsConfig,
   fireStoreAuthConfig,
   scheduleConfig,
@@ -58,8 +54,6 @@ const analyticsConfig = {
 
 const radiator = new Radiator(dailyConfig, new MessengersService(messengersConfig))
 radiator.register(new AnalyticsService(analyticsConfig, dailyConfig.range))
-radiator.register(new RedditCountPostsService(redditConfig))
-radiator.register(new QuoraService(quora, fireStore))
 radiator.register(new NewPagesInSiteService(newPagesInSiteConfig, fireStore))
 radiator.register(new PageAnalyticsService(pageAnalyticsConfig, fireStore))
 radiator.register(new SearchConsoleService(searchConsoleConfig))

@@ -37,10 +37,10 @@ export class Firestore {
     return {
       // @ts-ignore
       type: config.authType,
-      project_id: config.firestoreProjectId,
+      projectId: config.firestoreProjectId,
       private_key_id: config.firestorePrivateKeyId,
-      private_key: JSON.stringify(config.firestorePrivateKey.replace(/\\n/gm, "\n")),
-      client_email: config.firestoreClientEmail,
+      privateKey: config.firestorePrivateKey.replace(/\\n/g, '\n'),
+      clientEmail: config.firestoreClientEmail,
       client_id: config.firestoreClientId,
       auth_uri: config.firestoreAuthUri,
       token_uri: config.firestoreTokenUri,
