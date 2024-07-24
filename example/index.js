@@ -43,7 +43,7 @@ const searchConsoleConfig = {
   analyticsClientEmail: authConfig.analyticsClientEmail,
   analyticsPrivateKey: process.env.RADIATOR_PRIVATE_KEY.replaceAll('\\n', '\n'),
   website: 'https://maddevs.io/',
-  websiteSitemap: 'https://maddevs.io/sitemapindex.xml'
+  websiteSitemap: 'https://maddevs.io/sitemap_index.xml'
 }
 
 const messengersConfig = {

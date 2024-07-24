@@ -1,8 +1,5 @@
-import { writeFileSync } from 'fs'
-import path from 'path'
-
 import dotenv from 'dotenv'
-import admin from 'firebase-admin'
+import admin, { ServiceAccount } from 'firebase-admin'
 import { getFirestore } from 'firebase-admin/firestore'
 import { FirestoreConfig } from 'interfaces'
 import { Moment } from 'moment'
@@ -13,24 +10,21 @@ import { AuthorizationError } from '../errors/types/AuthorizationError'
 dotenv.config()
 
 export class Firestore {
-  private readonly KEYS_FILEPATH: string
-
   private readonly config: FirestoreConfig
 
   private db: admin.firestore.Firestore | undefined
 
   constructor(firestoreConfig: FirestoreConfig) {
-    this.KEYS_FILEPATH = path.join(__dirname, 'serviceAccount.json')
     this.config = firestoreConfig
     this.authorize()
   }
 
   private authorize() {
     try {
-      this.buildKeysFile(this.config, this.KEYS_FILEPATH)
       if (!admin.apps.length) {
         admin.initializeApp({
-          credential: admin.credential.cert(this.KEYS_FILEPATH),
+          credential: admin.credential.cert(this.buildKeysFile(this.config)
+          ),
         })
       }
       this.db = getFirestore()
@@ -39,25 +33,19 @@ export class Firestore {
     }
   }
 
-  private buildKeysFile(config: FirestoreConfig, keysFilePath: string) {
-    const fileData = `{
-            "type": "${config.authType}",
-            "project_id": "${config.firestoreProjectId}",
-            "private_key_id": "${config.firestorePrivateKeyId}",
-            "private_key": "${config.firestorePrivateKey}",
-            "client_email": "${config.firestoreClientEmail}",
-            "client_id": "${config.firestoreClientId}",
-            "auth_uri": "${config.firestoreAuthUri}",
-            "token_uri": "${config.firestoreTokenUri}",
-            "auth_provider_x509_cert_url": "${config.firestoreAuthProviderCertUrl}",
-            "client_x509_cert_url": "${config.firestoreClientCertUrl}"
-        }`
-
-    try {
-      writeFileSync(keysFilePath, fileData)
-      return true
-    } catch (error: any) {
-      throw new AuthorizationError(error)
+  private buildKeysFile(config: FirestoreConfig): ServiceAccount {
+    return {
+      // @ts-ignore
+      type: config.authType,
+      project_id: config.firestoreProjectId,
+      private_key_id: config.firestorePrivateKeyId,
+      private_key: config.firestorePrivateKey,
+      client_email: config.firestoreClientEmail,
+      client_id: config.firestoreClientId,
+      auth_uri: config.firestoreAuthUri,
+      token_uri: config.firestoreTokenUri,
+      auth_provider_x509_cert_url: config.firestoreAuthProviderCertUrl,
+      client_x509_cert_url: config.firestoreClientCertUrl,
     }
   }
 
