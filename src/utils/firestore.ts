@@ -39,7 +39,7 @@ export class Firestore {
       type: config.authType,
       project_id: config.firestoreProjectId,
       private_key_id: config.firestorePrivateKeyId,
-      private_key: config.firestorePrivateKey,
+      private_key: JSON.stringify(config.firestorePrivateKey.replace(/\\n/gm, "\n")),
       client_email: config.firestoreClientEmail,
       client_id: config.firestoreClientId,
       auth_uri: config.firestoreAuthUri,
