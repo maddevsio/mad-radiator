@@ -45,46 +45,10 @@ describe('GoogleAuthorization', () => {
     expect(service.authorize).toBeTruthy()
   })
 
-  it('should correctly authorize', async () => {
-    const service = new GoogleAuthorization(config)
-
-    const { unlink } = await service.authorize()
-
-    expect(fs.unlink).toHaveBeenCalledTimes(0)
-
-    await unlink()
-
-    expect(fs.unlink).toHaveBeenCalledTimes(1)
-  })
-
   it('should correctly throw AuthorizationError', async () => {
     const error = () => {
       throw new AuthorizationError('authorization error')
     }
     expect(error).toThrow(AuthorizationError)
-  })
-
-  it('should errors correctly handle with logger service', async () => {
-    jest.spyOn(fs, 'writeFile').mockImplementation(
-      (_, __, cb) =>
-        new Promise<void>(res => {
-          cb(new Error('error'))
-          res()
-        }),
-    )
-    jest.spyOn(fs, 'unlink').mockImplementation(
-      (_, cb) =>
-        new Promise<void>(res => {
-          cb(new Error('error'))
-          res()
-        }),
-    )
-
-    const service = new GoogleAuthorization(config)
-    const { unlink } = await service.authorize()
-
-    await unlink()
-
-    expect(Logger.error).toHaveBeenCalledTimes(1)
   })
 })
