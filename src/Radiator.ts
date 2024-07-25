@@ -17,7 +17,7 @@ export class Radiator implements RadiatorSpec {
 
   private readonly config: RadiatorConfig
 
-  private authorization!: { unlink: () => Promise<void>; google: GoogleApis }
+  private authorization!: { google: GoogleApis }
 
   constructor(config: RadiatorConfig, messageService: MessageService) {
     this.messageService = messageService
@@ -61,7 +61,6 @@ export class Radiator implements RadiatorSpec {
         }
         if (this.messageService) this.messageService.sendMessages(messageData)
       } finally {
-        await this.authorization.unlink()
         Logger.info(`ScheduleJob: completed.`)
       }
     })
