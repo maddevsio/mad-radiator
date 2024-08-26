@@ -7608,6 +7608,11 @@ sendpulse-api-request@^0.0.2:
   resolved "https://registry.yarnpkg.com/sendpulse-api-request/-/sendpulse-api-request-0.0.2.tgz#7321878707e49aa91c7e9b48215065ee78b8a7a0"
   integrity sha512-m8hCYqQMPDWBdsHgbzzlW/WWBIvXMt+KiWmNpqLeceuH0V//BRKVe1g5iJwJ8GyV9HPplIEVk908nUiLYFxjPw==
 
+sendpulse-api@^1.1.7:
+  version "1.1.7"
+  resolved "https://registry.yarnpkg.com/sendpulse-api/-/sendpulse-api-1.1.7.tgz#392d3d7414b9d8ac4d130d72bf6a0311837f9178"
+  integrity sha512-Jb/9mcMN1Cs/5iHDQ+EURXfUzhJAz3W9yeAfPnVoHhTsj2Cx9n9oqqxvwZay1kTSbweVNIrLCt12ku31IufQfw==
+
 set-blocking@^2.0.0, set-blocking@~2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/set-blocking/-/set-blocking-2.0.0.tgz#045f9782d011ae9a6803ddd382b24392b3d890f7"

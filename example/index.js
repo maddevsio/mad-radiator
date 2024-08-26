@@ -6,7 +6,7 @@ const { AnalyticsService } = require('../lib/analytics')
 const { NewPagesInSiteService } = require('../lib/pagesAnalytics')
 const { PageAnalyticsService } = require('../lib/pagesAnalytics')
 const { SearchConsoleService } = require('../lib/searchConsole')
-const { MoosendCountEmailsService } = require('../lib/moosend')
+const { SendPulseNewsletterSubscribersService } = require('../lib/sendPulse')
 
 dotenv.config()
 
@@ -18,7 +18,7 @@ const {
   fireStoreAuthConfig,
   scheduleConfig,
   sentryConfig,
-  moosendConfig,
+  sendPulseConfig
 } = config
 
 const dailyConfig = {
@@ -57,5 +57,5 @@ radiator.register(new AnalyticsService(analyticsConfig, dailyConfig.range))
 radiator.register(new NewPagesInSiteService(newPagesInSiteConfig, fireStore))
 radiator.register(new PageAnalyticsService(pageAnalyticsConfig, fireStore))
 radiator.register(new SearchConsoleService(searchConsoleConfig))
-radiator.register(new MoosendCountEmailsService(moosendConfig))
+radiator.register(new SendPulseNewsletterSubscribersService(sendPulseConfig))
 radiator.execute()
