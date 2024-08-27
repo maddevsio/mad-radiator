@@ -183,7 +183,14 @@ describe('SlackMessageBuilder', () => {
       },
       {
         text: {
-          text: `:postbox: *Всего подписано на рассылку:* undefined\n\n`,
+          text: `:postbox: *Общее количество подписчиков:* undefined\n\n`,
+          type: 'mrkdwn',
+        },
+        type: 'section',
+      },
+      {
+        text: {
+          text: `:envelope_with_arrow: *Количество активных подписчиков:* undefined\n\n`,
           type: 'mrkdwn',
         },
         type: 'section',

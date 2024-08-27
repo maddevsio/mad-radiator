@@ -5,8 +5,8 @@ import { RadiatorConfig } from 'interfaces'
 import { BuildMessageDataSpec, SlackMessageBlock } from 'messengers/interfaces'
 import { getYesterday } from 'utils/parseRange'
 
-import { IMoosendData } from '../moosend/interfaces'
 import { ISearchConsoleData } from '../searchConsole/interfaces'
+import { ISendPulseData } from "../sendPulse/inrefaces/ISendPulseData";
 import { getMonthName } from '../utils/getMonthName'
 
 export abstract class MessageBuilder {
@@ -229,6 +229,7 @@ export abstract class MessageBuilder {
     if (subscribers) {
       message.push(this.blocksService.section(MessageBuilder.SubscribersMessage(subscribers.value)))
       message.push(this.blocksService.section(MessageBuilder.subscribersMessageTotal(emailsCount)))
+      message.push(this.blocksService.section(MessageBuilder.activeSubscribersMessageTotal(emailsCount)))
       message.push(this.blocksService.divider())
     }
 
@@ -430,7 +431,11 @@ export abstract class MessageBuilder {
     }`
   }
 
-  private static subscribersMessageTotal(subscribersCountTotal: IMoosendData | undefined) {
-    return `:postbox: *Всего подписано на рассылку:* ${subscribersCountTotal}`
+  private static subscribersMessageTotal(subscribersCountTotal: ISendPulseData | undefined) {
+    return `:postbox: *Общее количество подписчиков:* ${subscribersCountTotal?.totalCount}`
+  }
+
+  private static activeSubscribersMessageTotal(subscribersCountTotal: ISendPulseData | undefined) {
+    return `:envelope_with_arrow: *Количество активных подписчиков:* ${subscribersCountTotal?.activeCount}`
   }
 }
